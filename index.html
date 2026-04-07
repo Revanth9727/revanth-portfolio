@@ -5,644 +5,795 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Revanth Gollapudi — AI Engineer</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Epilogue:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Epilogue:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
-:root { --cream:#f7f5f0; --ink:#0d0c0a; --ink-soft:#1f1e1b; --ink-faint:#555250; --ink-ghost:#a8a49e; --rule:#d6d2ca; --accent:#3d2f1e; }
-body { background:var(--cream); color:var(--ink); font-family:'Epilogue',sans-serif; font-weight:300; line-height:1.7; overflow-x:hidden; cursor:none; }
-.progress-bar { position:fixed; top:0; left:0; height:2px; background:var(--ink); z-index:9999; width:0%; pointer-events:none; transition:width 0.08s linear; }
-.cursor { position:fixed; width:8px; height:8px; background:var(--ink); border-radius:50%; pointer-events:none; z-index:9998; transform:translate(-50%,-50%); transition:width 0.3s cubic-bezier(.22,1,.36,1),height 0.3s cubic-bezier(.22,1,.36,1),background 0.3s,opacity 0.3s; mix-blend-mode:multiply; }
-.cursor.hover { width:36px; height:36px; background:var(--accent); opacity:0.25; }
-.cursor.clicking { transform:translate(-50%,-50%) scale(0.7); }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{font-size:16px;}
+:root{
+  --cream:#f6f3ee;
+  --ink:#0c0b09;
+  --ink-soft:#252320;
+  --ink-mid:#4a4744;
+  --ink-faint:#7a7673;
+  --ink-ghost:#b0ada8;
+  --rule:#dedad4;
+  --accent:#5c3d1e;
+  --accent-light:#8b6340;
+  --vh:1vh;
+}
+body{background:var(--cream);color:var(--ink);font-family:'Epilogue',sans-serif;font-weight:300;line-height:1.7;overflow-x:hidden;cursor:none;}
 
-nav { position:fixed; top:0; left:0; right:0; z-index:100; display:flex; justify-content:space-between; align-items:center; padding:1.25rem 3.5rem; background:rgba(247,245,240,0.93); backdrop-filter:blur(12px); border-bottom:1px solid var(--rule); }
-.nav-name { font-family:'Cormorant Garamond',serif; font-size:1rem; font-weight:400; letter-spacing:0.06em; color:var(--ink); text-decoration:none; }
-.nav-links { display:flex; gap:2rem; list-style:none; }
-.nav-links a { font-size:0.7rem; font-weight:400; letter-spacing:0.12em; text-transform:uppercase; color:var(--ink-soft); text-decoration:none; transition:color 0.2s; }
-.nav-links a:hover { color:var(--accent); }
+/* CURSOR */
+#cur{position:fixed;top:0;left:0;width:10px;height:10px;background:var(--ink);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .3s,height .3s,background .3s,opacity .3s;mix-blend-mode:multiply;}
+#cur.big{width:36px;height:36px;background:var(--accent);opacity:.22;}
+#cur.click{width:14px;height:14px;}
 
-/* HERO */
-.hero { min-height:100vh; display:grid; grid-template-columns:1fr 1fr; align-items:center; padding:8rem 3.5rem 4rem; gap:5rem; border-bottom:1px solid var(--rule); }
-.eyebrow { font-size:0.68rem; font-weight:500; letter-spacing:0.2em; text-transform:uppercase; color:var(--ink-faint); margin-bottom:1.25rem; display:flex; align-items:center; gap:0.75rem; opacity:0; animation:up 0.7s 0.15s forwards; }
-.eyebrow::before { content:''; display:block; width:24px; height:1px; background:var(--ink-ghost); }
-h1 { font-family:'Cormorant Garamond',serif; font-size:clamp(3.2rem,5.5vw,6rem); font-weight:300; line-height:1.0; letter-spacing:-0.02em; margin-bottom:1.5rem; opacity:0; animation:up 0.8s 0.3s forwards; }
-h1 em { font-style:italic; }
-.hero-summary { font-size:0.95rem; color:var(--ink-soft); max-width:44ch; line-height:1.85; margin-bottom:2.5rem; opacity:0; animation:up 0.7s 0.5s forwards; }
-.hero-stats { display:grid; grid-template-columns:repeat(3,1fr); border-top:1px solid var(--rule); margin-bottom:2.5rem; opacity:0; animation:up 0.7s 0.65s forwards; }
-.stat { padding:1.25rem 1.5rem 0 0; }
-.stat:not(:last-child) { border-right:1px solid var(--rule); margin-right:1.5rem; }
-.stat-n { font-family:'Cormorant Garamond',serif; font-size:2.2rem; font-weight:300; line-height:1; display:block; margin-bottom:0.3rem; }
-.stat-l { font-size:0.62rem; font-weight:500; letter-spacing:0.1em; text-transform:uppercase; color:var(--ink-faint); }
-.hero-ctas { display:flex; gap:1rem; flex-wrap:wrap; opacity:0; animation:up 0.7s 0.8s forwards; }
-.btn { font-size:0.68rem; font-weight:500; letter-spacing:0.14em; text-transform:uppercase; text-decoration:none; padding:0.75rem 1.6rem; transition:all 0.2s; display:inline-block; }
-.btn-dark { background:var(--ink); color:var(--cream); }
-.btn-dark:hover { background:var(--ink-soft); }
-.btn-line { border:1px solid var(--rule); color:var(--ink-soft); }
-.btn-line:hover { border-color:var(--ink); color:var(--ink); }
-.hero-right { opacity:0; animation:up 0.8s 0.5s forwards; }
-.hero-about { font-family:'Cormorant Garamond',serif; font-size:1.35rem; font-weight:300; font-style:italic; line-height:1.75; color:var(--ink-soft); margin-bottom:2rem; }
-.hero-tags { display:flex; flex-wrap:wrap; gap:0.5rem; }
-.hero-tag { font-size:0.7rem; font-weight:400; color:var(--ink-faint); border:1px solid var(--rule); padding:0.25rem 0.75rem; }
+/* PROGRESS DOTS */
+.dots{position:fixed;right:2rem;top:50%;transform:translateY(-50%);z-index:200;display:flex;flex-direction:column;gap:.75rem;}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--rule);transition:background .35s,transform .35s;cursor:pointer;}
+.dot.on{background:var(--ink);transform:scale(1.4);}
 
-/* SECTIONS */
-.section { padding:6rem 3.5rem; border-bottom:1px solid var(--rule); }
-.section-header { display:grid; grid-template-columns:160px 1fr; gap:3rem; align-items:baseline; margin-bottom:4rem; padding-bottom:1.5rem; border-bottom:1px solid var(--rule); }
-.section-num { font-size:0.68rem; font-weight:500; letter-spacing:0.1em; text-transform:uppercase; color:var(--ink-faint); }
-.section-title { font-family:'Cormorant Garamond',serif; font-size:2.4rem; font-weight:300; letter-spacing:-0.01em; }
+/* CHAPTERS — full-screen panels */
+.chapter{min-height:100vh;position:relative;display:flex;flex-direction:column;justify-content:center;padding:5rem 6rem;border-bottom:1px solid var(--rule);overflow:hidden;}
+.chapter:last-child{border-bottom:none;}
 
-/* EXPERIENCE */
-.exp-item { display:grid; grid-template-columns:160px 1fr; gap:3rem; padding:3rem 0; border-bottom:1px solid var(--rule); opacity:0; transform:translateX(-32px); transition:opacity 0.7s cubic-bezier(.22,1,.36,1),transform 0.7s cubic-bezier(.22,1,.36,1); }
-.exp-item.vis { opacity:1; transform:none; }
-.exp-item:last-child { border-bottom:none; }
-.exp-side { padding-top:0.2rem; }
-.exp-date { font-size:0.68rem; font-weight:500; letter-spacing:0.06em; text-transform:uppercase; color:var(--ink-faint); margin-bottom:0.5rem; line-height:1.7; }
-.exp-co { font-family:'Cormorant Garamond',serif; font-size:1.05rem; font-weight:500; color:var(--accent); margin-bottom:0.2rem; }
-.exp-loc { font-size:0.68rem; color:var(--ink-ghost); letter-spacing:0.04em; }
-.exp-role { font-family:'Cormorant Garamond',serif; font-size:1.55rem; font-weight:400; font-style:italic; color:var(--ink); margin-bottom:0.5rem; line-height:1.2; }
-.exp-tagline { font-size:0.75rem; font-weight:500; color:var(--ink-faint); letter-spacing:0.08em; text-transform:uppercase; margin-bottom:2rem; }
-.exp-points { display:flex; flex-direction:column; gap:2rem; }
-.exp-point-label { font-size:0.65rem; font-weight:500; letter-spacing:0.14em; text-transform:uppercase; color:var(--accent); margin-bottom:0.5rem; }
-.exp-point p { font-size:0.9rem; color:var(--ink-soft); line-height:1.85; }
-.exp-point p + p { margin-top:0.75rem; }
-.exp-point p strong { color:var(--ink); font-weight:500; }
-.metric { font-family:'Cormorant Garamond',serif; font-size:1.05rem; font-weight:400; color:var(--ink); }
-.tech-stack { display:flex; flex-wrap:wrap; gap:0.4rem; margin-top:1.5rem; padding-top:1.5rem; border-top:1px solid var(--rule); }
-.tech-pill { font-size:0.68rem; font-weight:400; color:var(--ink-faint); border:1px solid var(--rule); padding:0.2rem 0.6rem; transition:border-color 0.2s,color 0.2s; }
-.tech-pill:hover { border-color:var(--ink-ghost); color:var(--ink-soft); }
+/* chapter entrance */
+.chapter .c-inner{opacity:0;transform:translateY(40px);transition:opacity .9s cubic-bezier(.22,1,.36,1),transform .9s cubic-bezier(.22,1,.36,1);}
+.chapter.entered .c-inner{opacity:1;transform:none;}
 
-/* SKILLS */
-.skills-body { display:grid; grid-template-columns:160px 1fr; gap:3rem; }
-.sk-rows { display:flex; flex-direction:column; }
-.sk-row { display:grid; grid-template-columns:200px 1fr; gap:2rem; align-items:baseline; padding:1.4rem 0; border-bottom:1px solid var(--rule); opacity:0; transform:translateX(28px); transition:opacity 0.55s cubic-bezier(.22,1,.36,1),transform 0.55s cubic-bezier(.22,1,.36,1); }
-.sk-row.vis { opacity:1; transform:none; }
-.sk-row:last-child { border-bottom:none; }
-.sk-cat { font-size:0.68rem; font-weight:500; letter-spacing:0.1em; text-transform:uppercase; color:var(--ink-soft); }
-.sk-tags { display:flex; flex-wrap:wrap; gap:0.4rem; }
-.sk-tag { font-size:0.8rem; color:var(--ink-soft); border:1px solid var(--rule); padding:0.22rem 0.65rem; transition:border-color 0.2s; }
-.sk-tag:hover { border-color:var(--ink-soft); }
+/* chapter number watermark */
+.ch-num{position:absolute;right:5rem;bottom:3rem;font-family:'Cormorant Garamond',serif;font-size:12rem;font-weight:300;color:transparent;-webkit-text-stroke:1px var(--rule);line-height:1;pointer-events:none;user-select:none;transition:opacity .6s;}
 
-/* PROJECTS */
-.proj-list { display:flex; flex-direction:column; }
-.proj-item { display:grid; grid-template-columns:160px 1fr auto; gap:3rem; align-items:start; padding:3rem 0; border-bottom:1px solid var(--rule); text-decoration:none; color:inherit; opacity:0; transform:translateY(28px) scale(0.99); transition:opacity 0.65s cubic-bezier(.22,1,.36,1),transform 0.65s cubic-bezier(.22,1,.36,1); transform-style:preserve-3d; will-change:transform; }
-.proj-item.vis { opacity:1; transform:none; }
-.proj-item:hover { background:rgba(61,47,30,0.025); margin:0 -1.5rem; padding:3rem 1.5rem; border-radius:4px; transition:opacity 0.65s cubic-bezier(.22,1,.36,1),transform 0.65s cubic-bezier(.22,1,.36,1),background 0.3s,margin 0.3s,padding 0.3s; }
-.proj-item:last-child { border-bottom:none; }
-.proj-num { font-family:'Cormorant Garamond',serif; font-size:0.8rem; color:var(--ink-ghost); display:block; margin-bottom:0.5rem; }
-.proj-badge { font-size:0.6rem; font-weight:500; letter-spacing:0.1em; text-transform:uppercase; color:var(--accent); border:1px solid currentColor; padding:0.15rem 0.5rem; display:inline-block; }
-.proj-name { font-family:'Cormorant Garamond',serif; font-size:1.8rem; font-weight:400; font-style:italic; color:var(--ink); margin-bottom:0.5rem; line-height:1.1; transition:color 0.2s; }
-.proj-item:hover .proj-name { color:var(--accent); }
-.proj-what { font-size:0.75rem; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; color:var(--ink-faint); margin-bottom:0.85rem; }
-.proj-desc { font-size:0.9rem; color:var(--ink-soft); line-height:1.85; margin-bottom:1rem; max-width:62ch; }
-.proj-desc strong { color:var(--ink); font-weight:500; }
-.proj-highlights { list-style:none; display:flex; flex-direction:column; gap:0.55rem; margin-bottom:1rem; }
-.proj-highlights li { font-size:0.87rem; color:var(--ink-soft); line-height:1.75; padding-left:1rem; position:relative; }
-.proj-highlights li::before { content:'–'; position:absolute; left:0; color:var(--ink-ghost); }
-.proj-highlights li strong { color:var(--ink); font-weight:500; }
-.proj-arrow { color:var(--ink-ghost); font-size:1rem; padding-top:0.5rem; transition:color 0.2s,transform 0.2s; }
-.proj-item:hover .proj-arrow { color:var(--ink); transform:translate(3px,-3px); }
+/* ── CHAPTER 1: HERO ── */
+#ch1{background:var(--cream);}
+.hero-chapter{}
+.hero-pre{font-size:.68rem;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:2rem;display:flex;align-items:center;gap:1rem;}
+.hero-pre::before{content:'';display:block;width:2rem;height:1px;background:var(--ink-ghost);}
+.hero-name{font-family:'Cormorant Garamond',serif;font-size:clamp(4rem,7vw,8rem);font-weight:300;line-height:.95;letter-spacing:-.025em;margin-bottom:1.5rem;}
+.hero-name em{font-style:italic;}
+.hero-line{font-size:1.05rem;color:var(--ink-soft);max-width:52ch;line-height:1.85;margin-bottom:3.5rem;}
+.hero-stats{display:flex;gap:3.5rem;margin-bottom:3rem;padding-top:2rem;border-top:1px solid var(--rule);}
+.st{display:flex;flex-direction:column;}
+.st-n{font-family:'Cormorant Garamond',serif;font-size:2.8rem;font-weight:300;line-height:1;margin-bottom:.3rem;}
+.st-l{font-size:.62rem;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint);}
+.hero-ctas{display:flex;gap:1rem;flex-wrap:wrap;}
+.btn{font-size:.68rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;padding:.8rem 1.8rem;transition:all .25s cubic-bezier(.22,1,.36,1);display:inline-block;border:none;cursor:pointer;}
+.btn-ink{background:var(--ink);color:var(--cream);}
+.btn-ink:hover{background:var(--ink-soft);transform:translateY(-2px);box-shadow:0 8px 24px rgba(12,11,9,.18);}
+.btn-ghost{border:1px solid var(--rule);color:var(--ink-mid);}
+.btn-ghost:hover{border-color:var(--ink);color:var(--ink);transform:translateY(-2px);}
 
-/* EDUCATION */
-.edu-list { display:flex; flex-direction:column; }
-.edu-item { display:grid; grid-template-columns:160px 1fr; gap:3rem; align-items:baseline; padding:2rem 0; border-bottom:1px solid var(--rule); opacity:0; transform:translateX(-20px); transition:opacity 0.5s cubic-bezier(.22,1,.36,1),transform 0.5s cubic-bezier(.22,1,.36,1); }
-.edu-item.vis { opacity:1; transform:none; }
-.edu-item:last-child { border-bottom:none; }
-.edu-date { font-size:0.68rem; font-weight:500; letter-spacing:0.06em; text-transform:uppercase; color:var(--ink-faint); }
-.edu-deg { font-family:'Cormorant Garamond',serif; font-size:1.4rem; font-weight:400; font-style:italic; color:var(--ink); margin-bottom:0.2rem; }
-.edu-school { font-size:0.87rem; color:var(--ink-soft); }
-.edu-loc { font-size:0.72rem; color:var(--ink-ghost); margin-top:0.1rem; }
+/* hero right float */
+.hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:6rem;align-items:center;}
+.hero-right{}
+.hero-pull{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-style:italic;font-weight:300;line-height:1.7;color:var(--ink-mid);border-left:2px solid var(--rule);padding-left:2rem;margin-bottom:2.5rem;}
+.hero-tags{display:flex;flex-wrap:wrap;gap:.5rem;}
+.h-tag{font-size:.68rem;color:var(--ink-faint);border:1px solid var(--rule);padding:.22rem .7rem;transition:all .2s;cursor:default;}
+.h-tag:hover{border-color:var(--ink-ghost);color:var(--ink-mid);transform:translateY(-2px);}
 
-/* CONTACT */
-#contact { padding:8rem 3.5rem; }
-.contact-inner { display:grid; grid-template-columns:160px 1fr; gap:3rem; }
-.contact-heading { font-family:'Cormorant Garamond',serif; font-size:clamp(2.5rem,4.5vw,4rem); font-weight:300; font-style:italic; line-height:1.1; margin-bottom:1.25rem; }
-.contact-sub { font-size:0.9rem; color:var(--ink-soft); line-height:1.8; max-width:44ch; margin-bottom:2.5rem; }
-.contact-links { display:flex; gap:1rem; flex-wrap:wrap; }
+/* ── CHAPTER 2: STORY/ABOUT ── */
+#ch2{background:var(--ink);}
+#ch2 *{color:var(--cream);}
+#ch2 .ch-num{-webkit-text-stroke-color:rgba(255,255,255,.06);}
+.story-grid{display:grid;grid-template-columns:1fr 1fr;gap:6rem;align-items:start;}
+.story-label{font-size:.65rem;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:1.5rem;}
+.story-heading{font-family:'Cormorant Garamond',serif;font-size:clamp(2.4rem,4vw,4rem);font-weight:300;font-style:italic;line-height:1.1;margin-bottom:2rem;color:var(--cream);}
+.story-body{font-size:.95rem;color:rgba(255,255,255,.7);line-height:1.9;}
+.story-body p+p{margin-top:1.25rem;}
+.story-body strong{color:var(--cream);font-weight:500;}
+.story-right{padding-top:4rem;}
+.story-stat-row{border-top:1px solid rgba(255,255,255,.1);padding:1.5rem 0;}
+.story-stat-row:last-child{border-bottom:1px solid rgba(255,255,255,.1);}
+.sr-n{font-family:'Cormorant Garamond',serif;font-size:2.5rem;font-weight:300;color:var(--cream);margin-bottom:.2rem;}
+.sr-l{font-size:.75rem;color:rgba(255,255,255,.45);letter-spacing:.06em;}
 
-footer { padding:1.5rem 3.5rem; border-top:1px solid var(--rule); display:flex; justify-content:space-between; align-items:center; }
-.footer-l { font-size:0.68rem; font-weight:400; letter-spacing:0.08em; text-transform:uppercase; color:var(--ink-ghost); }
-.footer-r { display:flex; gap:2rem; }
-.footer-r a { font-size:0.68rem; color:var(--ink-ghost); text-decoration:none; letter-spacing:0.08em; text-transform:uppercase; transition:color 0.2s; }
-.footer-r a:hover { color:var(--ink); }
+/* ── CHAPTER 3: EXPERIENCE ── */
+#ch3{background:var(--cream);}
+.exp-story{display:grid;grid-template-columns:240px 1fr;gap:4rem;}
+.exp-nav{display:flex;flex-direction:column;gap:0;position:sticky;top:5rem;align-self:start;}
+.exp-nav-item{padding:1rem 0;border-bottom:1px solid var(--rule);cursor:pointer;transition:all .2s;}
+.exp-nav-item:first-child{border-top:1px solid var(--rule);}
+.exp-nav-item.on .en-role{color:var(--ink);}
+.exp-nav-item.on .en-bar{width:100%;}
+.en-co{font-size:.65rem;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:.3rem;}
+.en-role{font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:400;color:var(--ink-faint);transition:color .2s;line-height:1.3;}
+.en-date{font-size:.62rem;color:var(--ink-ghost);margin-top:.2rem;}
+.en-bar{height:1px;background:var(--ink);width:0;transition:width .4s cubic-bezier(.22,1,.36,1);margin-top:.6rem;}
 
-@keyframes up { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:none; } }
-@keyframes slideLeft { from { opacity:0; transform:translateX(-24px); } to { opacity:1; transform:none; } }
-@keyframes slideRight { from { opacity:0; transform:translateX(24px); } to { opacity:1; transform:none; } }
-@keyframes scaleIn { from { opacity:0; transform:scale(0.94); } to { opacity:1; transform:scale(1); } }
-@keyframes countUp { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:none; } }
-@keyframes lineGrow { from { transform:scaleX(0); } to { transform:scaleX(1); } }
+.exp-content{min-height:60vh;}
+.exp-panel{display:none;}
+.exp-panel.on{display:block;animation:panelIn .5s cubic-bezier(.22,1,.36,1);}
+@keyframes panelIn{from{opacity:0;transform:translateX(16px);}to{opacity:1;transform:none;}}
+.ep-role{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:400;font-style:italic;margin-bottom:.5rem;}
+.ep-meta{font-size:.72rem;color:var(--ink-faint);letter-spacing:.06em;margin-bottom:2rem;display:flex;gap:1rem;align-items:center;}
+.ep-meta span::before{content:'·';margin-right:1rem;}
+.ep-meta span:first-child::before{content:'';}
+.ep-points{display:flex;flex-direction:column;gap:1.75rem;}
+.ep-point-label{font-size:.62rem;font-weight:500;letter-spacing:.15em;text-transform:uppercase;color:var(--accent);margin-bottom:.45rem;}
+.ep-point p{font-size:.88rem;color:var(--ink-mid);line-height:1.85;}
+.ep-point p+p{margin-top:.7rem;}
+.ep-point p strong{color:var(--ink);font-weight:500;}
+.ep-stack{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid var(--rule);}
+.ep-pill{font-size:.67rem;color:var(--ink-faint);border:1px solid var(--rule);padding:.18rem .55rem;transition:all .2s;}
+.ep-pill:hover{border-color:var(--ink-ghost);color:var(--ink-mid);transform:translateY(-1px);}
 
-/* section headers slide in from left */
-.section-header { display:grid; grid-template-columns:160px 1fr; gap:3rem; align-items:baseline; margin-bottom:4rem; padding-bottom:1.5rem; border-bottom:1px solid var(--rule); opacity:0; transform:translateY(16px); transition:opacity 0.6s cubic-bezier(.22,1,.36,1),transform 0.6s cubic-bezier(.22,1,.36,1); }
-.section-header.vis { opacity:1; transform:none; }
+/* ── CHAPTER 4: SKILLS ── */
+#ch4{background:#f0ede7;}
+.skills-story{display:grid;grid-template-columns:1fr 1fr;gap:6rem;align-items:start;}
+.skills-left{}
+.skills-intro{font-size:.95rem;color:var(--ink-mid);line-height:1.9;margin-bottom:2rem;}
+.skills-right{display:flex;flex-direction:column;gap:0;}
+.sk-line{display:grid;grid-template-columns:180px 1fr;gap:1.5rem;align-items:baseline;padding:1.1rem 0;border-bottom:1px solid var(--rule);}
+.sk-line:first-child{border-top:1px solid var(--rule);}
+.sk-cat{font-size:.65rem;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-mid);}
+.sk-vals{display:flex;flex-wrap:wrap;gap:.35rem;}
+.sk-v{font-size:.78rem;color:var(--ink-mid);border:1px solid var(--rule);padding:.18rem .6rem;transition:all .22s;background:transparent;}
+.sk-v:hover{border-color:var(--ink-mid);background:var(--ink);color:var(--cream);transform:translateY(-2px);}
 
-/* stat number count animation */
-.stat-n { font-family:'Cormorant Garamond',serif; font-size:2.2rem; font-weight:300; line-height:1; display:block; margin-bottom:0.3rem; opacity:0; animation:countUp 0.6s forwards; }
-.stat-n.counted { opacity:1; }
+/* ── CHAPTER 5: PROJECTS ── */
+#ch5{background:var(--cream);}
+.proj-tabs{display:flex;gap:0;border-bottom:1px solid var(--rule);margin-bottom:3rem;}
+.p-tab{font-size:.68rem;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-ghost);padding:.85rem 1.5rem;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .2s;}
+.p-tab:hover{color:var(--ink-mid);}
+.p-tab.on{color:var(--ink);border-bottom-color:var(--ink);}
+.proj-panel{display:none;}
+.proj-panel.on{display:grid;grid-template-columns:1fr 1fr;gap:4rem;animation:panelIn .5s cubic-bezier(.22,1,.36,1);}
+.pp-left{}
+.pp-badge{font-size:.6rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);border:1px solid var(--accent);padding:.15rem .6rem;display:inline-block;margin-bottom:1rem;}
+.pp-name{font-family:'Cormorant Garamond',serif;font-size:2.6rem;font-weight:300;font-style:italic;line-height:1.05;margin-bottom:.75rem;}
+.pp-what{font-size:.72rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:1.25rem;}
+.pp-desc{font-size:.9rem;color:var(--ink-mid);line-height:1.85;margin-bottom:1.5rem;}
+.pp-desc strong{color:var(--ink);font-weight:500;}
+.pp-bullets{list-style:none;display:flex;flex-direction:column;gap:.65rem;margin-bottom:1.5rem;}
+.pp-bullets li{font-size:.86rem;color:var(--ink-mid);line-height:1.75;padding-left:1rem;position:relative;}
+.pp-bullets li::before{content:'–';position:absolute;left:0;color:var(--ink-ghost);}
+.pp-bullets li strong{color:var(--ink);font-weight:500;}
+.pp-stack{display:flex;flex-wrap:wrap;gap:.35rem;margin-bottom:1.5rem;}
+.pp-pill{font-size:.65rem;color:var(--ink-faint);border:1px solid var(--rule);padding:.16rem .55rem;}
+.pp-link{font-size:.68rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--ink);text-decoration:none;display:inline-flex;align-items:center;gap:.5rem;border-bottom:1px solid var(--ink);padding-bottom:.1rem;transition:all .2s;}
+.pp-link:hover{color:var(--accent);border-bottom-color:var(--accent);}
+.pp-right{}
 
-/* tech pill hover ripple */
-.tech-pill { font-size:0.68rem; font-weight:400; color:var(--ink-faint); border:1px solid var(--rule); padding:0.2rem 0.6rem; transition:border-color 0.25s,color 0.25s,transform 0.25s,background 0.25s; display:inline-block; }
-.tech-pill:hover { border-color:var(--ink-soft); color:var(--ink); transform:translateY(-2px); background:rgba(13,12,10,0.04); }
+/* DIAGRAM */
+.diagram-wrap{background:#f9f7f3;border:1px solid var(--rule);padding:2rem;border-radius:2px;}
+.diagram-title{font-size:.6rem;font-weight:500;letter-spacing:.15em;text-transform:uppercase;color:var(--ink-ghost);margin-bottom:1.5rem;text-align:center;}
+svg.diag{width:100%;height:auto;display:block;}
 
-/* sk-tag hover */
-.sk-tag { font-size:0.8rem; color:var(--ink-soft); border:1px solid var(--rule); padding:0.22rem 0.65rem; transition:border-color 0.2s,transform 0.2s,background 0.2s; display:inline-block; }
-.sk-tag:hover { border-color:var(--ink-soft); transform:translateY(-2px); background:rgba(13,12,10,0.04); }
+/* ── CHAPTER 6: CONTACT ── */
+#ch6{background:var(--ink);}
+#ch6 *{color:var(--cream);}
+#ch6 .ch-num{-webkit-text-stroke-color:rgba(255,255,255,.05);}
+.contact-story{display:grid;grid-template-columns:1fr 1fr;gap:6rem;align-items:center;}
+.ct-heading{font-family:'Cormorant Garamond',serif;font-size:clamp(2.8rem,5vw,5.5rem);font-weight:300;font-style:italic;line-height:1.05;margin-bottom:1.5rem;}
+.ct-sub{font-size:.92rem;color:rgba(255,255,255,.6);line-height:1.85;max-width:40ch;margin-bottom:2.5rem;}
+.ct-links{display:flex;flex-direction:column;gap:.75rem;}
+.ct-link{font-size:.72rem;font-weight:500;letter-spacing:.12em;text-transform:uppercase;text-decoration:none;color:rgba(255,255,255,.5);display:flex;align-items:center;gap:1rem;transition:all .25s;padding:.5rem 0;border-bottom:1px solid rgba(255,255,255,.08);}
+.ct-link:hover{color:var(--cream);padding-left:.75rem;}
+.ct-link::after{content:'↗';margin-left:auto;}
+.ct-right{text-align:right;}
+.ct-available{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-style:italic;color:rgba(255,255,255,.35);margin-bottom:3rem;line-height:1.6;}
+.ct-email-big{font-family:'Cormorant Garamond',serif;font-size:clamp(1.2rem,2.5vw,1.8rem);font-weight:300;word-break:break-all;color:rgba(255,255,255,.75);}
 
-/* hero tag hover */
-.hero-tag { font-size:0.7rem; font-weight:400; color:var(--ink-faint); border:1px solid var(--rule); padding:0.25rem 0.75rem; transition:color 0.2s,border-color 0.2s,transform 0.2s; display:inline-block; }
-.hero-tag:hover { color:var(--ink-soft); border-color:var(--ink-ghost); transform:translateY(-2px); }
-
-/* exp-point label hover line */
-.exp-point-label { font-size:0.65rem; font-weight:500; letter-spacing:0.14em; text-transform:uppercase; color:var(--accent); margin-bottom:0.5rem; position:relative; display:inline-block; }
-.exp-point-label::after { content:''; position:absolute; bottom:-2px; left:0; width:0; height:1px; background:var(--accent); transition:width 0.3s ease; }
-.exp-item.vis .exp-point-label::after { width:100%; transition-delay:0.4s; }
-
-/* btn hover lift */
-.btn { font-size:0.68rem; font-weight:500; letter-spacing:0.14em; text-transform:uppercase; text-decoration:none; padding:0.75rem 1.6rem; transition:all 0.25s cubic-bezier(.22,1,.36,1); display:inline-block; }
-.btn:hover { transform:translateY(-2px); }
-.btn-dark { background:var(--ink); color:var(--cream); }
-.btn-dark:hover { background:var(--ink-soft); box-shadow:0 6px 20px rgba(13,12,10,0.15); }
-.btn-line { border:1px solid var(--rule); color:var(--ink-soft); }
-.btn-line:hover { border-color:var(--ink); color:var(--ink); box-shadow:0 4px 14px rgba(13,12,10,0.08); }
-
-/* nav active link indicator */
-.nav-links a { font-size:0.7rem; font-weight:400; letter-spacing:0.12em; text-transform:uppercase; color:var(--ink-soft); text-decoration:none; transition:color 0.2s; position:relative; }
-.nav-links a::after { content:''; position:absolute; bottom:-4px; left:0; right:0; height:1px; background:var(--ink); transform:scaleX(0); transition:transform 0.25s ease; }
-.nav-links a.active, .nav-links a:hover { color:var(--ink); }
-.nav-links a.active::after, .nav-links a:hover::after { transform:scaleX(1); }
-
-@media (max-width:900px) {
-  nav { padding:1rem 1.5rem; } .nav-links { gap:1.25rem; }
-  .hero { grid-template-columns:1fr; padding:6rem 1.5rem 3rem; gap:2.5rem; }
-  .hero-right { display:none; }
-  .section { padding:4rem 1.5rem; }
-  .section-header { grid-template-columns:1fr; gap:0.5rem; }
-  .exp-item,.edu-item { grid-template-columns:1fr; gap:0.75rem; }
-  .skills-body { grid-template-columns:1fr; }
-  .sk-row { grid-template-columns:1fr; gap:0.6rem; }
-  .proj-item { grid-template-columns:1fr; gap:0.75rem; }
-  .proj-arrow { display:none; }
-  #contact { padding:5rem 1.5rem; }
-  .contact-inner { grid-template-columns:1fr; gap:1rem; }
-  footer { flex-direction:column; gap:0.75rem; padding:1.5rem; }
-  .cursor { display:none; } body { cursor:auto; }
+/* RESPONSIVE */
+@media(max-width:900px){
+  .chapter{padding:4rem 1.75rem;}
+  .hero-grid,.story-grid,.skills-story,.contact-story{grid-template-columns:1fr;}
+  .hero-right,.story-right,.skills-left,.ct-right{display:none;}
+  .exp-story{grid-template-columns:1fr;}
+  .exp-nav{display:none;}
+  .proj-panel.on{grid-template-columns:1fr;}
+  .pp-right{display:none;}
+  .ch-num{display:none;}
+  .dots{display:none;}
+  #cur{display:none;}body{cursor:auto;}
 }
 </style>
 </head>
 <body>
 
-<div class="cursor" id="cursor"></div>
+<div id="cur"></div>
 
-<nav>
-  <a class="nav-name" href="#">Revanth Gollapudi</a>
-  <ul class="nav-links">
-    <li><a href="#experience">Experience</a></li>
-    <li><a href="#skills">Skills</a></li>
-    <li><a href="#projects">Projects</a></li>
-    <li><a href="#education">Education</a></li>
-    <li><a href="#contact">Contact</a></li>
-  </ul>
-</nav>
+<!-- PROGRESS DOTS -->
+<nav class="dots" id="dots"></nav>
 
-<section class="hero">
-  <div>
-    <div class="eyebrow">AI Engineer · West Lafayette, IN</div>
-    <h1>Revanth<br><em>Gollapudi</em></h1>
-    <p class="hero-summary">AI Engineer with 4+ years building and owning production ML and GenAI systems on AWS and Azure. Experienced in RAG, LLM fine-tuning, evaluation pipelines, and inference optimisation. Delivered platforms serving 85K+ daily requests and internal AI systems used by 6,000 employees.</p>
-    <div class="hero-stats">
-      <div class="stat"><span class="stat-n" data-target="85" data-suffix="K+">85K+</span><span class="stat-l">Requests / day</span></div>
-      <div class="stat"><span class="stat-n" data-target="6000" data-suffix="">6,000</span><span class="stat-l">Employees served</span></div>
-      <div class="stat"><span class="stat-n" data-target="30" data-suffix="%">30%</span><span class="stat-l">Inference cost cut</span></div>
-    </div>
-    <div class="hero-ctas">
-      <a href="mailto:gollapudi.off@gmail.com" class="btn btn-dark">Get in touch</a>
-      <a href="https://linkedin.com/in/revanth-gollapudi" target="_blank" class="btn btn-line">LinkedIn ↗</a>
-      <a href="https://github.com/Revanth980727" target="_blank" class="btn btn-line">GitHub ↗</a>
-    </div>
-  </div>
-  <div class="hero-right">
-    <p class="hero-about">"Strongest at taking LLM-powered systems from prototype to reliable, observable, cost-efficient production services — and keeping them there."</p>
-    <div class="hero-tags">
-      <span class="hero-tag">Production GenAI</span><span class="hero-tag">RAG Systems</span><span class="hero-tag">LLM Fine-tuning</span><span class="hero-tag">EvalOps</span><span class="hero-tag">AWS · Azure</span><span class="hero-tag">Kubernetes</span><span class="hero-tag">Inference Routing</span><span class="hero-tag">Retrieval Quality</span><span class="hero-tag">Multi-agent Systems</span><span class="hero-tag">Observability</span>
-    </div>
-  </div>
-</section>
-
-<section class="section" id="experience">
-  <div class="section-header">
-    <span class="section-num">01 — Experience</span>
-    <h2 class="section-title">Where I've worked</h2>
-  </div>
-
-  <div class="exp-item reveal">
-    <div class="exp-side">
-      <div class="exp-date">Dec 2024<br>Present</div>
-      <div class="exp-co">CGI</div>
-      <div class="exp-loc">West Lafayette, IN</div>
-    </div>
-    <div>
-      <div class="exp-role">Consultant, AI Engineer</div>
-      <div class="exp-tagline">Leading two live production AI systems · 5-person team</div>
-      <div class="exp-points">
-
-        <div>
-          <div class="exp-point-label">Conversational AI Platform — AWS</div>
-          <p>Architected and own a <strong>Kubernetes-based conversational AI platform on AWS EKS</strong> serving approximately <span class="metric">85,000</span> requests per day across more than ten agent workflows for 1,200 active users. I lead the 5-person engineering team with full SLA accountability and present architecture decisions directly to both internal stakeholders and the client. The platform uses OpenTelemetry for end-to-end observability, with dashboards tracking retrieval latency, token usage, cache performance, and model quality across every workflow in real time.</p>
-        </div>
-
-        <div>
-          <div class="exp-point-label">Azure HR Policy RAG System — Live for 6,000 Employees</div>
-          <p>Served as the <strong>sole architect on an end-to-end Azure RAG system</strong> for an HR Policy chatbot now live across the entire organisation of 6,000 employees. I led a 2-engineer team (one frontend, one backend) while personally owning every architecture and infrastructure decision from day one through to production.</p>
-          <p>The system uses an Angular SPA hosted on Azure Static Web Apps with global CDN delivery, a FastAPI backend on Azure Container Apps with built-in autoscaling and no Kubernetes overhead, and <strong>hybrid retrieval via Azure AI Search</strong> combining HNSW vector search, BM25 keyword search, and a built-in semantic cross-encoder reranker — all in a single managed API call. <strong>GPT-4o runs on Provisioned Throughput Units</strong> to guarantee capacity at 200–300 concurrent users with no throttling risk. Azure Document Intelligence handles PDF extraction, correctly processing multi-column layouts, comparison tables as structured Markdown, and embedded flowcharts via GPT-4o Vision descriptions — because HR documents almost always contain tables that basic OCR garbles. All secrets live in Key Vault accessed via Managed Identity, all backend services run on private endpoints inside the Container Apps VNet with no public exposure, and employees authenticate via Microsoft Entra ID with MFA enforced by org policy.</p>
-          <p>In production the system delivers <strong>under 3 seconds end-to-end response time</strong>, approximately <strong>40% of queries served from in-memory semantic cache in under 150ms</strong> with no LLM call, and a <strong>99.9% uptime SLA</strong>. Every answer includes citations with document name, page number, and section title.</p>
-          <p>Key decisions I made that shaped the architecture: replaced AKS with Container Apps to eliminate Kubernetes operational overhead at this scale, replaced Redis with in-memory caching using cachetools (perfectly sufficient at 200–300 concurrent users, zero extra infrastructure), replaced Cosmos DB with MySQL Flexible Server to reuse the existing chat history schema, replaced Service Bus with Event Grid for direct blob-upload triggers (simpler at 200 PDFs), and dropped HyDE query expansion in favour of PDF filename-based metadata pre-filtering — reducing cost and latency without any measurable retrieval quality loss.</p>
-        </div>
-
-        <div>
-          <div class="exp-point-label">Inference Cost Optimisation — 30% Cost Reduction</div>
-          <p>LLM inference was running at $15,000 per month with every query hitting GPT-4o regardless of complexity. I co-designed a <strong>complexity-based model router</strong> that classifies incoming queries at the API gateway level and directs straightforward questions to Gemma and Mistral 8B models while reserving GPT-4o for tasks that genuinely require it. The router uses a lightweight classifier trained on query length, entity density, and reasoning requirement signals. The result was a <strong>30% reduction in monthly inference spend</strong> — from $15,000 to $10,500 — with no measurable degradation in answer quality on our golden evaluation set.</p>
-        </div>
-
-        <div>
-          <div class="exp-point-label">LLM Fine-tuning — Hallucination Rate from 45% to 30%</div>
-          <p>Production evaluation identified a <strong>45% hallucination rate</strong> in model responses — answers that were confident but not grounded in the retrieved context. Rather than replacing the base model, I fine-tuned <strong>Llama 3 using LoRA/PEFT with Direct Preference Optimisation (DPO)</strong> on a dataset of 500+ human-labeled preference pairs where annotators selected preferred responses (well-grounded, cited) over rejected ones (confident but unsupported). The parameter-efficient fine-tuning preserved the base model's general capabilities while significantly improving its tendency to stay within the retrieved context. Post-deployment evaluation showed the hallucination rate dropped from <strong>45% to 30%</strong> across production workloads.</p>
-        </div>
-
-        <div>
-          <div class="exp-point-label">EvalOps Pipeline — Zero Undetected Regressions</div>
-          <p>Before this pipeline existed, model updates were deployed with informal checks and silent regressions were reaching production. I built a <strong>full EvalOps pipeline</strong> that runs as a mandatory CI gate before any model update can be deployed. It includes groundedness rubrics that verify answers are supported by retrieved context, golden datasets with expected outputs for regression detection, automated RAGAS scoring across faithfulness, answer relevancy, and context precision, and OpenTelemetry retrieval tracing that surfaces chunk-level signals for debugging. Updates that degrade scores below configured thresholds are automatically blocked with a non-zero exit code. Since rollout there have been zero undetected regressions deployed to production.</p>
-        </div>
-
-      </div>
-      <div class="tech-stack">
-        <span class="tech-pill">AWS EKS</span><span class="tech-pill">Azure Container Apps</span><span class="tech-pill">Azure AI Search</span><span class="tech-pill">Azure OpenAI PTU</span><span class="tech-pill">Document Intelligence</span><span class="tech-pill">Entra ID / MFA</span><span class="tech-pill">Key Vault</span><span class="tech-pill">Private VNet</span><span class="tech-pill">Kubernetes</span><span class="tech-pill">FastAPI</span><span class="tech-pill">Angular</span><span class="tech-pill">GPT-4o</span><span class="tech-pill">Llama 3</span><span class="tech-pill">LoRA / PEFT</span><span class="tech-pill">DPO</span><span class="tech-pill">RAGAS</span><span class="tech-pill">OpenTelemetry</span><span class="tech-pill">LangGraph</span><span class="tech-pill">Bicep</span><span class="tech-pill">Azure DevOps</span><span class="tech-pill">Event Grid</span><span class="tech-pill">MySQL Flexible Server</span>
-      </div>
-    </div>
-  </div>
-
-  <div class="exp-item reveal">
-    <div class="exp-side">
-      <div class="exp-date">Jan 2023<br>Dec 2024</div>
-      <div class="exp-co">CGI</div>
-      <div class="exp-loc">New Brunswick, NJ</div>
-    </div>
-    <div>
-      <div class="exp-role">Consultant, Data Engineer</div>
-      <div class="exp-tagline">RAG retrieval · EvalOps · ML infrastructure</div>
-      <div class="exp-points">
-
-        <div>
-          <div class="exp-point-label">Retrieval Quality — RAGAS Faithfulness from 0.62 to 0.74</div>
-          <p>The RAG system was producing answers with a RAGAS faithfulness score of 0.62 on a 500-question evaluation set — meaning the model was frequently drifting from retrieved context and adding unsupported claims. I systematically tuned the <strong>hybrid retrieval layer combining BM25 keyword search, pgvector dense retrieval, and cross-encoder reranking</strong>, and introduced query rewriting to better align the user's natural language intent with the indexed content. The query rewriter expands ambiguous queries and reformulates them in language closer to how the source documents are written. After tuning, faithfulness lifted from <strong>0.62 to 0.74 — a 19% improvement</strong> on the same evaluation set with no changes to the generation model or prompt.</p>
-        </div>
-
-        <div>
-          <div class="exp-point-label">Eval-gated CI/CD — Blocking 20% of Regressive Updates</div>
-          <p>Regressive model updates were reaching production undetected because there was no systematic gate between a proposed update and deployment. I built an <strong>eval-gated CI/CD pipeline</strong> where every proposed model change must pass rubric-based LLM-as-judge scoring before it can proceed. The judge evaluates outputs against a curated test set using defined quality rubrics — scoring dimensions like groundedness, completeness, and format compliance. Updates that score below configured thresholds are automatically rejected with a detailed failure report. This pipeline <strong>blocked approximately 20% of proposed updates</strong> that would have caused quality regressions had they reached production.</p>
-        </div>
-
-        <div>
-          <div class="exp-point-label">ML Training Pipelines — 72 Hours to Under 24</div>
-          <p>The Kubernetes-based ML training pipelines for a document classification task over approximately <strong>6TB of data</strong> had a 72-hour training-to-deployment cycle, severely limiting how quickly the team could iterate on models and features. I profiled the pipelines, identified bottlenecks in resource allocation, data loading, and job orchestration, and rebuilt the pipelines with improved parallelism, better resource requests and limits, and optimised artifact management. The training-to-deployment cycle dropped from <strong>72 hours to under 24 hours — a 3× improvement</strong> — enabling the team to ship model updates three times faster.</p>
-        </div>
-
-        <div>
-          <div class="exp-point-label">Pipeline Observability — Hours to Minutes MTTD</div>
-          <p>Production pipeline failures were taking hours to diagnose because there was no structured observability layer — engineers were manually reading logs and tracing failures by hand. I implemented <strong>CloudWatch and OpenTelemetry instrumentation</strong> across the full pipeline stack with drift detection that compares current throughput, latency, and error rate metrics against rolling baselines and fires alerts on anomalies. Structured logging was added at every stage boundary so failures could be traced end-to-end immediately. Mean time to diagnose production failures dropped <strong>from hours to minutes</strong>.</p>
-        </div>
-
-      </div>
-      <div class="tech-stack">
-        <span class="tech-pill">BM25</span><span class="tech-pill">pgvector</span><span class="tech-pill">Cross-encoder reranking</span><span class="tech-pill">Query rewriting</span><span class="tech-pill">RAGAS</span><span class="tech-pill">LLM-as-judge</span><span class="tech-pill">Kubernetes</span><span class="tech-pill">AWS</span><span class="tech-pill">CloudWatch</span><span class="tech-pill">OpenTelemetry</span><span class="tech-pill">Python</span><span class="tech-pill">FastAPI</span>
-      </div>
-    </div>
-  </div>
-
-  <div class="exp-item reveal">
-    <div class="exp-side">
-      <div class="exp-date">Aug 2020<br>Jul 2021</div>
-      <div class="exp-co">eKincare</div>
-      <div class="exp-loc">Bangalore, India</div>
-    </div>
-    <div>
-      <div class="exp-role">Data Engineer</div>
-      <div class="exp-tagline">Streaming pipelines · reliability engineering</div>
-      <div class="exp-points">
-
-        <div>
-          <div class="exp-point-label">Pipeline Throughput — 40% Improvement</div>
-          <p>Kafka and Spark data pipelines were operating well below capacity, creating a bottleneck for downstream analytics. I profiled the consumer and job configurations, identified inefficient partition strategies and underutilised parallelism, and applied <strong>partitioning optimisations and parallelism tuning</strong> across both Kafka consumers and Spark jobs. I also added schema validation at ingestion time and dead-letter queue handling to prevent malformed records from stalling the pipeline. Throughput improved by <strong>40%</strong> and production failure rate dropped significantly.</p>
-        </div>
-
-        <div>
-          <div class="exp-point-label">Application Stability — 15% Crash Reduction</div>
-          <p>The application had a recurring crash rate that was consuming engineering time in incident response. I worked with engineering teams to trace crash patterns through log analysis, identifying several recurring failure modes that lacked adequate error handling or retry logic. After <strong>overhauling logging, monitoring, and alerting</strong> to surface failures earlier and fixing the identified root causes, the crash rate dropped by <strong>15%</strong>.</p>
-        </div>
-
-      </div>
-      <div class="tech-stack">
-        <span class="tech-pill">Apache Kafka</span><span class="tech-pill">Apache Spark</span><span class="tech-pill">Python</span><span class="tech-pill">AWS</span>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="section" id="skills">
-  <div class="section-header">
-    <span class="section-num">02 — Skills</span>
-    <h2 class="section-title">What I work with</h2>
-  </div>
-  <div class="skills-body">
-    <div></div>
-    <div class="sk-rows">
-      <div class="sk-row reveal">
-        <span class="sk-cat">LLMs &amp; GenAI</span>
-        <div class="sk-tags"><span class="sk-tag">Llama 3</span><span class="sk-tag">LoRA / PEFT</span><span class="sk-tag">DPO</span><span class="sk-tag">RLHF</span><span class="sk-tag">Reward Modeling</span><span class="sk-tag">LangGraph</span><span class="sk-tag">Complexity-based Model Routing</span><span class="sk-tag">NL-to-SQL Agents</span></div>
-      </div>
-      <div class="sk-row reveal">
-        <span class="sk-cat">RAG &amp; Retrieval</span>
-        <div class="sk-tags"><span class="sk-tag">BM25</span><span class="sk-tag">pgvector</span><span class="sk-tag">Azure AI Search</span><span class="sk-tag">Cross-encoder Reranking</span><span class="sk-tag">Query Rewriting</span><span class="sk-tag">Redis Caching</span><span class="sk-tag">Document Intelligence</span><span class="sk-tag">Hybrid Retrieval</span></div>
-      </div>
-      <div class="sk-row reveal">
-        <span class="sk-cat">Eval &amp; Observability</span>
-        <div class="sk-tags"><span class="sk-tag">RAGAS</span><span class="sk-tag">DeepEval</span><span class="sk-tag">LLM-as-Judge</span><span class="sk-tag">Golden Datasets</span><span class="sk-tag">Regression Gates</span><span class="sk-tag">Drift Detection</span><span class="sk-tag">OpenTelemetry</span><span class="sk-tag">Application Insights</span><span class="sk-tag">CloudWatch</span></div>
-      </div>
-      <div class="sk-row reveal">
-        <span class="sk-cat">Cloud &amp; Infrastructure</span>
-        <div class="sk-tags"><span class="sk-tag">AWS EKS</span><span class="sk-tag">S3</span><span class="sk-tag">SageMaker</span><span class="sk-tag">Azure Container Apps</span><span class="sk-tag">Azure OpenAI PTU</span><span class="sk-tag">Front Door</span><span class="sk-tag">Key Vault</span><span class="sk-tag">Entra ID</span><span class="sk-tag">Kubernetes</span><span class="sk-tag">Docker</span><span class="sk-tag">Terraform</span><span class="sk-tag">Bicep</span><span class="sk-tag">Argo CD</span><span class="sk-tag">GitHub Actions</span><span class="sk-tag">Azure DevOps</span></div>
-      </div>
-      <div class="sk-row reveal">
-        <span class="sk-cat">Languages &amp; Frameworks</span>
-        <div class="sk-tags"><span class="sk-tag">Python</span><span class="sk-tag">PyTorch</span><span class="sk-tag">FastAPI</span><span class="sk-tag">React / Next.js</span><span class="sk-tag">Angular</span><span class="sk-tag">Go</span></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="section" id="projects">
-  <div class="section-header">
-    <span class="section-num">03 — Projects</span>
-    <h2 class="section-title">Selected work</h2>
-  </div>
-  <div class="proj-list">
-
-    <a class="proj-item reveal" href="https://github.com/Revanth9727/RAOC" target="_blank">
-      <div class="proj-side">
-        <span class="proj-num">001</span>
-        <span class="proj-badge">Agentic · macOS</span>
-      </div>
-      <div class="proj-main">
-        <div class="proj-name">RAOC</div>
-        <div class="proj-what">Remote Autonomous OS Controller</div>
-        <p class="proj-desc">RAOC lets you control your Mac through natural language commands sent from your phone via Telegram. You describe what you want done — rewrite a file, run a script, find a document and update it — and a pipeline of six specialised agents understands the request, locates the relevant files, builds a step-by-step plan, and presents it to you for approval before touching anything. Nothing executes without your explicit tap-to-approve.</p>
-        <ul class="proj-highlights">
-          <li><strong>6-agent pipeline:</strong> Intake (understands intent), Discovery (finds and reads the target file), Planning (generates step-by-step action plan), Execution (carries it out), Verification (checks the result), Reporter (sends proof to your phone with screenshots and diffs).</li>
-          <li><strong>Safety model:</strong> approval_granted enforced in code, not just convention. Dangerous command patterns (rm -rf, sudo, curl | bash, etc.) blocked by a pattern matcher before execution. Every file backed up automatically before any write. All file access sandboxed to a workspace folder — paths outside it raise an error at the zone resolver level, not just a warning.</li>
-          <li><strong>Secrets handled properly:</strong> All API keys stored in macOS Keychain via keyring — never in code, environment variables, or .env files. Only your Telegram user ID is accepted; all other senders are silently ignored. Replay attacks mitigated by ignoring messages older than a configured threshold.</li>
-          <li><strong>303 passing tests</strong> covering every agent, the coordinator, command wrapper, zone resolver, and full database layer. GitHub Actions CI runs on every push.</li>
-        </ul>
-        <div class="tech-stack">
-          <span class="tech-pill">Python 3.12</span><span class="tech-pill">Claude API</span><span class="tech-pill">Telegram Bot API</span><span class="tech-pill">SQLite / SQLAlchemy</span><span class="tech-pill">Pydantic v2</span><span class="tech-pill">macOS Keychain</span><span class="tech-pill">pyautogui</span><span class="tech-pill">pytest</span>
-        </div>
-      </div>
-      <span class="proj-arrow">↗</span>
-    </a>
-
-    <a class="proj-item reveal" href="https://github.com/Revanth980727/bugfix-ai-pilot" target="_blank">
-      <div class="proj-side">
-        <span class="proj-num">002</span>
-        <span class="proj-badge">Multi-agent</span>
-      </div>
-      <div class="proj-main">
-        <div class="proj-name">Bugfix AI Pilot</div>
-        <div class="proj-what">Autonomous Bug Resolution System</div>
-        <p class="proj-desc">A multi-agent system that takes a JIRA ticket ID as input and — without any human involvement — reads the ticket, identifies the affected code, generates a fix, validates it by running the test suite, and opens a GitHub pull request with the changes and a summary. Each agent runs as an independent microservice communicating over REST APIs, coordinated by a central backend. A React frontend provides live monitoring and manual trigger capability.</p>
-        <ul class="proj-highlights">
-          <li><strong>Planner agent</strong> calls the JIRA API, reads the ticket description and acceptance criteria, uses GPT-4 to identify affected files and probable root cause, and outputs a structured repair plan with file paths and proposed changes.</li>
-          <li><strong>Developer agent</strong> receives the plan, reads the relevant source files for context, and generates a code fix. Handles multi-file changes and maintains awareness of imports and dependencies.</li>
-          <li><strong>QA agent</strong> runs the test suite against the generated fix. If tests fail, the failure output is fed back to the Developer for a second attempt. Up to three retry cycles before escalating to human review.</li>
-          <li><strong>Communicator agent</strong> posts a comment to the JIRA ticket with the fix summary, opens a GitHub PR with the diff and test results, and links the PR back to the ticket.</li>
-          <li>Full-stack: React / TypeScript frontend with live ticket status cards, per-agent output logs, and a manual trigger form. All microservices in Docker Compose. 233 commits.</li>
-        </ul>
-        <div class="tech-stack">
-          <span class="tech-pill">Python</span><span class="tech-pill">GPT-4</span><span class="tech-pill">TypeScript</span><span class="tech-pill">React</span><span class="tech-pill">FastAPI</span><span class="tech-pill">Docker Compose</span><span class="tech-pill">JIRA API</span><span class="tech-pill">GitHub API</span>
-        </div>
-      </div>
-      <span class="proj-arrow">↗</span>
-    </a>
-
-    <a class="proj-item reveal" href="https://github.com/Revanth9727/LLM-Evaluation-Harness" target="_blank">
-      <div class="proj-side">
-        <span class="proj-num">003</span>
-        <span class="proj-badge">EvalOps</span>
-      </div>
-      <div class="proj-main">
-        <div class="proj-name">LLM Evaluation Harness</div>
-        <div class="proj-what">CI-ready A/B Evaluation Framework</div>
-        <p class="proj-desc">A production-ready framework for A/B evaluating LLM changes — comparing two model versions, two prompts, or two configurations — with the statistical rigour and CI integration needed to make evaluation a real deployment gate rather than a manual spot-check. Built to reflect and generalise the EvalOps work I do at CGI.</p>
-        <ul class="proj-highlights">
-          <li><strong>Hard checks first:</strong> Deterministic validation runs before any LLM judge call — schema compliance, citation presence, output length, format requirements. Only cases that pass hard checks proceed to LLM evaluation, keeping costs down and judge attention on genuine quality questions.</li>
-          <li><strong>LLM-as-judge with calibration:</strong> Rubric-based pairwise scoring. Judge calibration tools measure agreement rate, flip rate (consistency when A/B order is swapped), and order bias to verify the judge is reliable before trusting its outputs at scale.</li>
-          <li><strong>Statistical rigour:</strong> Win rate reported with 95% bootstrap confidence intervals. Per-tag breakdown shows where one candidate wins and where it loses. Refusal rates and format pass rates tracked independently.</li>
-          <li><strong>Quality gates for CI/CD:</strong> Configurable thresholds. If any gate fails, process exits with code 2, blocking the CI pipeline. Regression detection compares against a stored baseline and fails if win rate drops beyond a configurable tolerance.</li>
-          <li><strong>Zero-cost CI:</strong> Mock providers run the full pipeline in GitHub Actions with no API keys, validating wiring and logic on every PR at no cost.</li>
-        </ul>
-        <div class="tech-stack">
-          <span class="tech-pill">Python</span><span class="tech-pill">OpenAI</span><span class="tech-pill">Ollama</span><span class="tech-pill">NumPy</span><span class="tech-pill">RAGAS</span><span class="tech-pill">GitHub Actions</span><span class="tech-pill">pytest</span><span class="tech-pill">YAML / JSONL</span>
-        </div>
-      </div>
-      <span class="proj-arrow">↗</span>
-    </a>
-
-    <a class="proj-item reveal" href="https://github.com/Revanth980727/DataAnalysis-Chatbot" target="_blank">
-      <div class="proj-side">
-        <span class="proj-num">004</span>
-        <span class="proj-badge">NL-to-SQL</span>
-      </div>
-      <div class="proj-main">
-        <div class="proj-name">Data Analysis Chatbot</div>
-        <div class="proj-what">Natural Language to SQL Interface</div>
-        <p class="proj-desc">A Streamlit-based chatbot that lets non-technical users ask questions about their data in plain English and get answers backed by real SQL queries. Supports two modes: uploading CSV files directly into a local SQL engine, or connecting to a live MySQL database with multi-table schemas. The system reads schema metadata before generating SQL so column names, types, and table relationships are respected in every query.</p>
-        <ul class="proj-highlights">
-          <li><strong>CSV mode</strong> reads uploaded files into an in-process SQL engine. No database required — works entirely from a file upload.</li>
-          <li><strong>MySQL mode</strong> connects to a live database and supports multi-table joins. Tested against telecom, healthcare, and environmental datasets with varying schema complexity.</li>
-          <li>Schema-aware query generation reads table and column metadata before each query, reducing hallucinated column names and invalid SQL.</li>
-        </ul>
-        <div class="tech-stack">
-          <span class="tech-pill">Python</span><span class="tech-pill">OpenAI</span><span class="tech-pill">Streamlit</span><span class="tech-pill">MySQL</span><span class="tech-pill">Pandas</span>
-        </div>
-      </div>
-      <span class="proj-arrow">↗</span>
-    </a>
-
-  </div>
-</section>
-
-<section class="section" id="education">
-  <div class="section-header">
-    <span class="section-num">04 — Education</span>
-    <h2 class="section-title">Academic background</h2>
-  </div>
-  <div class="edu-list">
-    <div class="edu-item reveal">
-      <div class="edu-date">2021 – 2022</div>
+<!-- ══════════════════════════════════════════════════════════════════════════ -->
+<!-- CHAPTER 1 — HERO                                                          -->
+<!-- ══════════════════════════════════════════════════════════════════════════ -->
+<section class="chapter" id="ch1" data-label="Intro">
+  <div class="ch-num">01</div>
+  <div class="c-inner hero-chapter">
+    <div class="hero-grid">
       <div>
-        <div class="edu-deg">Master of Science</div>
-        <div class="edu-school">University of Colorado Boulder</div>
-        <div class="edu-loc">Boulder, CO</div>
+        <div class="hero-pre">AI Engineer · West Lafayette, IN</div>
+        <h1 class="hero-name">Revanth<br><em>Gollapudi</em></h1>
+        <p class="hero-line">I build production GenAI systems that don't just work in demos — they serve thousands of users every day, stay observable, and keep getting better. Currently leading two live AI systems at CGI serving 85,000+ daily requests and 6,000 employees.</p>
+        <div class="hero-stats">
+          <div class="st"><span class="st-n" data-target="85" data-suffix="K+">85K+</span><span class="st-l">Requests / day</span></div>
+          <div class="st"><span class="st-n" data-target="6000" data-suffix="">6,000</span><span class="st-l">Employees served</span></div>
+          <div class="st"><span class="st-n" data-target="30" data-suffix="%">30%</span><span class="st-l">Inference cost cut</span></div>
+          <div class="st"><span class="st-n" data-target="4" data-suffix="+ yrs">4+ yrs</span><span class="st-l">In production AI</span></div>
+        </div>
+        <div class="hero-ctas">
+          <a href="mailto:gollapudi.off@gmail.com" class="btn btn-ink">Get in touch</a>
+          <a href="https://linkedin.com/in/revanth-gollapudi" target="_blank" class="btn btn-ghost">LinkedIn ↗</a>
+          <a href="https://github.com/Revanth980727" target="_blank" class="btn btn-ghost">GitHub ↗</a>
+        </div>
+      </div>
+      <div class="hero-right">
+        <p class="hero-pull">"Strongest at taking LLM-powered systems from prototype to reliable, observable, cost-efficient production — and keeping them there."</p>
+        <div class="hero-tags">
+          <span class="h-tag">Production GenAI</span><span class="h-tag">RAG Systems</span><span class="h-tag">LLM Fine-tuning</span><span class="h-tag">EvalOps</span><span class="h-tag">AWS · Azure</span><span class="h-tag">Kubernetes</span><span class="h-tag">Inference Routing</span><span class="h-tag">Multi-agent Systems</span><span class="h-tag">Retrieval Quality</span><span class="h-tag">Observability</span>
+        </div>
       </div>
     </div>
-    <div class="edu-item reveal">
-      <div class="edu-date">2016 – 2020</div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════════════════ -->
+<!-- CHAPTER 2 — THE STORY                                                     -->
+<!-- ══════════════════════════════════════════════════════════════════════════ -->
+<section class="chapter" id="ch2" data-label="Story">
+  <div class="ch-num">02</div>
+  <div class="c-inner">
+    <div class="story-grid">
       <div>
-        <div class="edu-deg">Bachelor of Technology</div>
-        <div class="edu-school">PES University</div>
-        <div class="edu-loc">Bangalore, India</div>
+        <div class="story-label">The story so far</div>
+        <h2 class="story-heading">I got into AI engineering because I wanted to build things that actually ship.</h2>
+        <div class="story-body">
+          <p>Most ML work lives in notebooks. I wanted to understand what happens when you take a model out of a notebook and put it in front of real users — when latency matters, when costs compound, when the model hallucinates and you have to catch it before anyone notices.</p>
+          <p>That obsession led me to <strong>retrieval quality, evaluation pipelines, and inference cost</strong> — the unglamorous work that separates a demo from a production system. At CGI I've now led two live systems: a conversational AI platform handling 85K+ requests a day, and an Azure RAG chatbot for 6,000 employees answering HR policy questions.</p>
+          <p>I care about <strong>owning outcomes, not just delivering code</strong>. Every system I build has observability baked in from day one. Every model update goes through an eval gate. Every cost spike gets investigated. That's what it means to run AI in production.</p>
+        </div>
+      </div>
+      <div class="story-right">
+        <div class="story-stat-row"><div class="sr-n">99.9%</div><div class="sr-l">Uptime SLA maintained — Azure HR RAG</div></div>
+        <div class="story-stat-row"><div class="sr-n">~40%</div><div class="sr-l">Cache hit rate · answers under 150ms</div></div>
+        <div class="story-stat-row"><div class="sr-n">20%</div><div class="sr-l">Regressive model updates blocked by EvalOps</div></div>
+        <div class="story-stat-row"><div class="sr-n">3×</div><div class="sr-l">ML deployment cycle faster after pipeline rebuild</div></div>
+        <div class="story-stat-row"><div class="sr-n">19%</div><div class="sr-l">RAG faithfulness improvement — 0.62 → 0.74</div></div>
       </div>
     </div>
   </div>
 </section>
 
-<section id="contact">
-  <div class="contact-inner">
-    <div></div>
-    <div>
-      <h2 class="contact-heading">Let's build something reliable together.</h2>
-      <p class="contact-sub">Open to AI engineering roles, consulting engagements, and conversations about LLM systems in production. Based in West Lafayette, IN.</p>
-      <div class="contact-links">
-        <a href="mailto:gollapudi.off@gmail.com" class="btn btn-dark">gollapudi.off@gmail.com</a>
-        <a href="https://linkedin.com/in/revanth-gollapudi" target="_blank" class="btn btn-line">LinkedIn ↗</a>
-        <a href="https://github.com/Revanth980727" target="_blank" class="btn btn-line">GitHub ↗</a>
+<!-- ══════════════════════════════════════════════════════════════════════════ -->
+<!-- CHAPTER 3 — EXPERIENCE                                                    -->
+<!-- ══════════════════════════════════════════════════════════════════════════ -->
+<section class="chapter" id="ch3" data-label="Experience">
+  <div class="ch-num">03</div>
+  <div class="c-inner">
+    <div style="margin-bottom:2.5rem;">
+      <div class="story-label" style="color:var(--ink-faint);">Where I've worked</div>
+      <h2 style="font-family:'Cormorant Garamond',serif;font-size:2.4rem;font-weight:300;">Experience</h2>
+    </div>
+    <div class="exp-story">
+      <!-- sidebar nav -->
+      <div class="exp-nav" id="expNav">
+        <div class="exp-nav-item on" data-ep="ep1">
+          <div class="en-co">CGI</div>
+          <div class="en-role">Consultant, AI Engineer</div>
+          <div class="en-date">Dec 2024 – Present</div>
+          <div class="en-bar"></div>
+        </div>
+        <div class="exp-nav-item" data-ep="ep2">
+          <div class="en-co">CGI</div>
+          <div class="en-role">Consultant, Data Engineer</div>
+          <div class="en-date">Jan 2023 – Dec 2024</div>
+          <div class="en-bar"></div>
+        </div>
+        <div class="exp-nav-item" data-ep="ep3">
+          <div class="en-co">eKincare</div>
+          <div class="en-role">Data Engineer</div>
+          <div class="en-date">Aug 2020 – Jul 2021</div>
+          <div class="en-bar"></div>
+        </div>
+      </div>
+
+      <!-- panels -->
+      <div class="exp-content">
+        <!-- Panel 1 -->
+        <div class="exp-panel on" id="ep1">
+          <div class="ep-role">Consultant, AI Engineer</div>
+          <div class="ep-meta">
+            <span>CGI</span><span>West Lafayette, IN</span><span>Dec 2024 – Present</span>
+          </div>
+          <div class="ep-points">
+            <div class="ep-point">
+              <div class="ep-point-label">Conversational AI Platform — AWS</div>
+              <p>Architected and own a <strong>Kubernetes-based conversational AI platform on AWS EKS</strong> serving ~85K requests/day across 10+ agent workflows for 1,200 users. Lead a 5-person engineering team with full SLA accountability, presenting architecture decisions directly to the client.</p>
+            </div>
+            <div class="ep-point">
+              <div class="ep-point-label">Azure HR RAG System — Live for 6,000 Employees</div>
+              <p>Served as <strong>sole architect</strong> on an end-to-end Azure RAG system for an HR Policy chatbot — led 2 engineers, owned every infrastructure decision. Angular SPA, FastAPI on Container Apps, Azure AI Search (vector + BM25 + semantic reranker), GPT-4o on PTU, Document Intelligence, Entra ID/MFA, private VNet. Delivers <strong>&lt;3s response time, ~40% cache hit rate, 99.9% uptime</strong>.</p>
+            </div>
+            <div class="ep-point">
+              <div class="ep-point-label">Inference Cost — 30% Reduction</div>
+              <p>Co-designed a <strong>complexity-based model router</strong> sending simple queries to Gemma/Mistral 8B and complex ones to GPT-4o. Cut monthly inference spend from <strong>$15K to $10.5K</strong> with no quality degradation.</p>
+            </div>
+            <div class="ep-point">
+              <div class="ep-point-label">Fine-tuning — Hallucinations from 45% to 30%</div>
+              <p>Fine-tuned <strong>Llama 3 via LoRA/PEFT with DPO</strong> on 500+ human-labeled preference pairs. Reduced measured hallucination rate from 45% to 30% across production workloads.</p>
+            </div>
+            <div class="ep-point">
+              <div class="ep-point-label">EvalOps Pipeline — Zero Undetected Regressions</div>
+              <p>Built a full <strong>EvalOps pipeline</strong> — groundedness rubrics, golden datasets, automated RAGAS scoring, OpenTelemetry retrieval tracing — as mandatory CI gates before every model update. Zero undetected regressions since rollout.</p>
+            </div>
+          </div>
+          <div class="ep-stack">
+            <span class="ep-pill">AWS EKS</span><span class="ep-pill">Azure Container Apps</span><span class="ep-pill">Azure AI Search</span><span class="ep-pill">GPT-4o PTU</span><span class="ep-pill">Document Intelligence</span><span class="ep-pill">Entra ID</span><span class="ep-pill">Key Vault</span><span class="ep-pill">Llama 3</span><span class="ep-pill">LoRA/PEFT</span><span class="ep-pill">DPO</span><span class="ep-pill">RAGAS</span><span class="ep-pill">OpenTelemetry</span><span class="ep-pill">LangGraph</span><span class="ep-pill">Bicep</span>
+          </div>
+        </div>
+
+        <!-- Panel 2 -->
+        <div class="exp-panel" id="ep2">
+          <div class="ep-role">Consultant, Data Engineer</div>
+          <div class="ep-meta">
+            <span>CGI</span><span>New Brunswick, NJ</span><span>Jan 2023 – Dec 2024</span>
+          </div>
+          <div class="ep-points">
+            <div class="ep-point">
+              <div class="ep-point-label">Retrieval Quality — 0.62 to 0.74 Faithfulness</div>
+              <p>Tuned <strong>hybrid retrieval (BM25 + pgvector + cross-encoder reranking)</strong> with query rewriting optimisations. Lifted RAGAS faithfulness from 0.62 to 0.74 on a 500-question eval set — a 19% improvement with no generation model changes.</p>
+            </div>
+            <div class="ep-point">
+              <div class="ep-point-label">Eval-gated CI/CD — 20% of Bad Updates Blocked</div>
+              <p>Built an <strong>eval-gated CI/CD pipeline</strong> using LLM-as-judge with rubric scoring as a mandatory release gate. Blocked ~20% of regressive model updates before production.</p>
+            </div>
+            <div class="ep-point">
+              <div class="ep-point-label">ML Pipelines — 72 Hours to Under 24</div>
+              <p>Rebuilt <strong>Kubernetes ML training pipelines</strong> for ~6TB document classification. Cut training-to-deployment cycle from 72 hours to under 24 hours — 3× faster iteration.</p>
+            </div>
+            <div class="ep-point">
+              <div class="ep-point-label">Observability — Hours to Minutes MTTD</div>
+              <p>Implemented <strong>CloudWatch + OpenTelemetry</strong> instrumentation with drift detection and alerting. Reduced mean time to diagnose failures from hours to minutes.</p>
+            </div>
+          </div>
+          <div class="ep-stack">
+            <span class="ep-pill">BM25</span><span class="ep-pill">pgvector</span><span class="ep-pill">Cross-encoder reranking</span><span class="ep-pill">Query rewriting</span><span class="ep-pill">RAGAS</span><span class="ep-pill">LLM-as-judge</span><span class="ep-pill">Kubernetes</span><span class="ep-pill">CloudWatch</span><span class="ep-pill">OpenTelemetry</span>
+          </div>
+        </div>
+
+        <!-- Panel 3 -->
+        <div class="exp-panel" id="ep3">
+          <div class="ep-role">Data Engineer</div>
+          <div class="ep-meta">
+            <span>eKincare</span><span>Bangalore, India</span><span>Aug 2020 – Jul 2021</span>
+          </div>
+          <div class="ep-points">
+            <div class="ep-point">
+              <div class="ep-point-label">Pipeline Throughput — 40% Improvement</div>
+              <p>Improved <strong>Kafka and Spark pipeline throughput by 40%</strong> through partitioning and parallelism tuning. Added schema validation and dead-letter handling to cut production failures.</p>
+            </div>
+            <div class="ep-point">
+              <div class="ep-point-label">Application Stability — 15% Crash Reduction</div>
+              <p>Diagnosed root causes across recurring crash patterns and overhauled <strong>logging, monitoring, and alerting</strong> with engineering teams. Reduced crash rate by 15%.</p>
+            </div>
+          </div>
+          <div class="ep-stack">
+            <span class="ep-pill">Apache Kafka</span><span class="ep-pill">Apache Spark</span><span class="ep-pill">Python</span><span class="ep-pill">AWS</span>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<footer>
-  <span class="footer-l">© 2026 Revanth Gollapudi</span>
-  <div class="footer-r">
-    <a href="mailto:gollapudi.off@gmail.com">Email</a>
-    <a href="https://linkedin.com/in/revanth-gollapudi" target="_blank">LinkedIn</a>
-    <a href="https://github.com/Revanth980727" target="_blank">GitHub</a>
+<!-- ══════════════════════════════════════════════════════════════════════════ -->
+<!-- CHAPTER 4 — SKILLS                                                        -->
+<!-- ══════════════════════════════════════════════════════════════════════════ -->
+<section class="chapter" id="ch4" data-label="Skills">
+  <div class="ch-num">04</div>
+  <div class="c-inner">
+    <div class="skills-story">
+      <div class="skills-left">
+        <div class="story-label" style="color:var(--ink-faint);">How I think</div>
+        <h2 style="font-family:'Cormorant Garamond',serif;font-size:2.4rem;font-weight:300;margin-bottom:1.5rem;">Skills &amp; tools</h2>
+        <p class="skills-intro">I'm not a framework collector. Every skill here is something I've used to solve a real production problem — usually at 2am when something was wrong.</p>
+        <p class="skills-intro">My strongest areas are the intersection of <strong>retrieval quality, evaluation, and inference cost</strong>. That's where most production GenAI systems fail, and it's where I've spent the most time.</p>
+        <p class="skills-intro">The infrastructure skills came from necessity — you can't own a system end-to-end without understanding how it runs.</p>
+      </div>
+      <div class="skills-right">
+        <div class="sk-line"><span class="sk-cat">LLMs &amp; GenAI</span><div class="sk-vals"><span class="sk-v">Llama 3</span><span class="sk-v">LoRA/PEFT</span><span class="sk-v">DPO</span><span class="sk-v">RLHF</span><span class="sk-v">LangGraph</span><span class="sk-v">Model Routing</span><span class="sk-v">NL-to-SQL</span></div></div>
+        <div class="sk-line"><span class="sk-cat">RAG &amp; Retrieval</span><div class="sk-vals"><span class="sk-v">BM25</span><span class="sk-v">pgvector</span><span class="sk-v">Azure AI Search</span><span class="sk-v">Cross-encoder Reranking</span><span class="sk-v">Query Rewriting</span><span class="sk-v">Document Intelligence</span></div></div>
+        <div class="sk-line"><span class="sk-cat">Eval &amp; Observability</span><div class="sk-vals"><span class="sk-v">RAGAS</span><span class="sk-v">DeepEval</span><span class="sk-v">LLM-as-Judge</span><span class="sk-v">Golden Datasets</span><span class="sk-v">Regression Gates</span><span class="sk-v">OpenTelemetry</span><span class="sk-v">CloudWatch</span></div></div>
+        <div class="sk-line"><span class="sk-cat">Cloud &amp; Infra</span><div class="sk-vals"><span class="sk-v">AWS EKS</span><span class="sk-v">Azure Container Apps</span><span class="sk-v">Azure OpenAI PTU</span><span class="sk-v">Key Vault</span><span class="sk-v">Entra ID</span><span class="sk-v">Kubernetes</span><span class="sk-v">Docker</span><span class="sk-v">Terraform</span><span class="sk-v">Bicep</span><span class="sk-v">GitHub Actions</span></div></div>
+        <div class="sk-line"><span class="sk-cat">Languages</span><div class="sk-vals"><span class="sk-v">Python</span><span class="sk-v">PyTorch</span><span class="sk-v">FastAPI</span><span class="sk-v">React/Next.js</span><span class="sk-v">Angular</span><span class="sk-v">Go</span></div></div>
+      </div>
+    </div>
   </div>
-</footer>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════════════════ -->
+<!-- CHAPTER 5 — PROJECTS                                                      -->
+<!-- ══════════════════════════════════════════════════════════════════════════ -->
+<section class="chapter" id="ch5" data-label="Projects">
+  <div class="ch-num">05</div>
+  <div class="c-inner">
+    <div style="margin-bottom:2rem;">
+      <div class="story-label" style="color:var(--ink-faint);">What I've built</div>
+      <h2 style="font-family:'Cormorant Garamond',serif;font-size:2.4rem;font-weight:300;margin-bottom:0;">Selected projects</h2>
+    </div>
+
+    <!-- TABS -->
+    <div class="proj-tabs">
+      <div class="p-tab on" data-pp="pp1">RAOC</div>
+      <div class="p-tab" data-pp="pp2">Bugfix AI Pilot</div>
+      <div class="p-tab" data-pp="pp3">LLM Eval Harness</div>
+      <div class="p-tab" data-pp="pp4">Data Analysis Chatbot</div>
+    </div>
+
+    <!-- PROJECT 1: RAOC -->
+    <div class="proj-panel on" id="pp1">
+      <div class="pp-left">
+        <span class="pp-badge">Agentic · macOS · Python</span>
+        <div class="pp-name">RAOC</div>
+        <div class="pp-what">Remote Autonomous OS Controller</div>
+        <p class="pp-desc">Control your Mac from your phone via Telegram. Send a natural language command, a <strong>6-agent pipeline</strong> builds and executes a plan — with mandatory tap-to-approve before anything runs.</p>
+        <ul class="pp-bullets">
+          <li><strong>Intake agent</strong> understands your request. <strong>Discovery</strong> finds the target file. <strong>Planning</strong> generates a step-by-step action plan. <strong>Execution</strong> carries it out. <strong>Verification</strong> checks it worked. <strong>Reporter</strong> sends proof to your phone.</li>
+          <li><strong>Safety model:</strong> approval enforced in code, not convention. Dangerous commands blocked. Every file backed up before writes. Workspace sandboxed at the zone resolver level.</li>
+          <li>303 passing tests · GitHub Actions CI · Pydantic v2 · macOS Keychain for secrets</li>
+        </ul>
+        <div class="pp-stack"><span class="pp-pill">Python 3.12</span><span class="pp-pill">Claude API</span><span class="pp-pill">Telegram Bot</span><span class="pp-pill">SQLite/SQLAlchemy</span><span class="pp-pill">Pydantic v2</span><span class="pp-pill">macOS Keychain</span></div>
+        <a class="pp-link" href="https://github.com/Revanth9727/RAOC" target="_blank">View on GitHub</a>
+      </div>
+      <div class="pp-right">
+        <div class="diagram-wrap">
+          <div class="diagram-title">Agent pipeline — RAOC</div>
+          <svg class="diag" viewBox="0 0 320 420" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <marker id="arr" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+                <path d="M0,0 L6,3 L0,6 Z" fill="#a8a49e"/>
+              </marker>
+            </defs>
+            <!-- phone input -->
+            <rect x="100" y="10" width="120" height="36" rx="2" fill="#f0ede7" stroke="#d6d2ca" stroke-width="1"/>
+            <text x="160" y="32" font-family="Epilogue,sans-serif" font-size="10" fill="#4a4744" text-anchor="middle">📱 Telegram command</text>
+            <!-- arrow -->
+            <line x1="160" y1="46" x2="160" y2="62" stroke="#d6d2ca" stroke-width="1" marker-end="url(#arr)"/>
+            <!-- agent boxes -->
+            <!-- Intake -->
+            <rect x="80" y="62" width="160" height="42" rx="2" fill="#f6f3ee" stroke="#b0ada8" stroke-width="1"/>
+            <text x="160" y="78" font-family="Epilogue,sans-serif" font-size="9" fill="#7a7673" text-anchor="middle" font-weight="500" letter-spacing="1">INTAKE AGENT</text>
+            <text x="160" y="93" font-family="Epilogue,sans-serif" font-size="9" fill="#4a4744" text-anchor="middle">Understands intent</text>
+            <line x1="160" y1="104" x2="160" y2="120" stroke="#d6d2ca" stroke-width="1" marker-end="url(#arr)"/>
+            <!-- Discovery -->
+            <rect x="80" y="120" width="160" height="42" rx="2" fill="#f6f3ee" stroke="#b0ada8" stroke-width="1"/>
+            <text x="160" y="136" font-family="Epilogue,sans-serif" font-size="9" fill="#7a7673" text-anchor="middle" font-weight="500" letter-spacing="1">DISCOVERY AGENT</text>
+            <text x="160" y="151" font-family="Epilogue,sans-serif" font-size="9" fill="#4a4744" text-anchor="middle">Finds &amp; reads files</text>
+            <line x1="160" y1="162" x2="160" y2="178" stroke="#d6d2ca" stroke-width="1" marker-end="url(#arr)"/>
+            <!-- Planning -->
+            <rect x="80" y="178" width="160" height="42" rx="2" fill="#f6f3ee" stroke="#b0ada8" stroke-width="1"/>
+            <text x="160" y="194" font-family="Epilogue,sans-serif" font-size="9" fill="#7a7673" text-anchor="middle" font-weight="500" letter-spacing="1">PLANNING AGENT</text>
+            <text x="160" y="209" font-family="Epilogue,sans-serif" font-size="9" fill="#4a4744" text-anchor="middle">Generates action plan</text>
+            <!-- approval gate -->
+            <line x1="160" y1="220" x2="160" y2="234" stroke="#d6d2ca" stroke-width="1" marker-end="url(#arr)"/>
+            <rect x="95" y="234" width="130" height="28" rx="14" fill="#5c3d1e" stroke="none"/>
+            <text x="160" y="252" font-family="Epilogue,sans-serif" font-size="9" fill="#f6f3ee" text-anchor="middle" font-weight="500">✓ TAP TO APPROVE</text>
+            <line x1="160" y1="262" x2="160" y2="278" stroke="#d6d2ca" stroke-width="1" marker-end="url(#arr)"/>
+            <!-- Execution -->
+            <rect x="80" y="278" width="160" height="42" rx="2" fill="#f6f3ee" stroke="#b0ada8" stroke-width="1"/>
+            <text x="160" y="294" font-family="Epilogue,sans-serif" font-size="9" fill="#7a7673" text-anchor="middle" font-weight="500" letter-spacing="1">EXECUTION AGENT</text>
+            <text x="160" y="309" font-family="Epilogue,sans-serif" font-size="9" fill="#4a4744" text-anchor="middle">Runs the plan safely</text>
+            <line x1="160" y1="320" x2="160" y2="336" stroke="#d6d2ca" stroke-width="1" marker-end="url(#arr)"/>
+            <!-- Verification + Reporter side by side -->
+            <rect x="20" y="336" width="130" height="42" rx="2" fill="#f6f3ee" stroke="#b0ada8" stroke-width="1"/>
+            <text x="85" y="352" font-family="Epilogue,sans-serif" font-size="9" fill="#7a7673" text-anchor="middle" font-weight="500" letter-spacing="1">VERIFICATION</text>
+            <text x="85" y="367" font-family="Epilogue,sans-serif" font-size="9" fill="#4a4744" text-anchor="middle">Checks result</text>
+            <rect x="170" y="336" width="130" height="42" rx="2" fill="#f6f3ee" stroke="#b0ada8" stroke-width="1"/>
+            <text x="235" y="352" font-family="Epilogue,sans-serif" font-size="9" fill="#7a7673" text-anchor="middle" font-weight="500" letter-spacing="1">REPORTER</text>
+            <text x="235" y="367" font-family="Epilogue,sans-serif" font-size="9" fill="#4a4744" text-anchor="middle">Sends proof to phone</text>
+            <!-- split line -->
+            <line x1="160" y1="336" x2="85" y2="336" stroke="#d6d2ca" stroke-width="1"/>
+            <line x1="160" y1="336" x2="235" y2="336" stroke="#d6d2ca" stroke-width="1"/>
+            <!-- bottom arrow -->
+            <line x1="85" y1="378" x2="85" y2="400" stroke="#d6d2ca" stroke-width="1" marker-end="url(#arr)"/>
+            <line x1="235" y1="378" x2="235" y2="400" stroke="#d6d2ca" stroke-width="1" marker-end="url(#arr)"/>
+            <text x="160" y="415" font-family="Epilogue,sans-serif" font-size="9" fill="#7a7673" text-anchor="middle">📱 Result delivered</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROJECT 2: BUGFIX AI PILOT -->
+    <div class="proj-panel" id="pp2">
+      <div class="pp-left">
+        <span class="pp-badge">Multi-agent · Full-stack · Docker</span>
+        <div class="pp-name">Bugfix AI Pilot</div>
+        <div class="pp-what">Autonomous Bug Resolution System</div>
+        <p class="pp-desc">Takes a JIRA ticket ID and — without any human involvement — reads the ticket, generates a GPT-4 code fix, validates it with tests, and opens a GitHub PR. 233 commits.</p>
+        <ul class="pp-bullets">
+          <li><strong>Planner agent</strong> reads the JIRA ticket and identifies the affected code and root cause.</li>
+          <li><strong>Developer agent</strong> generates the fix with full codebase context awareness.</li>
+          <li><strong>QA agent</strong> runs tests against the fix. Failed results loop back to the Developer for retry (up to 3 cycles).</li>
+          <li><strong>Communicator agent</strong> comments on JIRA and opens a GitHub PR with the diff and test results.</li>
+          <li>React/TypeScript monitoring dashboard with live agent output logs and manual trigger.</li>
+        </ul>
+        <div class="pp-stack"><span class="pp-pill">Python</span><span class="pp-pill">GPT-4</span><span class="pp-pill">TypeScript</span><span class="pp-pill">React</span><span class="pp-pill">FastAPI</span><span class="pp-pill">Docker Compose</span><span class="pp-pill">JIRA API</span><span class="pp-pill">GitHub API</span></div>
+        <a class="pp-link" href="https://github.com/Revanth980727/bugfix-ai-pilot" target="_blank">View on GitHub</a>
+      </div>
+      <div class="pp-right">
+        <div class="diagram-wrap">
+          <div class="diagram-title">Agent pipeline — Bugfix AI Pilot</div>
+          <svg class="diag" viewBox="0 0 320 400" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <marker id="arr2" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+                <path d="M0,0 L6,3 L0,6 Z" fill="#a8a49e"/>
+              </marker>
+            </defs>
+            <!-- JIRA input -->
+            <rect x="90" y="10" width="140" height="36" rx="2" fill="#f0ede7" stroke="#d6d2ca" stroke-width="1"/>
+            <text x="160" y="32" font-family="Epilogue,sans-serif" font-size="10" fill="#4a4744" text-anchor="middle">🎫 JIRA Ticket</text>
+            <line x1="160" y1="46" x2="160" y2="62" stroke="#d6d2ca" stroke-width="1" marker-end="url(#arr2)"/>
+            <!-- Planner -->
+            <rect x="70" y="62" width="180" height="50" rx="2" fill="#f6f3ee" stroke="#b0ada8" stroke-width="1"/>
+            <text x="160" y="80" font-family="Epilogue,sans-serif" font-size="9" fill="#7a7673" text-anchor="middle" font-weight="500" letter-spacing="1">PLANNER AGENT</text>
+            <text x="160" y="95" font-family="Epilogue,sans-serif" font-size="9" fill="#4a4744" text-anchor="middle">Reads ticket · identifies</text>
+            <text x="160" y="106" font-family="Epilogue,sans-serif" font-size="9" fill="#4a4744" text-anchor="middle">affected files &amp; root cause</text>
+            <line x1="160" y1="112" x2="160" y2="128" stroke="#d6d2ca" stroke-width="1" marker-end="url(#arr2)"/>
+            <!-- Developer -->
+            <rect x="70" y="128" width="180" height="50" rx="2" fill="#f6f3ee" stroke="#b0ada8" stroke-width="1"/>
+            <text x="160" y="146" font-family="Epilogue,sans-serif" font-size="9" fill="#7a7673" text-anchor="middle" font-weight="500" letter-spacing="1">DEVELOPER AGENT</text>
+            <text x="160" y="161" font-family="Epilogue,sans-serif" font-size="9" fill="#4a4744" text-anchor="middle">Generates code fix</text>
+            <text x="160" y="172" font-family="Epilogue,sans-serif" font-size="9" fill="#4a4744" text-anchor="middle">with codebase context</text>
+            <line x1="160" y1="178" x2="160" y2="194" stroke="#d6d2ca" stroke-width="1" marker-end="url(#arr2)"/>
+            <!-- QA -->
+            <rect x="70" y="194" width="180" height="50" rx="2" fill="#f6f3ee" stroke="#b0ada8" stroke-width="1"/>
+            <text x="160" y="212" font-family="Epilogue,sans-serif" font-size="9" fill="#7a7673" text-anchor="middle" font-weight="500" letter-spacing="1">QA AGENT</text>
+            <text x="160" y="227" font-family="Epilogue,sans-serif" font-size="9" fill="#4a4744" text-anchor="middle">Runs test suite</text>
+            <text x="160" y="238" font-family="Epilogue,sans-serif" font-size="9" fill="#4a4744" text-anchor="middle">against the fix</text>
+            <!-- retry loop -->
+            <path d="M70,219 Q20,219 20,160 Q20,142 70,142" fill="none" stroke="#d6d2ca" stroke-width="1" stroke-dasharray="3,3" marker-end="url(#arr2)"/>
+            <text x="14" y="185" font-family="Epilogue,sans-serif" font-size="8" fill="#b0ada8" text-anchor="middle">retry</text>
+            <text x="14" y="195" font-family="Epilogue,sans-serif" font-size="8" fill="#b0ada8" text-anchor="middle">≤3×</text>
+            <line x1="160" y1="244" x2="160" y2="260" stroke="#d6d2ca" stroke-width="1" marker-end="url(#arr2)"/>
+            <!-- Communicator -->
+            <rect x="70" y="260" width="180" height="50" rx="2" fill="#f6f3ee" stroke="#b0ada8" stroke-width="1"/>
+            <text x="160" y="278" font-family="Epilogue,sans-serif" font-size="9" fill="#7a7673" text-anchor="middle" font-weight="500" letter-spacing="1">COMMUNICATOR AGENT</text>
+            <text x="160" y="293" font-family="Epilogue,sans-serif" font-size="9" fill="#4a4744" text-anchor="middle">Updates JIRA · opens</text>
+            <text x="160" y="304" font-family="Epilogue,sans-serif" font-size="9" fill="#4a4744" text-anchor="middle">GitHub PR with diff</text>
+            <line x1="160" y1="310" x2="160" y2="326" stroke="#d6d2ca" stroke-width="1" marker-end="url(#arr2)"/>
+            <!-- output boxes -->
+            <rect x="30" y="326" width="110" height="36" rx="2" fill="#5c3d1e" stroke="none"/>
+            <text x="85" y="348" font-family="Epilogue,sans-serif" font-size="9" fill="#f6f3ee" text-anchor="middle">🔀 GitHub PR</text>
+            <rect x="180" y="326" width="110" height="36" rx="2" fill="#5c3d1e" stroke="none"/>
+            <text x="235" y="348" font-family="Epilogue,sans-serif" font-size="9" fill="#f6f3ee" text-anchor="middle">🎫 JIRA updated</text>
+            <line x1="160" y1="326" x2="85" y2="326" stroke="#d6d2ca" stroke-width="1"/>
+            <line x1="160" y1="326" x2="235" y2="326" stroke="#d6d2ca" stroke-width="1"/>
+            <!-- monitoring note -->
+            <rect x="240" y="100" width="72" height="130" rx="2" fill="none" stroke="#d6d2ca" stroke-width="1" stroke-dasharray="3,3"/>
+            <text x="276" y="118" font-family="Epilogue,sans-serif" font-size="8" fill="#b0ada8" text-anchor="middle">React</text>
+            <text x="276" y="130" font-family="Epilogue,sans-serif" font-size="8" fill="#b0ada8" text-anchor="middle">dashboard</text>
+            <text x="276" y="148" font-family="Epilogue,sans-serif" font-size="8" fill="#b0ada8" text-anchor="middle">live agent</text>
+            <text x="276" y="160" font-family="Epilogue,sans-serif" font-size="8" fill="#b0ada8" text-anchor="middle">output logs</text>
+            <text x="276" y="180" font-family="Epilogue,sans-serif" font-size="8" fill="#b0ada8" text-anchor="middle">+ manual</text>
+            <text x="276" y="192" font-family="Epilogue,sans-serif" font-size="8" fill="#b0ada8" text-anchor="middle">trigger</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROJECT 3 -->
+    <div class="proj-panel" id="pp3">
+      <div class="pp-left">
+        <span class="pp-badge">EvalOps · Python · CI/CD</span>
+        <div class="pp-name">LLM Evaluation Harness</div>
+        <div class="pp-what">CI-ready A/B Evaluation Framework</div>
+        <p class="pp-desc">A production-ready framework for A/B evaluating LLM changes with statistical rigour and CI integration — making evaluation a real deployment gate, not a manual check.</p>
+        <ul class="pp-bullets">
+          <li><strong>Hard checks first:</strong> Schema, citation presence, format requirements — deterministic, zero cost. Only passing cases proceed to LLM judge.</li>
+          <li><strong>LLM-as-judge with calibration:</strong> Rubric-based pairwise scoring with agreement rate, flip rate, and order bias measurement.</li>
+          <li><strong>95% bootstrap confidence intervals</strong> on win rate. Per-tag breakdown. Refusal and format pass rates tracked separately.</li>
+          <li><strong>Quality gates:</strong> Configurable thresholds. Exit code 2 on failure blocks CI pipeline. Regression detection vs stored baseline.</li>
+          <li><strong>Zero-cost CI:</strong> Mock providers run the full pipeline in GitHub Actions with no API keys.</li>
+        </ul>
+        <div class="pp-stack"><span class="pp-pill">Python</span><span class="pp-pill">OpenAI</span><span class="pp-pill">Ollama</span><span class="pp-pill">NumPy</span><span class="pp-pill">RAGAS</span><span class="pp-pill">GitHub Actions</span><span class="pp-pill">pytest</span></div>
+        <a class="pp-link" href="https://github.com/Revanth9727/LLM-Evaluation-Harness" target="_blank">View on GitHub</a>
+      </div>
+      <div class="pp-right">
+        <div class="diagram-wrap">
+          <div class="diagram-title">Eval pipeline flow</div>
+          <svg class="diag" viewBox="0 0 300 360" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <marker id="arr3" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+                <path d="M0,0 L6,3 L0,6 Z" fill="#a8a49e"/>
+              </marker>
+            </defs>
+            <rect x="75" y="10" width="150" height="36" rx="2" fill="#f0ede7" stroke="#d6d2ca" stroke-width="1"/>
+            <text x="150" y="32" font-family="Epilogue,sans-serif" font-size="10" fill="#4a4744" text-anchor="middle">Test dataset (JSONL)</text>
+            <line x1="150" y1="46" x2="150" y2="62" stroke="#d6d2ca" stroke-width="1" marker-end="url(#arr3)"/>
+            <!-- hard checks -->
+            <rect x="55" y="62" width="190" height="50" rx="2" fill="#f6f3ee" stroke="#b0ada8" stroke-width="1"/>
+            <text x="150" y="80" font-family="Epilogue,sans-serif" font-size="9" fill="#7a7673" text-anchor="middle" font-weight="500" letter-spacing="1">HARD CHECKS</text>
+            <text x="150" y="95" font-family="Epilogue,sans-serif" font-size="9" fill="#4a4744" text-anchor="middle">Schema · citations · format · length</text>
+            <text x="150" y="106" font-family="Epilogue,sans-serif" font-size="9" fill="#4a4744" text-anchor="middle">Deterministic · zero LLM cost</text>
+            <!-- pass/fail -->
+            <line x1="150" y1="112" x2="150" y2="128" stroke="#d6d2ca" stroke-width="1" marker-end="url(#arr3)"/>
+            <path d="M55,88 Q10,88 10,140 Q10,150 55,150" fill="none" stroke="#d6d2ca" stroke-width="1" stroke-dasharray="3,3" marker-end="url(#arr3)"/>
+            <text x="6" y="120" font-family="Epilogue,sans-serif" font-size="8" fill="#b0ada8" text-anchor="middle">fail →</text>
+            <text x="6" y="130" font-family="Epilogue,sans-serif" font-size="8" fill="#b0ada8" text-anchor="middle">skip</text>
+            <!-- LLM judge -->
+            <rect x="55" y="128" width="190" height="50" rx="2" fill="#f6f3ee" stroke="#b0ada8" stroke-width="1"/>
+            <text x="150" y="146" font-family="Epilogue,sans-serif" font-size="9" fill="#7a7673" text-anchor="middle" font-weight="500" letter-spacing="1">LLM-AS-JUDGE</text>
+            <text x="150" y="161" font-family="Epilogue,sans-serif" font-size="9" fill="#4a4744" text-anchor="middle">Rubric-based A vs B scoring</text>
+            <text x="150" y="172" font-family="Epilogue,sans-serif" font-size="9" fill="#4a4744" text-anchor="middle">Calibration: flip rate · order bias</text>
+            <line x1="150" y1="178" x2="150" y2="194" stroke="#d6d2ca" stroke-width="1" marker-end="url(#arr3)"/>
+            <!-- metrics -->
+            <rect x="55" y="194" width="190" height="50" rx="2" fill="#f6f3ee" stroke="#b0ada8" stroke-width="1"/>
+            <text x="150" y="212" font-family="Epilogue,sans-serif" font-size="9" fill="#7a7673" text-anchor="middle" font-weight="500" letter-spacing="1">METRICS</text>
+            <text x="150" y="227" font-family="Epilogue,sans-serif" font-size="9" fill="#4a4744" text-anchor="middle">Win rate + 95% CI · refusal rate</text>
+            <text x="150" y="238" font-family="Epilogue,sans-serif" font-size="9" fill="#4a4744" text-anchor="middle">Format pass · per-tag breakdown</text>
+            <line x1="150" y1="244" x2="150" y2="260" stroke="#d6d2ca" stroke-width="1" marker-end="url(#arr3)"/>
+            <!-- quality gate -->
+            <rect x="55" y="260" width="190" height="42" rx="2" fill="#f6f3ee" stroke="#b0ada8" stroke-width="1"/>
+            <text x="150" y="278" font-family="Epilogue,sans-serif" font-size="9" fill="#7a7673" text-anchor="middle" font-weight="500" letter-spacing="1">QUALITY GATE</text>
+            <text x="150" y="293" font-family="Epilogue,sans-serif" font-size="9" fill="#4a4744" text-anchor="middle">Thresholds · regression vs baseline</text>
+            <line x1="150" y1="302" x2="150" y2="318" stroke="#d6d2ca" stroke-width="1" marker-end="url(#arr3)"/>
+            <!-- outcomes -->
+            <rect x="20" y="318" width="100" height="32" rx="2" fill="#2d6a4f" stroke="none"/>
+            <text x="70" y="338" font-family="Epilogue,sans-serif" font-size="9" fill="#f6f3ee" text-anchor="middle">✓ PASS · exit 0</text>
+            <rect x="180" y="318" width="100" height="32" rx="2" fill="#8b1a1a" stroke="none"/>
+            <text x="230" y="338" font-family="Epilogue,sans-serif" font-size="9" fill="#f6f3ee" text-anchor="middle">✗ FAIL · exit 2</text>
+            <line x1="150" y1="318" x2="70" y2="318" stroke="#d6d2ca" stroke-width="1"/>
+            <line x1="150" y1="318" x2="230" y2="318" stroke="#d6d2ca" stroke-width="1"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROJECT 4 -->
+    <div class="proj-panel" id="pp4">
+      <div class="pp-left" style="grid-column:1/-1;max-width:680px;">
+        <span class="pp-badge">NL-to-SQL · Streamlit · Python</span>
+        <div class="pp-name">Data Analysis Chatbot</div>
+        <div class="pp-what">Natural Language to SQL Interface</div>
+        <p class="pp-desc">A Streamlit chatbot that lets non-technical users ask questions about their data in plain English and get answers backed by real SQL queries. Supports CSV uploads and live MySQL connections.</p>
+        <ul class="pp-bullets">
+          <li><strong>CSV mode:</strong> reads uploaded files into a local SQL engine — no database setup needed.</li>
+          <li><strong>MySQL mode:</strong> connects to a live database. Supports multi-table schemas — tested against telecom, healthcare, and environmental datasets.</li>
+          <li>Schema-aware: reads table and column metadata before generating SQL, reducing hallucinated column names and invalid queries.</li>
+        </ul>
+        <div class="pp-stack"><span class="pp-pill">Python</span><span class="pp-pill">OpenAI</span><span class="pp-pill">Streamlit</span><span class="pp-pill">MySQL</span><span class="pp-pill">Pandas</span></div>
+        <a class="pp-link" href="https://github.com/Revanth980727/DataAnalysis-Chatbot" target="_blank">View on GitHub</a>
+      </div>
+    </div>
+
+  </div><!-- /c-inner -->
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════════════════ -->
+<!-- CHAPTER 6 — CONTACT                                                       -->
+<!-- ══════════════════════════════════════════════════════════════════════════ -->
+<section class="chapter" id="ch6" data-label="Contact">
+  <div class="ch-num">06</div>
+  <div class="c-inner">
+    <div class="contact-story">
+      <div>
+        <h2 class="ct-heading">Let's build something that stays running.</h2>
+        <p class="ct-sub">Open to AI engineering roles, consulting engagements, and interesting conversations about LLM systems in production. Based in West Lafayette, IN.</p>
+        <div class="ct-links">
+          <a class="ct-link" href="mailto:gollapudi.off@gmail.com">gollapudi.off@gmail.com</a>
+          <a class="ct-link" href="https://linkedin.com/in/revanth-gollapudi" target="_blank">LinkedIn</a>
+          <a class="ct-link" href="https://github.com/Revanth980727" target="_blank">GitHub — Revanth980727</a>
+          <a class="ct-link" href="https://github.com/Revanth9727" target="_blank">GitHub — Revanth9727</a>
+        </div>
+      </div>
+      <div class="ct-right">
+        <p class="ct-available">Currently open to new opportunities.<br>West Lafayette, IN · Available immediately.</p>
+        <p class="ct-email-big">gollapudi.off<br>@gmail.com</p>
+      </div>
+    </div>
+  </div>
+</section>
 
 <script>
-// PROGRESS BAR
-const bar = document.createElement('div');
-bar.className = 'progress-bar';
-document.body.prepend(bar);
-window.addEventListener('scroll', () => {
-  const pct = window.scrollY / (document.body.scrollHeight - window.innerHeight) * 100;
-  bar.style.width = pct + '%';
-}, {passive:true});
-
-// CURSOR with smooth lag
-const cursor = document.getElementById('cursor');
-let mx = window.innerWidth/2, my = window.innerHeight/2, cx = mx, cy = my;
-document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
-document.addEventListener('mousedown', () => cursor.classList.add('clicking'));
-document.addEventListener('mouseup', () => cursor.classList.remove('clicking'));
-document.querySelectorAll('a,button,.hero-tag,.tech-pill,.sk-tag').forEach(el => {
-  el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
-  el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+// ── CURSOR (smooth lag) ───────────────────────────────────────────────────────
+const cur = document.getElementById('cur');
+let mx=window.innerWidth/2, my=window.innerHeight/2, cx=mx, cy=my;
+document.addEventListener('mousemove', e=>{mx=e.clientX;my=e.clientY;});
+document.addEventListener('mousedown',()=>cur.classList.add('click'));
+document.addEventListener('mouseup',()=>cur.classList.remove('click'));
+document.querySelectorAll('a,button,.p-tab,.exp-nav-item,.h-tag,.sk-v,.ep-pill,.pp-pill,.ct-link').forEach(el=>{
+  el.addEventListener('mouseenter',()=>cur.classList.add('big'));
+  el.addEventListener('mouseleave',()=>cur.classList.remove('big'));
 });
-(function loop() {
-  cx += (mx - cx) * 0.12; cy += (my - cy) * 0.12;
-  cursor.style.left = cx + 'px'; cursor.style.top = cy + 'px';
+(function loop(){
+  cx+=(mx-cx)*.11; cy+=(my-cy)*.11;
+  cur.style.transform=`translate(calc(${cx}px - 50%), calc(${cy}px - 50%))`;
   requestAnimationFrame(loop);
 })();
 
-// SCROLL REVEAL — different directions
-const revealObs = new IntersectionObserver(entries => {
-  entries.forEach(e => {
-    if (!e.isIntersecting) return;
-    const siblings = Array.from(e.target.parentElement.children).filter(c => c.classList.contains('reveal'));
-    e.target.style.transitionDelay = (siblings.indexOf(e.target) * 0.09) + 's';
-    e.target.classList.add('vis');
-    revealObs.unobserve(e.target);
+// ── PROGRESS DOTS ─────────────────────────────────────────────────────────────
+const chapters = document.querySelectorAll('.chapter');
+const dotsNav = document.getElementById('dots');
+chapters.forEach((ch,i)=>{
+  const d = document.createElement('div');
+  d.className='dot';
+  d.title = ch.dataset.label||'';
+  d.addEventListener('click',()=>ch.scrollIntoView({behavior:'smooth'}));
+  dotsNav.appendChild(d);
+});
+const dotEls = dotsNav.querySelectorAll('.dot');
+
+// ── INTERSECTION — chapter entrance + dots ────────────────────────────────────
+const chObs = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      e.target.classList.add('entered');
+      // update dot
+      const idx = Array.from(chapters).indexOf(e.target);
+      dotEls.forEach((d,i)=>d.classList.toggle('on',i===idx));
+    }
   });
-}, { threshold: 0.07, rootMargin: '0px 0px -40px 0px' });
-document.querySelectorAll('.reveal').forEach(r => revealObs.observe(r));
+},{threshold:0.25});
+chapters.forEach(ch=>chObs.observe(ch));
 
-// SECTION HEADER REVEAL
-const headerObs = new IntersectionObserver(entries => {
-  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('vis'); headerObs.unobserve(e.target); } });
-}, { threshold: 0.2 });
-document.querySelectorAll('.section-header').forEach(h => headerObs.observe(h));
-
-// COUNTER ANIMATION — stat numbers
-function animateCounter(el, target, suffix, dur) {
-  const start = performance.now();
-  el.classList.add('counted');
-  (function update(now) {
-    const p = Math.min((now - start) / dur, 1);
-    const ease = 1 - Math.pow(1 - p, 3);
-    el.textContent = (target >= 1000 ? Math.round(target * ease).toLocaleString() : Math.round(target * ease)) + suffix;
-    if (p < 1) requestAnimationFrame(update);
-    else el.textContent = (target >= 1000 ? target.toLocaleString() : target) + suffix;
+// ── COUNTER ANIMATION ─────────────────────────────────────────────────────────
+function animCount(el,target,suffix,dur){
+  const s=performance.now();
+  (function go(now){
+    const p=Math.min((now-s)/dur,1), ease=1-Math.pow(1-p,3);
+    const v=Math.round(target*ease);
+    el.textContent=(target>=1000?v.toLocaleString():v)+suffix;
+    if(p<1)requestAnimationFrame(go);
+    else el.textContent=(target>=1000?target.toLocaleString():target)+suffix;
   })(performance.now());
 }
-const statObs = new IntersectionObserver(entries => {
-  entries.forEach(e => {
-    if (!e.isIntersecting) return;
-    const el = e.target;
-    animateCounter(el, parseFloat(el.dataset.target), el.dataset.suffix || '', 1400);
-    statObs.unobserve(el);
+const cntObs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(!e.isIntersecting)return;
+    const el=e.target;
+    animCount(el,parseFloat(el.dataset.target),el.dataset.suffix||'',1600);
+    cntObs.unobserve(el);
   });
-}, { threshold: 0.5 });
-document.querySelectorAll('.stat-n[data-target]').forEach(s => statObs.observe(s));
+},{threshold:.5});
+document.querySelectorAll('.st-n[data-target]').forEach(s=>cntObs.observe(s));
 
-// NAV ACTIVE STATE
-const navLinks = document.querySelectorAll('.nav-links a');
-const navObs = new IntersectionObserver(entries => {
-  entries.forEach(e => {
-    if (e.isIntersecting) navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + e.target.id));
-  });
-}, { threshold: 0.3 });
-document.querySelectorAll('section[id]').forEach(s => navObs.observe(s));
-
-// PARALLAX HERO
-const heroLeft = document.querySelector('.hero > div:first-child');
-const heroRight = document.querySelector('.hero-right');
-window.addEventListener('scroll', () => {
-  const y = window.scrollY;
-  if (y < window.innerHeight * 1.2) {
-    if (heroLeft) heroLeft.style.transform = 'translateY(' + (y * 0.07) + 'px)';
-    if (heroRight) heroRight.style.transform = 'translateY(' + (y * 0.12) + 'px)';
-  }
-}, {passive:true});
-
-// TILT ON PROJECT CARDS
-document.querySelectorAll('.proj-item').forEach(card => {
-  card.addEventListener('mousemove', e => {
-    const r = card.getBoundingClientRect();
-    const x = (e.clientX - r.left) / r.width - 0.5;
-    const y = (e.clientY - r.top) / r.height - 0.5;
-    card.style.transform = 'translateY(-3px) rotateX(' + (-y*1.8) + 'deg) rotateY(' + (x*1.8) + 'deg)';
-  });
-  card.addEventListener('mouseleave', () => {
-    card.style.transition = 'transform 0.55s cubic-bezier(.22,1,.36,1)';
-    card.style.transform = '';
-    setTimeout(() => { card.style.transition = ''; }, 550);
+// ── EXPERIENCE TABS ───────────────────────────────────────────────────────────
+document.querySelectorAll('.exp-nav-item').forEach(item=>{
+  item.addEventListener('click',()=>{
+    document.querySelectorAll('.exp-nav-item').forEach(i=>i.classList.remove('on'));
+    document.querySelectorAll('.exp-panel').forEach(p=>p.classList.remove('on'));
+    item.classList.add('on');
+    document.getElementById(item.dataset.ep).classList.add('on');
   });
 });
 
-// SKILL TAG STAGGER
-const skObs = new IntersectionObserver(entries => {
-  entries.forEach(e => {
-    if (!e.isIntersecting) return;
-    e.target.querySelectorAll('.sk-tag').forEach((tag, i) => {
-      tag.style.opacity = '0'; tag.style.transform = 'translateY(8px)';
-      setTimeout(() => {
-        tag.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
-        tag.style.opacity = '1'; tag.style.transform = 'none';
-      }, 60 + i * 40);
+// ── PROJECT TABS ──────────────────────────────────────────────────────────────
+document.querySelectorAll('.p-tab').forEach(tab=>{
+  tab.addEventListener('click',()=>{
+    document.querySelectorAll('.p-tab').forEach(t=>t.classList.remove('on'));
+    document.querySelectorAll('.proj-panel').forEach(p=>p.classList.remove('on'));
+    tab.classList.add('on');
+    document.getElementById(tab.dataset.pp).classList.add('on');
+  });
+});
+
+// ── SKILL TAG HOVER STAGGER ───────────────────────────────────────────────────
+const skObs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(!e.isIntersecting)return;
+    e.target.querySelectorAll('.sk-v').forEach((v,i)=>{
+      v.style.opacity='0'; v.style.transform='translateY(6px)';
+      setTimeout(()=>{
+        v.style.transition='opacity .3s,transform .3s';
+        v.style.opacity='1'; v.style.transform='none';
+      },50+i*35);
     });
     skObs.unobserve(e.target);
   });
-}, { threshold: 0.4 });
-document.querySelectorAll('.sk-row').forEach(r => skObs.observe(r));
+},{threshold:.4});
+document.querySelectorAll('.sk-line').forEach(l=>skObs.observe(l));
+
+// ── PARALLAX HERO ─────────────────────────────────────────────────────────────
+const heroGrid = document.querySelector('.hero-grid');
+const heroR = document.querySelector('.hero-right');
+window.addEventListener('scroll',()=>{
+  const y=window.scrollY;
+  if(y<window.innerHeight*1.2&&heroR){
+    heroR.style.transform='translateY('+(y*.1)+'px)';
+  }
+},{passive:true});
 </script>
 </body>
 </html>
