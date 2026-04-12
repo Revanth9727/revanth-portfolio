@@ -275,6 +275,12 @@ svg.diag{width:100%;height:auto;display:block;}
           <div class="en-date">Dec 2024 – Present</div>
           <div class="en-bar"></div>
         </div>
+        <div class="exp-nav-item" data-ep="ep1b">
+          <div class="en-co">CGI · Ryder Systems</div>
+          <div class="en-role">Vehicle AI Inspection System</div>
+          <div class="en-date">Apr 2026 – In progress</div>
+          <div class="en-bar"></div>
+        </div>
         <div class="exp-nav-item" data-ep="ep2">
           <div class="en-co">CGI</div>
           <div class="en-role">Consultant, Data Engineer</div>
@@ -321,6 +327,40 @@ svg.diag{width:100%;height:auto;display:block;}
           </div>
           <div class="ep-stack">
             <span class="ep-pill">AWS EKS</span><span class="ep-pill">Azure Container Apps</span><span class="ep-pill">Azure AI Search</span><span class="ep-pill">GPT-4o PTU</span><span class="ep-pill">Document Intelligence</span><span class="ep-pill">Entra ID</span><span class="ep-pill">Key Vault</span><span class="ep-pill">Llama 3</span><span class="ep-pill">LoRA/PEFT</span><span class="ep-pill">DPO</span><span class="ep-pill">RAGAS</span><span class="ep-pill">OpenTelemetry</span><span class="ep-pill">LangGraph</span><span class="ep-pill">Bicep</span>
+          </div>
+        </div>
+
+        <!-- Panel 1b — Ryder Vehicle AI -->
+        <div class="exp-panel" id="ep1b">
+          <div class="ep-role">Lead Engineer — Vehicle AI Inspection System</div>
+          <div class="ep-meta">
+            <span>CGI · Ryder Systems</span><span>Coral Gables, FL</span><span>Apr 2026 – Present</span>
+          </div>
+          <div class="ep-points">
+
+            <div class="ep-point">
+              <div class="ep-point-label">What we're building</div>
+              <p>Leading the engineering delivery of an <strong>AI-powered vehicle inspection system</strong> for Ryder Systems — one of the largest truck fleet operators in the US. The system replaces manual walk-around inspections with a photo-driven pipeline: a technician photographs the vehicle, the AI scans every image for damage, and a structured digital inspection report is produced automatically. Funded by <strong>Microsoft's ECIF programme</strong> and built entirely on Azure, with a fixed 9-week delivery window ending mid-June 2026.</p>
+            </div>
+
+            <div class="ep-point">
+              <div class="ep-point-label">Architecture & Pipeline</div>
+              <p>Designed the end-to-end system architecture on Azure: photo ingestion, a computer vision model that detects scratches, dents, rust, paint chips, and missing parts, a verdict layer that outputs <strong>Pass / Fail / Not Applicable</strong> per checklist item with annotated images and confidence scores, a generative AI layer that writes human-readable damage descriptions and recommended actions, and a JSON API output that plugs directly into Ryder's existing fleet management systems. Low-confidence detections are automatically routed to a <strong>human review queue</strong> — keeping humans in the loop for ambiguous cases without slowing down clear-cut ones.</p>
+            </div>
+
+            <div class="ep-point">
+              <div class="ep-point-label">AI Model & Data</div>
+              <p>Owning the <strong>computer vision model training pipeline</strong> — sourcing and labelling thousands of vehicle photos across damage categories, fine-tuning the detection model, and building the evaluation harness that measures per-class accuracy across scratch, dent, rust, and cleanliness categories. The checklist is dynamic: it adapts based on what the model finds in each image set, rather than running a fixed list regardless of vehicle condition.</p>
+            </div>
+
+            <div class="ep-point">
+              <div class="ep-point-label">Infrastructure & Delivery</div>
+              <p>Responsible for the full <strong>Azure infrastructure</strong> — compute, storage, monitoring, and the secure API layer. Building to a tight external deadline with $93,893 Microsoft ECIF funding at stake: Phase 1 complete by June 12, full system in Ryder's UAT environment by June 17. Scope is one vehicle category end-to-end — from raw photos to a validated, documented, handover-ready system.</p>
+            </div>
+
+          </div>
+          <div class="ep-stack">
+            <span class="ep-pill">Azure Computer Vision</span><span class="ep-pill">Azure OpenAI</span><span class="ep-pill">Python</span><span class="ep-pill">FastAPI</span><span class="ep-pill">Azure Container Apps</span><span class="ep-pill">Blob Storage</span><span class="ep-pill">Azure AI Studio</span><span class="ep-pill">GPT-4o Vision</span><span class="ep-pill">Model fine-tuning</span><span class="ep-pill">Bicep / IaC</span><span class="ep-pill">JSON API</span>
           </div>
         </div>
 
