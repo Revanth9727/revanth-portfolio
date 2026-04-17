@@ -339,28 +339,28 @@ svg.diag{width:100%;height:auto;display:block;}
           <div class="ep-points">
 
             <div class="ep-point">
-              <div class="ep-point-label">What we're building</div>
-              <p>Leading the engineering delivery of an <strong>AI-powered vehicle inspection system</strong> for Ryder Systems — one of the largest truck fleet operators in the US. The system replaces manual walk-around inspections with a photo-driven pipeline: a technician photographs the vehicle, the AI scans every image for damage, and a structured digital inspection report is produced automatically. Funded by <strong>Microsoft's ECIF programme</strong> and built entirely on Azure, with a fixed 9-week delivery window ending mid-June 2026.</p>
+              <div class="ep-point-label">The project</div>
+              <p>Leading end-to-end engineering delivery of an <strong>AI-powered vehicle inspection system for Ryder Systems (Fortune 500)</strong> — replacing manual walk-around inspections with a fully automated photo-driven pipeline. A technician photographs the vehicle, the system scans every image, assesses damage across 15 inspection points, and produces a structured report with zero manual intervention. Funded by a <strong>$93.9K Microsoft ECIF grant</strong> and built entirely on Azure.</p>
             </div>
 
             <div class="ep-point">
-              <div class="ep-point-label">Architecture & Pipeline</div>
-              <p>Designed the end-to-end system architecture on Azure: photo ingestion, a computer vision model that detects scratches, dents, rust, paint chips, and missing parts, a verdict layer that outputs <strong>Pass / Fail / Not Applicable</strong> per checklist item with annotated images and confidence scores, a generative AI layer that writes human-readable damage descriptions and recommended actions, and a JSON API output that plugs directly into Ryder's existing fleet management systems. Low-confidence detections are automatically routed to a <strong>human review queue</strong> — keeping humans in the loop for ambiguous cases without slowing down clear-cut ones.</p>
+              <div class="ep-point-label">Model training &amp; strategic pivot</div>
+              <p>Started by training and evaluating a <strong>YOLOv8 model on 10,000 labeled vehicle images</strong>, reaching 85–89% accuracy and precision across damage categories. After rigorous evaluation, drove a <strong>strategic pivot to GPT-4o Vision</strong> — recognising that the generative model's zero-shot understanding of damage context, severity, and natural language description would outperform a task-specific detector for this use case, without the ongoing retraining burden as vehicle categories expand.</p>
             </div>
 
             <div class="ep-point">
-              <div class="ep-point-label">AI Model & Data</div>
-              <p>Owning the <strong>computer vision model training pipeline</strong> — sourcing and labelling thousands of vehicle photos across damage categories, fine-tuning the detection model, and building the evaluation harness that measures per-class accuracy across scratch, dent, rust, and cleanliness categories. The checklist is dynamic: it adapts based on what the model finds in each image set, rather than running a fixed list regardless of vehicle condition.</p>
+              <div class="ep-point-label">Pipeline architecture</div>
+              <p>Built a <strong>two-pass automated pipeline</strong>: the first pass uses <strong>OpenCV blur detection</strong> to filter out unusable images before any expensive model call is made; the second pass runs GPT-4o Vision across the clean image set, executing a <strong>15-point damage assessment</strong> covering scratches, dents, rust, paint chips, cleanliness, and missing components. Every assessment includes a Pass / Fail / Not Applicable verdict, confidence signal, and a human-readable description of what was found and what action is recommended.</p>
             </div>
 
             <div class="ep-point">
-              <div class="ep-point-label">Infrastructure & Delivery</div>
-              <p>Responsible for the full <strong>Azure infrastructure</strong> — compute, storage, monitoring, and the secure API layer. Building to a tight external deadline with $93,893 Microsoft ECIF funding at stake: Phase 1 complete by June 12, full system in Ryder's UAT environment by June 17. Scope is one vehicle category end-to-end — from raw photos to a validated, documented, handover-ready system.</p>
+              <div class="ep-point-label">Infrastructure &amp; scale</div>
+              <p>Deployed on <strong>Azure Functions, Blob Storage, Cosmos DB, and Azure OpenAI</strong> — a serverless, event-driven architecture that scales to demand without managing infrastructure. The system currently processes <strong>10,000+ vehicles per month at approximately $0.01 per image</strong> with zero manual intervention at any point in the pipeline. The cost efficiency came directly from the two-pass design: OpenCV pre-filtering eliminates blurry or unusable frames before they reach GPT-4o, cutting API spend significantly.</p>
             </div>
 
           </div>
           <div class="ep-stack">
-            <span class="ep-pill">Azure Computer Vision</span><span class="ep-pill">Azure OpenAI</span><span class="ep-pill">Python</span><span class="ep-pill">FastAPI</span><span class="ep-pill">Azure Container Apps</span><span class="ep-pill">Blob Storage</span><span class="ep-pill">Azure AI Studio</span><span class="ep-pill">GPT-4o Vision</span><span class="ep-pill">Model fine-tuning</span><span class="ep-pill">Bicep / IaC</span><span class="ep-pill">JSON API</span>
+            <span class="ep-pill">GPT-4o Vision</span><span class="ep-pill">YOLOv8</span><span class="ep-pill">OpenCV</span><span class="ep-pill">Azure Functions</span><span class="ep-pill">Azure Blob Storage</span><span class="ep-pill">Cosmos DB</span><span class="ep-pill">Azure OpenAI</span><span class="ep-pill">Python</span><span class="ep-pill">Computer Vision</span><span class="ep-pill">Model Training &amp; Eval</span><span class="ep-pill">Microsoft ECIF</span>
           </div>
         </div>
 
@@ -435,7 +435,7 @@ svg.diag{width:100%;height:auto;display:block;}
       <div class="skills-right">
         <div class="sk-line"><span class="sk-cat">LLMs &amp; GenAI</span><div class="sk-vals"><span class="sk-v">Llama 3</span><span class="sk-v">LoRA/PEFT</span><span class="sk-v">DPO</span><span class="sk-v">RLHF</span><span class="sk-v">LangGraph</span><span class="sk-v">Model Routing</span><span class="sk-v">NL-to-SQL</span></div></div>
         <div class="sk-line"><span class="sk-cat">RAG &amp; Retrieval</span><div class="sk-vals"><span class="sk-v">BM25</span><span class="sk-v">pgvector</span><span class="sk-v">Azure AI Search</span><span class="sk-v">Cross-encoder Reranking</span><span class="sk-v">Query Rewriting</span><span class="sk-v">Document Intelligence</span></div></div>
-        <div class="sk-line"><span class="sk-cat">Computer Vision</span><div class="sk-vals"><span class="sk-v">Azure Computer Vision</span><span class="sk-v">GPT-4o Vision</span><span class="sk-v">Object Detection</span><span class="sk-v">Damage Classification</span><span class="sk-v">Model Fine-tuning</span><span class="sk-v">Azure AI Studio</span><span class="sk-v">Image Annotation</span><span class="sk-v">Confidence Scoring</span></div></div>
+        <div class="sk-line"><span class="sk-cat">Computer Vision</span><div class="sk-vals"><span class="sk-v">GPT-4o Vision</span><span class="sk-v">YOLOv8</span><span class="sk-v">OpenCV</span><span class="sk-v">Object Detection</span><span class="sk-v">Damage Classification</span><span class="sk-v">Model Training &amp; Evaluation</span><span class="sk-v">Image Annotation</span><span class="sk-v">Confidence Scoring</span></div></div>
         <div class="sk-line"><span class="sk-cat">Eval &amp; Observability</span><div class="sk-vals"><span class="sk-v">RAGAS</span><span class="sk-v">DeepEval</span><span class="sk-v">LLM-as-Judge</span><span class="sk-v">Golden Datasets</span><span class="sk-v">Regression Gates</span><span class="sk-v">OpenTelemetry</span><span class="sk-v">CloudWatch</span></div></div>
         <div class="sk-line"><span class="sk-cat">Cloud &amp; Infra</span><div class="sk-vals"><span class="sk-v">AWS EKS</span><span class="sk-v">Azure Container Apps</span><span class="sk-v">Azure OpenAI PTU</span><span class="sk-v">Key Vault</span><span class="sk-v">Entra ID</span><span class="sk-v">Kubernetes</span><span class="sk-v">Docker</span><span class="sk-v">Terraform</span><span class="sk-v">Bicep</span><span class="sk-v">GitHub Actions</span></div></div>
         <div class="sk-line"><span class="sk-cat">Languages</span><div class="sk-vals"><span class="sk-v">Python</span><span class="sk-v">PyTorch</span><span class="sk-v">FastAPI</span><span class="sk-v">React/Next.js</span><span class="sk-v">Angular</span><span class="sk-v">Go</span></div></div>
