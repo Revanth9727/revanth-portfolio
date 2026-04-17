@@ -275,12 +275,6 @@ svg.diag{width:100%;height:auto;display:block;}
           <div class="en-date">Dec 2024 – Present</div>
           <div class="en-bar"></div>
         </div>
-        <div class="exp-nav-item" data-ep="ep1b">
-          <div class="en-co">CGI · Ryder Systems</div>
-          <div class="en-role">Vehicle AI Inspection System</div>
-          <div class="en-date">Apr 2026 – In progress</div>
-          <div class="en-bar"></div>
-        </div>
         <div class="exp-nav-item" data-ep="ep2">
           <div class="en-co">CGI</div>
           <div class="en-role">Consultant, Data Engineer</div>
@@ -324,43 +318,16 @@ svg.diag{width:100%;height:auto;display:block;}
               <div class="ep-point-label">EvalOps Pipeline — Zero Undetected Regressions</div>
               <p>Built a full <strong>EvalOps pipeline</strong> — groundedness rubrics, golden datasets, automated RAGAS scoring, OpenTelemetry retrieval tracing — as mandatory CI gates before every model update. Zero undetected regressions since rollout.</p>
             </div>
+
+            <div class="ep-point">
+              <div class="ep-point-label">Vehicle AI Inspection System — Ryder Systems (Fortune 500)</div>
+              <p>Leading end-to-end engineering delivery of an <strong>AI-powered vehicle inspection system</strong> for Ryder Systems — replacing manual walk-around inspections with a fully automated pipeline processing <strong>10,000+ vehicles/month at ~$0.01/image</strong> with zero manual intervention. Funded by a $93.9K Microsoft ECIF grant.</p>
+              <p>Started by training and evaluating a <strong>YOLOv8 model on 10,000 labeled vehicle images</strong>, reaching 85–89% accuracy and precision, before driving a <strong>strategic pivot to GPT-4o Vision</strong> — recognising that the generative model's zero-shot damage understanding would outperform a task-specific detector without the retraining burden as vehicle categories expand.</p>
+              <p>Built a <strong>two-pass automated pipeline</strong>: OpenCV blur detection pre-filters unusable frames before any model call, then GPT-4o Vision runs a <strong>15-point damage assessment</strong> — scratches, dents, rust, paint chips, cleanliness, missing components — with Pass/Fail/N-A verdicts, confidence signals, and human-readable descriptions. Deployed on <strong>Azure Functions, Blob Storage, Cosmos DB, and Azure OpenAI</strong>.</p>
+            </div>
           </div>
           <div class="ep-stack">
-            <span class="ep-pill">AWS EKS</span><span class="ep-pill">Azure Container Apps</span><span class="ep-pill">Azure AI Search</span><span class="ep-pill">GPT-4o PTU</span><span class="ep-pill">Document Intelligence</span><span class="ep-pill">Entra ID</span><span class="ep-pill">Key Vault</span><span class="ep-pill">Llama 3</span><span class="ep-pill">LoRA/PEFT</span><span class="ep-pill">DPO</span><span class="ep-pill">RAGAS</span><span class="ep-pill">OpenTelemetry</span><span class="ep-pill">LangGraph</span><span class="ep-pill">Bicep</span>
-          </div>
-        </div>
-
-        <!-- Panel 1b — Ryder Vehicle AI -->
-        <div class="exp-panel" id="ep1b">
-          <div class="ep-role">Lead Engineer — Vehicle AI Inspection System</div>
-          <div class="ep-meta">
-            <span>CGI · Ryder Systems</span><span>Coral Gables, FL</span><span>Apr 2026 – Present</span>
-          </div>
-          <div class="ep-points">
-
-            <div class="ep-point">
-              <div class="ep-point-label">The project</div>
-              <p>Leading end-to-end engineering delivery of an <strong>AI-powered vehicle inspection system for Ryder Systems (Fortune 500)</strong> — replacing manual walk-around inspections with a fully automated photo-driven pipeline. A technician photographs the vehicle, the system scans every image, assesses damage across 15 inspection points, and produces a structured report with zero manual intervention. Funded by a <strong>$93.9K Microsoft ECIF grant</strong> and built entirely on Azure.</p>
-            </div>
-
-            <div class="ep-point">
-              <div class="ep-point-label">Model training &amp; strategic pivot</div>
-              <p>Started by training and evaluating a <strong>YOLOv8 model on 10,000 labeled vehicle images</strong>, reaching 85–89% accuracy and precision across damage categories. After rigorous evaluation, drove a <strong>strategic pivot to GPT-4o Vision</strong> — recognising that the generative model's zero-shot understanding of damage context, severity, and natural language description would outperform a task-specific detector for this use case, without the ongoing retraining burden as vehicle categories expand.</p>
-            </div>
-
-            <div class="ep-point">
-              <div class="ep-point-label">Pipeline architecture</div>
-              <p>Built a <strong>two-pass automated pipeline</strong>: the first pass uses <strong>OpenCV blur detection</strong> to filter out unusable images before any expensive model call is made; the second pass runs GPT-4o Vision across the clean image set, executing a <strong>15-point damage assessment</strong> covering scratches, dents, rust, paint chips, cleanliness, and missing components. Every assessment includes a Pass / Fail / Not Applicable verdict, confidence signal, and a human-readable description of what was found and what action is recommended.</p>
-            </div>
-
-            <div class="ep-point">
-              <div class="ep-point-label">Infrastructure &amp; scale</div>
-              <p>Deployed on <strong>Azure Functions, Blob Storage, Cosmos DB, and Azure OpenAI</strong> — a serverless, event-driven architecture that scales to demand without managing infrastructure. The system currently processes <strong>10,000+ vehicles per month at approximately $0.01 per image</strong> with zero manual intervention at any point in the pipeline. The cost efficiency came directly from the two-pass design: OpenCV pre-filtering eliminates blurry or unusable frames before they reach GPT-4o, cutting API spend significantly.</p>
-            </div>
-
-          </div>
-          <div class="ep-stack">
-            <span class="ep-pill">GPT-4o Vision</span><span class="ep-pill">YOLOv8</span><span class="ep-pill">OpenCV</span><span class="ep-pill">Azure Functions</span><span class="ep-pill">Azure Blob Storage</span><span class="ep-pill">Cosmos DB</span><span class="ep-pill">Azure OpenAI</span><span class="ep-pill">Python</span><span class="ep-pill">Computer Vision</span><span class="ep-pill">Model Training &amp; Eval</span><span class="ep-pill">Microsoft ECIF</span>
+            <span class="ep-pill">AWS EKS</span><span class="ep-pill">Azure Container Apps</span><span class="ep-pill">Azure AI Search</span><span class="ep-pill">GPT-4o PTU</span><span class="ep-pill">GPT-4o Vision</span><span class="ep-pill">YOLOv8</span><span class="ep-pill">OpenCV</span><span class="ep-pill">Azure Functions</span><span class="ep-pill">Cosmos DB</span><span class="ep-pill">Document Intelligence</span><span class="ep-pill">Entra ID</span><span class="ep-pill">Key Vault</span><span class="ep-pill">Llama 3</span><span class="ep-pill">LoRA/PEFT</span><span class="ep-pill">DPO</span><span class="ep-pill">RAGAS</span><span class="ep-pill">OpenTelemetry</span><span class="ep-pill">LangGraph</span><span class="ep-pill">Bicep</span>
           </div>
         </div>
 
