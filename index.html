@@ -5,375 +5,477 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Revanth Gollapudi — AI Architect</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Epilogue:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@200;300;400;500;600&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-html{font-size:16px;}
 :root{
-  --cream:#f6f3ee;
-  --ink:#0c0b09;
-  --ink-soft:#252320;
-  --ink-mid:#4a4744;
-  --ink-faint:#7a7673;
-  --ink-ghost:#b0ada8;
-  --rule:#dedad4;
-  --accent:#5c3d1e;
-  --accent-light:#8b6340;
-  --vh:1vh;
+  --void:#05070b;
+  --void-2:#0a0d13;
+  --frost:#e8eef5;
+  --frost-dim:#a8b3c3;
+  --frost-faint:#5a6573;
+  --frost-ghost:#2a3140;
+  --ice:#7fb8e0;
+  --ice-deep:#3a8fc4;
+  --ice-bright:#a8d8f5;
+  --aurora:#5dd9c1;
+  --rule:rgba(168,179,195,.08);
+  --rule-strong:rgba(168,179,195,.16);
 }
-body{background:var(--cream);color:var(--ink);font-family:'Epilogue',sans-serif;font-weight:300;line-height:1.7;overflow-x:hidden;cursor:none;}
+html{font-size:16px;background:var(--void);}
+body{
+  background:var(--void);
+  color:var(--frost);
+  font-family:'Inter Tight',sans-serif;
+  font-weight:300;
+  line-height:1.6;
+  overflow-x:hidden;
+  letter-spacing:.005em;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
 
-/* CURSOR */
-#cur{position:fixed;top:0;left:0;width:10px;height:10px;background:var(--ink);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .3s,height .3s,background .3s,opacity .3s;mix-blend-mode:multiply;}
-#cur.big{width:36px;height:36px;background:var(--accent);opacity:.22;}
-#cur.click{width:14px;height:14px;}
+/* ── ATMOSPHERIC GRAIN OVERLAY ── */
+body::before{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:1;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.6 0 0 0 0 0.7 0 0 0 0 0.85 0 0 0 0.06 0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity:.4;mix-blend-mode:overlay;
+}
+body::after{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:
+    radial-gradient(ellipse 80% 50% at 50% 0%,rgba(58,143,196,.08),transparent 60%),
+    radial-gradient(ellipse 60% 40% at 80% 90%,rgba(93,217,193,.04),transparent 50%);
+}
 
-/* PROGRESS DOTS */
-.dots{position:fixed;right:2rem;top:50%;transform:translateY(-50%);z-index:200;display:flex;flex-direction:column;gap:.75rem;}
-.dot{width:6px;height:6px;border-radius:50%;background:var(--rule);transition:background .35s,transform .35s;cursor:pointer;}
-.dot.on{background:var(--ink);transform:scale(1.4);}
+/* ── TOP NAV ── */
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:1.5rem 2rem;mix-blend-mode:difference;}
+.nav-logo{font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--frost);}
+.nav-logo span{color:var(--ice);}
+.nav-links{display:flex;gap:2rem;}
+.nav-link{font-family:'JetBrains Mono',monospace;font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;color:var(--frost);text-decoration:none;opacity:.6;transition:opacity .3s;cursor:pointer;}
+.nav-link:hover{opacity:1;}
+.nav-status{display:flex;align-items:center;gap:.5rem;font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.15em;text-transform:uppercase;color:var(--frost);opacity:.6;}
+.nav-status::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--aurora);box-shadow:0 0 8px var(--aurora);animation:pulse 2.5s infinite;}
+@keyframes pulse{0%,100%{opacity:.5;}50%{opacity:1;}}
 
-/* CHAPTERS — full-screen panels */
-.chapter{min-height:100vh;position:relative;display:flex;flex-direction:column;justify-content:center;padding:5rem 6rem;border-bottom:1px solid var(--rule);overflow:hidden;}
-.chapter:last-child{border-bottom:none;}
+/* ── HERO + 3D STAGE ── */
+.hero{position:relative;min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:8rem 2rem 6rem;z-index:2;}
+.hero-canvas{position:absolute;inset:0;z-index:-1;}
+.hero-grid-bg{
+  position:absolute;inset:0;z-index:-2;
+  background-image:
+    linear-gradient(rgba(168,179,195,.04) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(168,179,195,.04) 1px,transparent 1px);
+  background-size:80px 80px;
+  mask-image:radial-gradient(ellipse 70% 70% at 50% 50%,black,transparent);
+  -webkit-mask-image:radial-gradient(ellipse 70% 70% at 50% 50%,black,transparent);
+}
 
-/* chapter entrance */
-.chapter .c-inner{opacity:0;transform:translateY(40px);transition:opacity .9s cubic-bezier(.22,1,.36,1),transform .9s cubic-bezier(.22,1,.36,1);}
-.chapter.entered .c-inner{opacity:1;transform:none;}
+.hero-inner{max-width:1400px;margin:0 auto;width:100%;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;}
+.hero-meta{font-family:'JetBrains Mono',monospace;font-size:.65rem;letter-spacing:.22em;text-transform:uppercase;color:var(--frost-dim);margin-bottom:2.5rem;display:flex;gap:1.5rem;align-items:center;}
+.hero-meta .dot-sep{width:4px;height:4px;background:var(--ice);border-radius:50%;}
 
-/* chapter number watermark */
-.ch-num{position:absolute;right:5rem;bottom:3rem;font-family:'Cormorant Garamond',serif;font-size:12rem;font-weight:300;color:transparent;-webkit-text-stroke:1px var(--rule);line-height:1;pointer-events:none;user-select:none;transition:opacity .6s;}
+.hero-title{
+  font-family:'Inter Tight',sans-serif;
+  font-weight:200;
+  font-size:clamp(3.5rem,7.5vw,8.5rem);
+  line-height:.92;
+  letter-spacing:-.04em;
+  margin-bottom:2rem;
+}
+.hero-title .line{display:block;overflow:hidden;}
+.hero-title .line span{display:inline-block;animation:rise 1.2s cubic-bezier(.2,.9,.3,1) both;}
+.hero-title .line:nth-child(1) span{animation-delay:.2s;}
+.hero-title .line:nth-child(2) span{animation-delay:.35s;color:var(--ice-bright);font-style:italic;font-weight:300;}
+@keyframes rise{from{transform:translateY(110%);opacity:0;}to{transform:translateY(0);opacity:1;}}
 
-/* ── CHAPTER 1: HERO ── */
-#ch1{background:var(--cream);}
-.hero-chapter{}
-.hero-pre{font-size:.68rem;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:2rem;display:flex;align-items:center;gap:1rem;}
-.hero-pre::before{content:'';display:block;width:2rem;height:1px;background:var(--ink-ghost);}
-.hero-name{font-family:'Cormorant Garamond',serif;font-size:clamp(4rem,7vw,8rem);font-weight:300;line-height:.95;letter-spacing:-.025em;margin-bottom:1.5rem;}
-.hero-name em{font-style:italic;}
-.hero-line{font-size:1.05rem;color:var(--ink-soft);max-width:52ch;line-height:1.85;margin-bottom:3.5rem;}
-.hero-stats{display:flex;gap:3.5rem;margin-bottom:3rem;padding-top:2rem;border-top:1px solid var(--rule);}
-.st{display:flex;flex-direction:column;}
-.st-n{font-family:'Cormorant Garamond',serif;font-size:2.8rem;font-weight:300;line-height:1;margin-bottom:.3rem;}
-.st-l{font-size:.62rem;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint);}
-.hero-ctas{display:flex;gap:1rem;flex-wrap:wrap;}
-.btn{font-size:.68rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;padding:.8rem 1.8rem;transition:all .25s cubic-bezier(.22,1,.36,1);display:inline-block;border:none;cursor:pointer;}
-.btn-ink{background:var(--ink);color:var(--cream);}
-.btn-ink:hover{background:var(--ink-soft);transform:translateY(-2px);box-shadow:0 8px 24px rgba(12,11,9,.18);}
-.btn-ghost{border:1px solid var(--rule);color:var(--ink-mid);}
-.btn-ghost:hover{border-color:var(--ink);color:var(--ink);transform:translateY(-2px);}
+.hero-tagline{font-size:1rem;line-height:1.75;color:var(--frost-dim);max-width:46ch;margin-bottom:3rem;font-weight:300;animation:fade 1.4s ease .8s both;}
+.hero-tagline strong{color:var(--frost);font-weight:500;}
+@keyframes fade{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:none;}}
 
-/* hero right float */
-.hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:6rem;align-items:center;}
-.hero-right{}
-.hero-pull{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-style:italic;font-weight:300;line-height:1.7;color:var(--ink-mid);border-left:2px solid var(--rule);padding-left:2rem;margin-bottom:2.5rem;}
-.hero-tags{display:flex;flex-wrap:wrap;gap:.5rem;}
-.h-tag{font-size:.68rem;color:var(--ink-faint);border:1px solid var(--rule);padding:.22rem .7rem;transition:all .2s;cursor:default;}
-.h-tag:hover{border-color:var(--ink-ghost);color:var(--ink-mid);transform:translateY(-2px);}
+.hero-tags{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:3rem;animation:fade 1.4s ease 1s both;}
+.h-tag{font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.15em;text-transform:uppercase;color:var(--frost-dim);border:1px solid var(--rule-strong);padding:.4rem .8rem;border-radius:1px;backdrop-filter:blur(8px);background:rgba(10,13,19,.4);}
+.h-tag.accent{color:var(--ice-bright);border-color:rgba(127,184,224,.3);background:rgba(127,184,224,.05);}
 
-/* ── CHAPTER 2: STORY/ABOUT ── */
-#ch2{background:var(--ink);}
-#ch2 *{color:var(--cream);}
-#ch2 .ch-num{-webkit-text-stroke-color:rgba(255,255,255,.06);}
-.story-grid{display:grid;grid-template-columns:1fr 1fr;gap:6rem;align-items:start;}
-.story-label{font-size:.65rem;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:1.5rem;}
-.story-heading{font-family:'Cormorant Garamond',serif;font-size:clamp(2.4rem,4vw,4rem);font-weight:300;font-style:italic;line-height:1.1;margin-bottom:2rem;color:var(--cream);}
-.story-body{font-size:.95rem;color:rgba(255,255,255,.7);line-height:1.9;}
-.story-body p+p{margin-top:1.25rem;}
-.story-body strong{color:var(--cream);font-weight:500;}
-.story-right{padding-top:4rem;}
-.story-stat-row{border-top:1px solid rgba(255,255,255,.1);padding:1.5rem 0;}
-.story-stat-row:last-child{border-bottom:1px solid rgba(255,255,255,.1);}
-.sr-n{font-family:'Cormorant Garamond',serif;font-size:2.5rem;font-weight:300;color:var(--cream);margin-bottom:.2rem;}
-.sr-l{font-size:.75rem;color:rgba(255,255,255,.45);letter-spacing:.06em;}
+.hero-ctas{display:flex;gap:1rem;flex-wrap:wrap;animation:fade 1.4s ease 1.2s both;}
+.btn{font-family:'JetBrains Mono',monospace;font-size:.65rem;font-weight:400;letter-spacing:.18em;text-transform:uppercase;text-decoration:none;padding:1rem 1.6rem;transition:all .4s cubic-bezier(.22,1,.36,1);display:inline-flex;align-items:center;gap:.6rem;border:1px solid;cursor:pointer;background:transparent;position:relative;overflow:hidden;}
+.btn-primary{border-color:var(--ice);color:var(--frost);background:linear-gradient(135deg,rgba(127,184,224,.15),rgba(58,143,196,.05));}
+.btn-primary:hover{background:linear-gradient(135deg,rgba(127,184,224,.3),rgba(58,143,196,.15));border-color:var(--ice-bright);box-shadow:0 0 30px rgba(127,184,224,.2);transform:translateY(-2px);}
+.btn-ghost{border-color:var(--rule-strong);color:var(--frost-dim);}
+.btn-ghost:hover{border-color:var(--frost-dim);color:var(--frost);transform:translateY(-2px);}
+.btn::after{content:'→';font-size:.9rem;transform:translateX(0);transition:transform .3s;}
+.btn:hover::after{transform:translateX(4px);}
 
-/* ── CHAPTER 3: EXPERIENCE ── */
-#ch3{background:var(--cream);}
-.exp-story{display:grid;grid-template-columns:240px 1fr;gap:4rem;}
-.exp-nav{display:flex;flex-direction:column;gap:0;position:sticky;top:5rem;align-self:start;}
-.exp-nav-item{padding:1rem 0;border-bottom:1px solid var(--rule);cursor:pointer;transition:all .2s;}
-.exp-nav-item:first-child{border-top:1px solid var(--rule);}
-.exp-nav-item.on .en-role{color:var(--ink);}
-.exp-nav-item.on .en-bar{width:100%;}
-.en-co{font-size:.65rem;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:.3rem;}
-.en-role{font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:400;color:var(--ink-faint);transition:color .2s;line-height:1.3;}
-.en-date{font-size:.62rem;color:var(--ink-ghost);margin-top:.2rem;}
-.en-bar{height:1px;background:var(--ink);width:0;transition:width .4s cubic-bezier(.22,1,.36,1);margin-top:.6rem;}
+.hero-right{position:relative;height:100%;min-height:500px;}
+
+/* HERO STATS - bottom strip */
+.hero-strip{position:absolute;bottom:3rem;left:0;right:0;padding:0 2rem;z-index:3;animation:fade 1.4s ease 1.4s both;}
+.strip-inner{max-width:1400px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-top:1px solid var(--rule-strong);border-bottom:1px solid var(--rule-strong);}
+.strip-cell{padding:1.5rem 1.5rem;border-right:1px solid var(--rule-strong);position:relative;}
+.strip-cell:last-child{border-right:none;}
+.strip-num{font-family:'Inter Tight',sans-serif;font-weight:200;font-size:2rem;line-height:1;color:var(--frost);margin-bottom:.4rem;letter-spacing:-.02em;}
+.strip-num em{color:var(--ice);font-style:normal;}
+.strip-label{font-family:'JetBrains Mono',monospace;font-size:.55rem;letter-spacing:.18em;text-transform:uppercase;color:var(--frost-faint);}
+
+/* ── SECTION GENERIC ── */
+.section{position:relative;padding:8rem 2rem;z-index:2;}
+.section-inner{max-width:1400px;margin:0 auto;}
+.section-label{font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.25em;text-transform:uppercase;color:var(--ice);margin-bottom:1rem;display:flex;align-items:center;gap:.8rem;}
+.section-label::before{content:'';width:24px;height:1px;background:var(--ice);}
+.section-title{font-family:'Inter Tight',sans-serif;font-weight:200;font-size:clamp(2.5rem,5vw,4.5rem);line-height:1;letter-spacing:-.03em;margin-bottom:4rem;max-width:24ch;}
+.section-title em{font-style:italic;font-weight:300;color:var(--ice-bright);}
+
+/* ── STORY SECTION ── */
+#story{border-top:1px solid var(--rule);}
+.story-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:6rem;align-items:start;}
+.story-prose p{font-size:1.05rem;line-height:1.85;color:var(--frost-dim);margin-bottom:1.5rem;font-weight:300;}
+.story-prose p:last-child{margin-bottom:0;}
+.story-prose strong{color:var(--frost);font-weight:500;}
+.story-prose em{color:var(--ice);font-style:normal;}
+
+.story-stats{display:flex;flex-direction:column;gap:0;}
+.story-stat{padding:2rem 0;border-top:1px solid var(--rule);display:grid;grid-template-columns:auto 1fr;gap:2rem;align-items:baseline;}
+.story-stat:last-child{border-bottom:1px solid var(--rule);}
+.story-stat-num{font-family:'Inter Tight',sans-serif;font-weight:200;font-size:3rem;line-height:1;letter-spacing:-.03em;color:var(--frost);min-width:6rem;}
+.story-stat-num em{color:var(--ice);font-style:normal;}
+.story-stat-label{font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--frost-dim);line-height:1.6;}
+
+/* ── EXPERIENCE ── */
+#experience{border-top:1px solid var(--rule);background:linear-gradient(180deg,var(--void),var(--void-2));}
+.exp-shell{display:grid;grid-template-columns:280px 1fr;gap:5rem;}
+.exp-nav{display:flex;flex-direction:column;gap:0;position:sticky;top:7rem;align-self:start;}
+.exp-nav-item{padding:1.5rem 0;border-top:1px solid var(--rule);cursor:pointer;transition:all .3s;position:relative;}
+.exp-nav-item:last-child{border-bottom:1px solid var(--rule);}
+.exp-nav-item::before{content:'';position:absolute;left:-1.5rem;top:50%;transform:translateY(-50%);width:.5rem;height:.5rem;border:1px solid var(--frost-faint);border-radius:50%;transition:all .3s;}
+.exp-nav-item.on::before{background:var(--ice);border-color:var(--ice);box-shadow:0 0 12px var(--ice);}
+.exp-nav-item .en-co{font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;color:var(--ice);margin-bottom:.4rem;}
+.exp-nav-item .en-role{font-size:1.05rem;color:var(--frost-dim);font-weight:300;transition:color .3s;}
+.exp-nav-item.on .en-role{color:var(--frost);}
+.exp-nav-item .en-date{font-family:'JetBrains Mono',monospace;font-size:.62rem;color:var(--frost-faint);margin-top:.4rem;letter-spacing:.08em;}
 
 .exp-content{min-height:60vh;}
 .exp-panel{display:none;}
-.exp-panel.on{display:block;animation:panelIn .5s cubic-bezier(.22,1,.36,1);}
-@keyframes panelIn{from{opacity:0;transform:translateX(16px);}to{opacity:1;transform:none;}}
-.ep-role{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:400;font-style:italic;margin-bottom:.5rem;}
-.ep-meta{font-size:.72rem;color:var(--ink-faint);letter-spacing:.06em;margin-bottom:2rem;display:flex;gap:1rem;align-items:center;}
-.ep-meta span::before{content:'·';margin-right:1rem;}
-.ep-meta span:first-child::before{content:'';}
-.ep-points{display:flex;flex-direction:column;gap:1.75rem;}
-.ep-point-label{font-size:.62rem;font-weight:500;letter-spacing:.15em;text-transform:uppercase;color:var(--accent);margin-bottom:.45rem;}
-.ep-point p{font-size:.88rem;color:var(--ink-mid);line-height:1.85;}
-.ep-point p+p{margin-top:.7rem;}
-.ep-point p strong{color:var(--ink);font-weight:500;}
-.ep-stack{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid var(--rule);}
-.ep-pill{font-size:.67rem;color:var(--ink-faint);border:1px solid var(--rule);padding:.18rem .55rem;transition:all .2s;}
-.ep-pill:hover{border-color:var(--ink-ghost);color:var(--ink-mid);transform:translateY(-1px);}
+.exp-panel.on{display:block;animation:slideIn .6s cubic-bezier(.22,1,.36,1);}
+@keyframes slideIn{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:none;}}
+.ep-role{font-family:'Inter Tight',sans-serif;font-weight:200;font-size:2.5rem;letter-spacing:-.02em;margin-bottom:.6rem;color:var(--frost);}
+.ep-meta{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--frost-faint);letter-spacing:.12em;text-transform:uppercase;margin-bottom:3rem;display:flex;gap:1rem;}
+.ep-meta span+span::before{content:'·';margin-right:1rem;color:var(--frost-ghost);}
+.ep-points{display:flex;flex-direction:column;gap:2rem;}
+.ep-point-label{font-family:'JetBrains Mono',monospace;font-size:.6rem;font-weight:400;letter-spacing:.18em;text-transform:uppercase;color:var(--ice);margin-bottom:.7rem;}
+.ep-point p{font-size:.95rem;color:var(--frost-dim);line-height:1.85;font-weight:300;}
+.ep-point p+p{margin-top:.9rem;}
+.ep-point p strong{color:var(--frost);font-weight:500;}
+.ep-stack{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:2.5rem;padding-top:2rem;border-top:1px solid var(--rule);}
+.ep-pill{font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--frost-faint);border:1px solid var(--rule-strong);padding:.3rem .65rem;letter-spacing:.06em;}
 
-/* ── CHAPTER 4: SKILLS ── */
-#ch4{background:#f0ede7;}
-.skills-story{display:grid;grid-template-columns:1fr 1fr;gap:6rem;align-items:start;}
-.skills-left{}
-.skills-intro{font-size:.95rem;color:var(--ink-mid);line-height:1.9;margin-bottom:2rem;}
-.skills-right{display:flex;flex-direction:column;gap:0;}
-.sk-line{display:grid;grid-template-columns:180px 1fr;gap:1.5rem;align-items:baseline;padding:1.1rem 0;border-bottom:1px solid var(--rule);}
-.sk-line:first-child{border-top:1px solid var(--rule);}
-.sk-cat{font-size:.65rem;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-mid);}
-.sk-vals{display:flex;flex-wrap:wrap;gap:.35rem;}
-.sk-v{font-size:.78rem;color:var(--ink-mid);border:1px solid var(--rule);padding:.18rem .6rem;transition:all .22s;background:transparent;}
-.sk-v:hover{border-color:var(--ink-mid);background:var(--ink);color:var(--cream);transform:translateY(-2px);}
+/* ── SKILLS ── */
+#skills{border-top:1px solid var(--rule);}
+.skills-grid{display:grid;grid-template-columns:1fr 1.4fr;gap:6rem;}
+.skills-prose p{font-size:1rem;line-height:1.85;color:var(--frost-dim);margin-bottom:1.25rem;font-weight:300;}
+.skills-prose strong{color:var(--frost);font-weight:500;}
+.skills-prose em{color:var(--ice);font-style:normal;}
+.skills-list{display:flex;flex-direction:column;}
+.sk-row{display:grid;grid-template-columns:200px 1fr;gap:2rem;align-items:baseline;padding:1.5rem 0;border-top:1px solid var(--rule);}
+.sk-row:last-child{border-bottom:1px solid var(--rule);}
+.sk-cat{font-family:'JetBrains Mono',monospace;font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;color:var(--ice);}
+.sk-vals{display:flex;flex-wrap:wrap;gap:.4rem;}
+.sk-v{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--frost-dim);border:1px solid var(--rule-strong);padding:.3rem .65rem;transition:all .3s;letter-spacing:.06em;}
+.sk-v:hover{border-color:var(--ice);color:var(--frost);background:rgba(127,184,224,.08);transform:translateY(-1px);}
 
-/* ── CHAPTER 5: PROJECTS ── */
-#ch5{background:var(--cream);}
-.proj-tabs{display:flex;gap:0;border-bottom:1px solid var(--rule);margin-bottom:3rem;}
-.p-tab{font-size:.68rem;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-ghost);padding:.85rem 1.5rem;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .2s;}
-.p-tab:hover{color:var(--ink-mid);}
-.p-tab.on{color:var(--ink);border-bottom-color:var(--ink);}
+/* ── PROJECTS ── */
+#projects{border-top:1px solid var(--rule);background:linear-gradient(180deg,var(--void-2),var(--void));}
+.proj-tabs{display:flex;border-bottom:1px solid var(--rule-strong);margin-bottom:4rem;}
+.p-tab{font-family:'JetBrains Mono',monospace;font-size:.65rem;font-weight:400;letter-spacing:.18em;text-transform:uppercase;color:var(--frost-faint);padding:1.2rem 2rem;cursor:pointer;border-bottom:1px solid transparent;margin-bottom:-1px;transition:all .3s;background:transparent;}
+.p-tab:hover{color:var(--frost-dim);}
+.p-tab.on{color:var(--ice-bright);border-bottom-color:var(--ice);}
 .proj-panel{display:none;}
-.proj-panel.on{display:grid;grid-template-columns:1fr 1fr;gap:4rem;animation:panelIn .5s cubic-bezier(.22,1,.36,1);}
-.pp-left{}
-.pp-badge{font-size:.6rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);border:1px solid var(--accent);padding:.15rem .6rem;display:inline-block;margin-bottom:1rem;}
-.pp-name{font-family:'Cormorant Garamond',serif;font-size:2.6rem;font-weight:300;font-style:italic;line-height:1.05;margin-bottom:.75rem;}
-.pp-what{font-size:.72rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:1.25rem;}
-.pp-desc{font-size:.9rem;color:var(--ink-mid);line-height:1.85;margin-bottom:1.5rem;}
-.pp-desc strong{color:var(--ink);font-weight:500;}
-.pp-bullets{list-style:none;display:flex;flex-direction:column;gap:.65rem;margin-bottom:1.5rem;}
-.pp-bullets li{font-size:.86rem;color:var(--ink-mid);line-height:1.75;padding-left:1rem;position:relative;}
-.pp-bullets li::before{content:'–';position:absolute;left:0;color:var(--ink-ghost);}
-.pp-bullets li strong{color:var(--ink);font-weight:500;}
-.pp-stack{display:flex;flex-wrap:wrap;gap:.35rem;margin-bottom:1.5rem;}
-.pp-pill{font-size:.65rem;color:var(--ink-faint);border:1px solid var(--rule);padding:.16rem .55rem;}
-.pp-link{font-size:.68rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--ink);text-decoration:none;display:inline-flex;align-items:center;gap:.5rem;border-bottom:1px solid var(--ink);padding-bottom:.1rem;transition:all .2s;}
-.pp-link:hover{color:var(--accent);border-bottom-color:var(--accent);}
-.pp-right{}
+.proj-panel.on{display:grid;grid-template-columns:1fr 1fr;gap:5rem;animation:slideIn .6s cubic-bezier(.22,1,.36,1);}
+.pp-badge{font-family:'JetBrains Mono',monospace;font-size:.55rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ice);border:1px solid rgba(127,184,224,.3);padding:.3rem .7rem;display:inline-block;margin-bottom:1.5rem;background:rgba(127,184,224,.05);}
+.pp-name{font-family:'Inter Tight',sans-serif;font-weight:200;font-size:3rem;line-height:1;letter-spacing:-.03em;margin-bottom:.6rem;color:var(--frost);}
+.pp-what{font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:.15em;text-transform:uppercase;color:var(--frost-faint);margin-bottom:1.8rem;}
+.pp-desc{font-size:.95rem;color:var(--frost-dim);line-height:1.85;margin-bottom:1.8rem;font-weight:300;}
+.pp-desc strong{color:var(--frost);font-weight:500;}
+.pp-bullets{list-style:none;display:flex;flex-direction:column;gap:.9rem;margin-bottom:2rem;}
+.pp-bullets li{font-size:.88rem;color:var(--frost-dim);line-height:1.75;padding-left:1.5rem;position:relative;font-weight:300;}
+.pp-bullets li::before{content:'';position:absolute;left:0;top:.7em;width:.5rem;height:1px;background:var(--ice);}
+.pp-bullets li strong{color:var(--frost);font-weight:500;}
+.pp-stack{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:2rem;}
+.pp-pill{font-family:'JetBrains Mono',monospace;font-size:.58rem;color:var(--frost-faint);border:1px solid var(--rule-strong);padding:.25rem .55rem;letter-spacing:.05em;}
+.pp-link{font-family:'JetBrains Mono',monospace;font-size:.65rem;font-weight:400;letter-spacing:.18em;text-transform:uppercase;color:var(--ice-bright);text-decoration:none;display:inline-flex;align-items:center;gap:.7rem;border-bottom:1px solid var(--ice);padding-bottom:.4rem;transition:all .3s;}
+.pp-link:hover{color:var(--frost);border-bottom-color:var(--frost);gap:1rem;}
 
-/* DIAGRAM */
-.diagram-wrap{background:#f9f7f3;border:1px solid var(--rule);padding:2rem;border-radius:2px;}
-.diagram-title{font-size:.6rem;font-weight:500;letter-spacing:.15em;text-transform:uppercase;color:var(--ink-ghost);margin-bottom:1.5rem;text-align:center;}
+/* DIAGRAM (frosted) */
+.diagram-shell{background:linear-gradient(135deg,rgba(168,179,195,.03),rgba(127,184,224,.04));border:1px solid var(--rule-strong);padding:2.5rem;backdrop-filter:blur(20px);border-radius:2px;position:relative;overflow:hidden;}
+.diagram-shell::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--ice),transparent);}
+.diagram-title{font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ice);margin-bottom:2rem;text-align:center;}
 svg.diag{width:100%;height:auto;display:block;}
+svg.diag rect{stroke:var(--rule-strong);}
+svg.diag .node-fill{fill:rgba(168,179,195,.04);stroke:var(--rule-strong);stroke-width:1;}
+svg.diag .node-accent{fill:rgba(127,184,224,.12);stroke:var(--ice);stroke-width:1;}
+svg.diag .node-out{fill:rgba(93,217,193,.1);stroke:var(--aurora);stroke-width:1;}
+svg.diag .node-fail{fill:rgba(255,100,120,.08);stroke:#ff6478;stroke-width:1;}
+svg.diag .label{fill:var(--ice);font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:1px;font-weight:500;}
+svg.diag .text{fill:var(--frost-dim);font-family:'Inter Tight',sans-serif;font-size:9px;font-weight:300;}
+svg.diag .text-bright{fill:var(--frost);font-family:'Inter Tight',sans-serif;font-size:9px;font-weight:400;}
+svg.diag .arrow{stroke:var(--frost-faint);stroke-width:1;fill:none;}
 
-/* ── CHAPTER 6: CONTACT ── */
-#ch6{background:var(--ink);}
-#ch6 *{color:var(--cream);}
-#ch6 .ch-num{-webkit-text-stroke-color:rgba(255,255,255,.05);}
-.contact-story{display:grid;grid-template-columns:1fr 1fr;gap:6rem;align-items:center;}
-.ct-heading{font-family:'Cormorant Garamond',serif;font-size:clamp(2.8rem,5vw,5.5rem);font-weight:300;font-style:italic;line-height:1.05;margin-bottom:1.5rem;}
-.ct-sub{font-size:.92rem;color:rgba(255,255,255,.6);line-height:1.85;max-width:40ch;margin-bottom:2.5rem;}
-.ct-links{display:flex;flex-direction:column;gap:.75rem;}
-.ct-link{font-size:.72rem;font-weight:500;letter-spacing:.12em;text-transform:uppercase;text-decoration:none;color:rgba(255,255,255,.5);display:flex;align-items:center;gap:1rem;transition:all .25s;padding:.5rem 0;border-bottom:1px solid rgba(255,255,255,.08);}
-.ct-link:hover{color:var(--cream);padding-left:.75rem;}
-.ct-link::after{content:'↗';margin-left:auto;}
-.ct-right{text-align:right;}
-.ct-available{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-style:italic;color:rgba(255,255,255,.35);margin-bottom:3rem;line-height:1.6;}
-.ct-email-big{font-family:'Cormorant Garamond',serif;font-size:clamp(1.2rem,2.5vw,1.8rem);font-weight:300;word-break:break-all;color:rgba(255,255,255,.75);}
+/* ── CONTACT ── */
+#contact{border-top:1px solid var(--rule);padding:10rem 2rem;background:radial-gradient(ellipse 80% 60% at 50% 50%,rgba(58,143,196,.06),var(--void) 70%);}
+.contact-inner{max-width:1400px;margin:0 auto;text-align:center;}
+.contact-eyebrow{font-family:'JetBrains Mono',monospace;font-size:.65rem;letter-spacing:.25em;text-transform:uppercase;color:var(--ice);margin-bottom:2rem;}
+.contact-title{font-family:'Inter Tight',sans-serif;font-weight:200;font-size:clamp(3rem,8vw,7rem);line-height:.95;letter-spacing:-.04em;margin-bottom:2rem;}
+.contact-title em{font-style:italic;color:var(--ice-bright);font-weight:300;}
+.contact-sub{font-size:1.05rem;color:var(--frost-dim);max-width:50ch;margin:0 auto 4rem;line-height:1.75;font-weight:300;}
+.contact-links{display:flex;justify-content:center;gap:1rem;flex-wrap:wrap;margin-bottom:5rem;}
+.contact-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:1px solid var(--rule-strong);}
+.contact-cell{padding:2rem;border-right:1px solid var(--rule-strong);text-align:left;}
+.contact-cell:last-child{border-right:none;}
+.cc-label{font-family:'JetBrains Mono',monospace;font-size:.55rem;letter-spacing:.2em;text-transform:uppercase;color:var(--frost-faint);margin-bottom:.6rem;}
+.cc-val{font-family:'JetBrains Mono',monospace;font-size:.85rem;color:var(--frost);text-decoration:none;letter-spacing:.04em;}
+a.cc-val:hover{color:var(--ice-bright);}
 
-/* RESPONSIVE */
-@media(max-width:900px){
-  .chapter{padding:4rem 1.75rem;}
-  .hero-grid,.story-grid,.skills-story,.contact-story{grid-template-columns:1fr;}
-  .hero-right,.story-right,.skills-left,.ct-right{display:none;}
-  .exp-story{grid-template-columns:1fr;}
-  .exp-nav{display:none;}
-  .proj-panel.on{grid-template-columns:1fr;}
-  .pp-right{display:none;}
-  .ch-num{display:none;}
-  .dots{display:none;}
-  #cur{display:none;}body{cursor:auto;}
+/* ── FOOTER ── */
+.footer{padding:2rem;border-top:1px solid var(--rule);text-align:center;font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--frost-faint);position:relative;z-index:2;}
+
+/* ── SCROLL PROGRESS ── */
+.scroll-prog{position:fixed;top:0;left:0;height:1px;background:linear-gradient(90deg,var(--ice),var(--aurora));z-index:200;transform-origin:left;transform:scaleX(0);transition:transform .1s;}
+
+/* ── REVEAL ON SCROLL ── */
+.reveal{opacity:0;transform:translateY(40px);transition:opacity 1s cubic-bezier(.22,1,.36,1),transform 1s cubic-bezier(.22,1,.36,1);}
+.reveal.in{opacity:1;transform:none;}
+
+/* ── RESPONSIVE ── */
+@media(max-width:980px){
+  .nav-links{display:none;}
+  .hero{padding:7rem 1.25rem 4rem;}
+  .hero-inner{grid-template-columns:1fr;gap:0;}
+  .hero-right{display:none;}
+  .hero-canvas{opacity:.5;}
+  .hero-strip{position:relative;bottom:auto;margin-top:3rem;padding:0;}
+  .strip-inner{grid-template-columns:repeat(2,1fr);}
+  .strip-cell:nth-child(2){border-right:none;}
+  .strip-cell:nth-child(1),.strip-cell:nth-child(2){border-bottom:1px solid var(--rule-strong);}
+  .section{padding:5rem 1.25rem;}
+  .story-grid,.skills-grid,.exp-shell{grid-template-columns:1fr;gap:3rem;}
+  .exp-nav{position:relative;top:auto;flex-direction:row;overflow-x:auto;}
+  .exp-nav-item{flex:1;min-width:200px;border-top:none;border-left:1px solid var(--rule);padding:1rem;}
+  .exp-nav-item::before{display:none;}
+  .proj-panel.on{grid-template-columns:1fr;gap:3rem;}
+  .contact-grid{grid-template-columns:1fr;}
+  .contact-cell{border-right:none;border-bottom:1px solid var(--rule-strong);}
+  .sk-row{grid-template-columns:1fr;gap:.8rem;}
 }
 </style>
 </head>
 <body>
 
-<div id="cur"></div>
+<!-- SCROLL PROGRESS -->
+<div class="scroll-prog" id="scrollProg"></div>
 
-<!-- PROGRESS DOTS -->
-<nav class="dots" id="dots"></nav>
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-logo">RG <span>·</span> AI/ARCH</div>
+  <div class="nav-links">
+    <a class="nav-link" data-scroll="story">Story</a>
+    <a class="nav-link" data-scroll="experience">Experience</a>
+    <a class="nav-link" data-scroll="skills">Skills</a>
+    <a class="nav-link" data-scroll="projects">Projects</a>
+    <a class="nav-link" data-scroll="contact">Contact</a>
+  </div>
+  <div class="nav-status">Available · Q4 2026</div>
+</nav>
 
-<!-- ══════════════════════════════════════════════════════════════════════════ -->
-<!-- CHAPTER 1 — HERO                                                          -->
-<!-- ══════════════════════════════════════════════════════════════════════════ -->
-<section class="chapter" id="ch1" data-label="Intro">
-  <div class="ch-num">01</div>
-  <div class="c-inner hero-chapter">
-    <div class="hero-grid">
-      <div>
-        <div class="hero-pre">AI Architect · West Lafayette, IN</div>
-        <h1 class="hero-name">Revanth<br><em>Gollapudi</em></h1>
-        <p class="hero-line">I architect and lead production GenAI systems at CGI — from infrastructure design through deployment and evaluation. Currently leading two live systems: a conversational AI platform serving 85K+ requests/day and an enterprise HR RAG chatbot used by 6,000 employees, with EU AI Act-aligned deployment practices.</p>
-        <div class="hero-stats">
-          <div class="st"><span class="st-n" data-target="85" data-suffix="K+">85K+</span><span class="st-l">API requests / day (CGI platform)</span></div>
-          <div class="st"><span class="st-n" data-target="6000" data-suffix="">6,000</span><span class="st-l">Employees — Azure RAG system</span></div>
-          <div class="st"><span class="st-n" data-target="30" data-suffix="%">30%</span><span class="st-l">Inference cost cut</span></div>
-          <div class="st"><span class="st-n" data-target="4" data-suffix="+ yrs">4+ yrs</span><span class="st-l">In production AI</span></div>
-        </div>
-        <div class="hero-ctas">
-          <a href="mailto:gollapudi.off@gmail.com" class="btn btn-ink">Get in touch</a>
-          <a href="https://linkedin.com/in/revanth-gollapudi" target="_blank" class="btn btn-ghost">LinkedIn ↗</a>
-          <a href="https://github.com/Revanth980727" target="_blank" class="btn btn-ghost">GitHub ↗</a>
-        </div>
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<!-- HERO with 3D shard                                                     -->
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<section class="hero" id="hero">
+  <div class="hero-grid-bg"></div>
+  <canvas class="hero-canvas" id="canvas"></canvas>
+  <div class="hero-inner">
+    <div>
+      <div class="hero-meta">
+        <span>AI ARCHITECT</span>
+        <span class="dot-sep"></span>
+        <span>WEST LAFAYETTE, IN</span>
+        <span class="dot-sep"></span>
+        <span>2026</span>
       </div>
-      <div class="hero-right">
-        <p class="hero-pull">My focus is the gap between a working prototype and a system you can actually trust in production — retrieval quality, evaluation pipelines, inference cost, and observability.</p>
-        <div class="hero-tags">
-          <span class="h-tag">Production GenAI</span><span class="h-tag">RAG Systems</span><span class="h-tag">LLM Fine-tuning</span><span class="h-tag">EvalOps</span><span class="h-tag">AWS · Azure</span><span class="h-tag">Kubernetes</span><span class="h-tag">Inference Routing</span><span class="h-tag">Multi-agent Systems</span><span class="h-tag">Retrieval Quality</span><span class="h-tag">EU AI Act-aligned</span>
-        </div>
+      <h1 class="hero-title">
+        <span class="line"><span>Revanth</span></span>
+        <span class="line"><span>Gollapudi</span></span>
+      </h1>
+      <p class="hero-tagline">I architect and lead <strong>production GenAI systems</strong> at CGI — conversational platforms at <strong>85K+ requests/day</strong>, an Azure RAG system live for <strong>6,000 employees</strong>, with <strong>EU AI Act-aligned</strong> deployment practices.</p>
+      <div class="hero-tags">
+        <span class="h-tag accent">Production GenAI</span>
+        <span class="h-tag">RAG · Multi-Agent</span>
+        <span class="h-tag">AWS · Azure</span>
+        <span class="h-tag">LLM Fine-tuning</span>
+        <span class="h-tag">EvalOps</span>
+        <span class="h-tag accent">EU AI Act-aligned</span>
+      </div>
+      <div class="hero-ctas">
+        <a href="mailto:gollapudi.off@gmail.com" class="btn btn-primary">Get in touch</a>
+        <a href="https://linkedin.com/in/revanth-gollapudi" target="_blank" class="btn btn-ghost">LinkedIn</a>
+        <a href="https://github.com/Revanth980727" target="_blank" class="btn btn-ghost">GitHub</a>
+      </div>
+    </div>
+    <div class="hero-right"></div>
+  </div>
+  <!-- bottom strip -->
+  <div class="hero-strip">
+    <div class="strip-inner">
+      <div class="strip-cell">
+        <div class="strip-num"><em>85</em>K+</div>
+        <div class="strip-label">API requests / day</div>
+      </div>
+      <div class="strip-cell">
+        <div class="strip-num"><em>6</em>,000</div>
+        <div class="strip-label">Enterprise users · Azure RAG</div>
+      </div>
+      <div class="strip-cell">
+        <div class="strip-num"><em>30</em>%</div>
+        <div class="strip-label">Inference cost reduction</div>
+      </div>
+      <div class="strip-cell">
+        <div class="strip-num"><em>4</em>+ yrs</div>
+        <div class="strip-label">Production AI systems</div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ══════════════════════════════════════════════════════════════════════════ -->
-<!-- CHAPTER 2 — THE STORY                                                     -->
-<!-- ══════════════════════════════════════════════════════════════════════════ -->
-<section class="chapter" id="ch2" data-label="Story">
-  <div class="ch-num">02</div>
-  <div class="c-inner">
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<!-- STORY                                                                  -->
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<section class="section" id="story">
+  <div class="section-inner">
+    <div class="reveal">
+      <div class="section-label">01 — Story</div>
+      <h2 class="section-title">Building things that <em>actually ship.</em></h2>
+    </div>
     <div class="story-grid">
-      <div>
-        <div class="story-label">The story so far</div>
-        <h2 class="story-heading">I got into AI engineering because I wanted to build things that actually ship.</h2>
-        <div class="story-body">
-          <p>Most ML work lives in notebooks. I wanted to understand what happens when you take a model out of a notebook and put it in front of real users — when latency matters, when costs compound, when the model hallucinates and you have to catch it before anyone notices.</p>
-          <p>That obsession led me to <strong>retrieval quality, evaluation pipelines, and inference cost</strong> — the unglamorous work that separates a demo from a production system. At CGI I've designed and led two live systems end-to-end: a conversational AI platform handling 85K+ requests a day (leading a 5-person engineering team), and an Azure RAG chatbot for 6,000 employees where I was the sole architect.</p>
-          <p>I care about <strong>owning outcomes, not just delivering code</strong>. Every system I build has observability baked in from day one. Every model update goes through an eval gate. Every cost spike gets investigated. That's what it means to run AI in production.</p>
-        </div>
+      <div class="story-prose reveal">
+        <p>Most ML work lives in notebooks. I wanted to understand what happens when you take a model out of a notebook and put it in front of real users — when latency matters, when costs compound, when the model hallucinates and you have to catch it before anyone notices.</p>
+        <p>That obsession led me to <em>retrieval quality, evaluation pipelines, and inference cost</em> — the unglamorous work that separates a demo from a production system. At CGI I've designed and led two live systems end-to-end: a conversational AI platform handling <strong>85K+ requests a day</strong> (leading a 5-person engineering team), and an Azure RAG chatbot for <strong>6,000 employees</strong> where I was the sole architect.</p>
+        <p>I care about <strong>owning outcomes, not just delivering code</strong>. Every system I build has observability baked in from day one. Every model update goes through an eval gate. Every cost spike gets investigated. That's what it means to run AI in production.</p>
       </div>
-      <div class="story-right">
-        <div class="story-stat-row"><div class="sr-n">99.9%</div><div class="sr-l">Uptime SLA maintained — Azure HR RAG</div></div>
-        <div class="story-stat-row"><div class="sr-n">~40%</div><div class="sr-l">Cache hit rate · answers under 150ms</div></div>
-        <div class="story-stat-row"><div class="sr-n">20%</div><div class="sr-l">Regressive model updates blocked by EvalOps</div></div>
-        <div class="story-stat-row"><div class="sr-n">3×</div><div class="sr-l">ML deployment cycle faster after pipeline rebuild</div></div>
-        <div class="story-stat-row"><div class="sr-n">19%</div><div class="sr-l">RAG faithfulness improvement — 0.62 → 0.74</div></div>
+      <div class="story-stats reveal">
+        <div class="story-stat"><div class="story-stat-num"><em>99.9</em>%</div><div class="story-stat-label">Uptime SLA · Azure HR RAG</div></div>
+        <div class="story-stat"><div class="story-stat-num">~<em>40</em>%</div><div class="story-stat-label">Cache hit rate · sub-150ms</div></div>
+        <div class="story-stat"><div class="story-stat-num"><em>20</em>%</div><div class="story-stat-label">Bad updates blocked by EvalOps</div></div>
+        <div class="story-stat"><div class="story-stat-num"><em>3</em>×</div><div class="story-stat-label">Deployment cycle accelerated</div></div>
+        <div class="story-stat"><div class="story-stat-num"><em>19</em>%</div><div class="story-stat-label">RAG faithfulness · 0.62 → 0.74</div></div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ══════════════════════════════════════════════════════════════════════════ -->
-<!-- CHAPTER 3 — EXPERIENCE                                                    -->
-<!-- ══════════════════════════════════════════════════════════════════════════ -->
-<section class="chapter" id="ch3" data-label="Experience">
-  <div class="ch-num">03</div>
-  <div class="c-inner">
-    <div style="margin-bottom:2.5rem;">
-      <div class="story-label" style="color:var(--ink-faint);">Where I've worked</div>
-      <h2 style="font-family:'Cormorant Garamond',serif;font-size:2.4rem;font-weight:300;">Experience</h2>
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<!-- EXPERIENCE                                                             -->
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<section class="section" id="experience">
+  <div class="section-inner">
+    <div class="reveal">
+      <div class="section-label">02 — Experience</div>
+      <h2 class="section-title">Where <em>I've shipped.</em></h2>
     </div>
-    <div class="exp-story">
-      <!-- sidebar nav -->
-      <div class="exp-nav" id="expNav">
+    <div class="exp-shell">
+      <div class="exp-nav reveal">
         <div class="exp-nav-item on" data-ep="ep1">
-          <div class="en-co">CGI</div>
+          <div class="en-co">CGI · 2024 →</div>
           <div class="en-role">AI Architect / Consultant</div>
-          <div class="en-date">Dec 2024 – Present</div>
-          <div class="en-bar"></div>
+          <div class="en-date">Dec 2024 — Present</div>
         </div>
         <div class="exp-nav-item" data-ep="ep2">
-          <div class="en-co">CGI</div>
-          <div class="en-role">Consultant, Data Engineer</div>
-          <div class="en-date">Jan 2023 – Dec 2024</div>
-          <div class="en-bar"></div>
+          <div class="en-co">CGI · 2023</div>
+          <div class="en-role">Data Engineer / Consultant</div>
+          <div class="en-date">Jan 2023 — Dec 2024</div>
         </div>
         <div class="exp-nav-item" data-ep="ep3">
-          <div class="en-co">eKincare</div>
+          <div class="en-co">eKincare · 2020</div>
           <div class="en-role">Data Engineer</div>
-          <div class="en-date">Aug 2020 – Jul 2021</div>
-          <div class="en-bar"></div>
+          <div class="en-date">Aug 2020 — Jul 2021</div>
         </div>
       </div>
-
-      <!-- panels -->
-      <div class="exp-content">
+      <div class="exp-content reveal">
         <!-- Panel 1 -->
         <div class="exp-panel on" id="ep1">
           <div class="ep-role">AI Architect / Consultant</div>
-          <div class="ep-meta">
-            <span>CGI</span><span>West Lafayette, IN</span><span>Dec 2024 – Present</span>
-          </div>
+          <div class="ep-meta"><span>CGI</span><span>West Lafayette, IN</span><span>Dec 2024 — Present</span></div>
           <div class="ep-points">
             <div class="ep-point">
-              <div class="ep-point-label">Conversational AI Platform — AWS</div>
+              <div class="ep-point-label">Conversational AI Platform · AWS</div>
               <p>Architected and own a <strong>Kubernetes-based conversational AI platform on AWS EKS</strong> serving ~85K requests/day across 10+ agent workflows for 1,200 users. Lead a 5-person engineering team with full SLA accountability, presenting architecture decisions directly to the client.</p>
             </div>
             <div class="ep-point">
-              <div class="ep-point-label">Azure HR RAG System — Live for 6,000 Employees</div>
-              <p>Served as <strong>sole architect</strong> on an end-to-end Azure RAG system for an HR Policy chatbot — led 2 engineers, owned every infrastructure decision. Angular SPA, FastAPI on Container Apps, Azure AI Search (vector + BM25 + semantic reranker), GPT-4o on PTU, Document Intelligence, Entra ID/MFA, private VNet. Delivers <strong>&lt;3s response time, ~40% cache hit rate, 99.9% uptime</strong>, with <strong>EU AI Act-aligned</strong> deployment documentation.</p>
+              <div class="ep-point-label">Azure HR RAG · Live for 6,000 Employees</div>
+              <p>Served as <strong>sole architect</strong> on an end-to-end Azure RAG system for an HR Policy chatbot. Angular SPA, FastAPI on Container Apps, Azure AI Search (vector + BM25 + semantic reranker), GPT-4o on PTU, Document Intelligence, Entra ID/MFA, private VNet. Delivers <strong>&lt;3s response time, ~40% cache hit rate, 99.9% uptime</strong>, with <strong>EU AI Act-aligned</strong> deployment documentation.</p>
             </div>
             <div class="ep-point">
-              <div class="ep-point-label">Inference Cost — 30% Reduction</div>
+              <div class="ep-point-label">Inference Cost · 30% Reduction</div>
               <p>Co-designed a <strong>complexity-based model router</strong> sending simple queries to Gemma/Mistral 8B and complex ones to GPT-4o. Cut monthly inference spend from <strong>$15K to $10.5K</strong> with no quality degradation.</p>
             </div>
             <div class="ep-point">
-              <div class="ep-point-label">Fine-tuning — Hallucinations from 45% to 30%</div>
+              <div class="ep-point-label">Fine-tuning · 45% → 30% Hallucination Rate</div>
               <p>Fine-tuned <strong>Llama 3 via LoRA/PEFT with DPO</strong> on 500+ human-labeled preference pairs. Reduced measured hallucination rate from 45% to 30% across production workloads.</p>
             </div>
             <div class="ep-point">
-              <div class="ep-point-label">EvalOps Pipeline — Zero Undetected Regressions</div>
+              <div class="ep-point-label">EvalOps · Zero Undetected Regressions</div>
               <p>Built a full <strong>EvalOps pipeline</strong> — groundedness rubrics, golden datasets, automated RAGAS scoring, OpenTelemetry retrieval tracing — as mandatory CI gates before every model update. Zero undetected regressions since rollout.</p>
             </div>
-
             <div class="ep-point">
-              <div class="ep-point-label">Vehicle AI Inspection System — Ryder Systems (Fortune 500)</div>
-              <p>Leading end-to-end engineering delivery of an <strong>AI-powered vehicle inspection system</strong> for Ryder Systems — replacing manual walk-around inspections with a fully automated pipeline processing <strong>10,000+ vehicles/month at ~$0.01/image</strong> with zero manual intervention. Funded by a $93.9K Microsoft ECIF grant.</p>
-              <p>Started by training and evaluating a <strong>YOLOv8 model on 10,000 labeled vehicle images</strong>, reaching 85–89% accuracy and precision, before driving a <strong>strategic pivot to GPT-4o Vision</strong> — recognising that the generative model's zero-shot damage understanding would outperform a task-specific detector without the retraining burden as vehicle categories expand.</p>
-              <p>Built a <strong>two-pass automated pipeline</strong>: OpenCV blur detection pre-filters unusable frames before any model call, then GPT-4o Vision runs a <strong>15-point damage assessment</strong> — scratches, dents, rust, paint chips, cleanliness, missing components — with Pass/Fail/N-A verdicts, confidence signals, and human-readable descriptions. Deployed on <strong>Azure Functions, Blob Storage, Cosmos DB, and Azure OpenAI</strong>.</p>
+              <div class="ep-point-label">Vehicle AI Inspection · Ryder Systems (Fortune 500)</div>
+              <p>Leading end-to-end engineering delivery of an <strong>AI-powered vehicle inspection system</strong> — replacing manual walk-around inspections with a fully automated pipeline processing <strong>10,000+ vehicles/month at ~$0.01/image</strong>. Funded by a $93.9K Microsoft ECIF grant.</p>
+              <p>Started by training and evaluating a <strong>YOLOv8 model on 10,000 labeled vehicle images</strong>, reaching 85–89% accuracy, before driving a <strong>strategic pivot to GPT-4o Vision</strong> — recognising the generative model's zero-shot damage understanding would outperform a task-specific detector without retraining burden.</p>
+              <p>Built a <strong>two-pass automated pipeline</strong>: OpenCV blur detection pre-filters frames, then GPT-4o Vision runs a <strong>15-point damage assessment</strong> with Pass/Fail/N-A verdicts, confidence signals, and human-readable descriptions. Deployed on <strong>Azure Functions, Blob Storage, Cosmos DB, and Azure OpenAI</strong>.</p>
             </div>
           </div>
           <div class="ep-stack">
-            <span class="ep-pill">AWS EKS</span><span class="ep-pill">Azure Container Apps</span><span class="ep-pill">Azure AI Search</span><span class="ep-pill">GPT-4o PTU</span><span class="ep-pill">GPT-4o Vision</span><span class="ep-pill">YOLOv8</span><span class="ep-pill">OpenCV</span><span class="ep-pill">Azure Functions</span><span class="ep-pill">Cosmos DB</span><span class="ep-pill">Document Intelligence</span><span class="ep-pill">Entra ID</span><span class="ep-pill">Key Vault</span><span class="ep-pill">Llama 3</span><span class="ep-pill">LoRA/PEFT</span><span class="ep-pill">DPO</span><span class="ep-pill">RAGAS</span><span class="ep-pill">OpenTelemetry</span><span class="ep-pill">LangGraph</span><span class="ep-pill">Bicep</span>
+            <span class="ep-pill">AWS EKS</span><span class="ep-pill">Azure Container Apps</span><span class="ep-pill">Azure AI Search</span><span class="ep-pill">GPT-4o PTU</span><span class="ep-pill">GPT-4o Vision</span><span class="ep-pill">YOLOv8</span><span class="ep-pill">OpenCV</span><span class="ep-pill">Azure Functions</span><span class="ep-pill">Cosmos DB</span><span class="ep-pill">Llama 3</span><span class="ep-pill">LoRA/PEFT</span><span class="ep-pill">DPO</span><span class="ep-pill">RAGAS</span><span class="ep-pill">OpenTelemetry</span><span class="ep-pill">LangGraph</span><span class="ep-pill">Bicep</span>
           </div>
         </div>
 
         <!-- Panel 2 -->
         <div class="exp-panel" id="ep2">
-          <div class="ep-role">Consultant, Data Engineer</div>
-          <div class="ep-meta">
-            <span>CGI</span><span>New Brunswick, NJ</span><span>Jan 2023 – Dec 2024</span>
-          </div>
+          <div class="ep-role">Data Engineer / Consultant</div>
+          <div class="ep-meta"><span>CGI</span><span>New Brunswick, NJ</span><span>Jan 2023 — Dec 2024</span></div>
           <div class="ep-points">
             <div class="ep-point">
-              <div class="ep-point-label">Retrieval Quality — 0.62 to 0.74 Faithfulness</div>
+              <div class="ep-point-label">Retrieval Quality · 0.62 → 0.74 Faithfulness</div>
               <p>Tuned <strong>hybrid retrieval (BM25 + pgvector + cross-encoder reranking)</strong> with query rewriting optimisations. Lifted RAGAS faithfulness from 0.62 to 0.74 on a 500-question eval set — a 19% improvement with no generation model changes.</p>
             </div>
             <div class="ep-point">
-              <div class="ep-point-label">Eval-gated CI/CD — 20% of Bad Updates Blocked</div>
+              <div class="ep-point-label">Eval-gated CI/CD · 20% of Bad Updates Blocked</div>
               <p>Built an <strong>eval-gated CI/CD pipeline</strong> using LLM-as-judge with rubric scoring as a mandatory release gate. Blocked ~20% of regressive model updates before production.</p>
             </div>
             <div class="ep-point">
-              <div class="ep-point-label">ML Pipelines — 72 Hours to Under 24</div>
+              <div class="ep-point-label">ML Pipelines · 72h → 24h</div>
               <p>Rebuilt <strong>Kubernetes ML training pipelines</strong> for ~6TB document classification. Cut training-to-deployment cycle from 72 hours to under 24 hours — 3× faster iteration.</p>
             </div>
             <div class="ep-point">
-              <div class="ep-point-label">Observability — Hours to Minutes MTTD</div>
+              <div class="ep-point-label">Observability · Hours to Minutes MTTD</div>
               <p>Implemented <strong>CloudWatch + OpenTelemetry</strong> instrumentation with drift detection and alerting. Reduced mean time to diagnose failures from hours to minutes.</p>
             </div>
           </div>
           <div class="ep-stack">
-            <span class="ep-pill">BM25</span><span class="ep-pill">pgvector</span><span class="ep-pill">Cross-encoder reranking</span><span class="ep-pill">Query rewriting</span><span class="ep-pill">RAGAS</span><span class="ep-pill">LLM-as-judge</span><span class="ep-pill">Kubernetes</span><span class="ep-pill">CloudWatch</span><span class="ep-pill">OpenTelemetry</span>
+            <span class="ep-pill">BM25</span><span class="ep-pill">pgvector</span><span class="ep-pill">Cross-encoder</span><span class="ep-pill">RAGAS</span><span class="ep-pill">LLM-as-judge</span><span class="ep-pill">Kubernetes</span><span class="ep-pill">CloudWatch</span><span class="ep-pill">OpenTelemetry</span>
           </div>
         </div>
 
         <!-- Panel 3 -->
         <div class="exp-panel" id="ep3">
           <div class="ep-role">Data Engineer</div>
-          <div class="ep-meta">
-            <span>eKincare</span><span>Bangalore, India</span><span>Aug 2020 – Jul 2021</span>
-          </div>
+          <div class="ep-meta"><span>eKincare</span><span>Bangalore, India</span><span>Aug 2020 — Jul 2021</span></div>
           <div class="ep-points">
             <div class="ep-point">
-              <div class="ep-point-label">Pipeline Throughput — 40% Improvement</div>
+              <div class="ep-point-label">Pipeline Throughput · +40%</div>
               <p>Improved <strong>Kafka and Spark pipeline throughput by 40%</strong> through partitioning and parallelism tuning. Added schema validation and dead-letter handling to cut production failures.</p>
             </div>
             <div class="ep-point">
-              <div class="ep-point-label">Application Stability — 15% Crash Reduction</div>
-              <p>Diagnosed root causes across recurring crash patterns and overhauled <strong>logging, monitoring, and alerting</strong> with engineering teams. Reduced crash rate by 15%.</p>
+              <div class="ep-point-label">Application Stability · -15% Crashes</div>
+              <p>Diagnosed root causes across recurring crash patterns and overhauled <strong>logging, monitoring, and alerting</strong>. Reduced crash rate by 15%.</p>
             </div>
           </div>
           <div class="ep-stack">
@@ -385,197 +487,160 @@ svg.diag{width:100%;height:auto;display:block;}
   </div>
 </section>
 
-<!-- ══════════════════════════════════════════════════════════════════════════ -->
-<!-- CHAPTER 4 — SKILLS                                                        -->
-<!-- ══════════════════════════════════════════════════════════════════════════ -->
-<section class="chapter" id="ch4" data-label="Skills">
-  <div class="ch-num">04</div>
-  <div class="c-inner">
-    <div class="skills-story">
-      <div class="skills-left">
-        <div class="story-label" style="color:var(--ink-faint);">How I think</div>
-        <h2 style="font-family:'Cormorant Garamond',serif;font-size:2.4rem;font-weight:300;margin-bottom:1.5rem;">Skills &amp; tools</h2>
-        <p class="skills-intro">I'm not a framework collector. Every skill here is something I've used to solve a real production problem — usually at 2am when something was wrong.</p>
-        <p class="skills-intro">My strongest areas are the intersection of <strong>retrieval quality, evaluation, and inference cost</strong>. That's where most production GenAI systems fail, and it's where I've spent the most time.</p>
-        <p class="skills-intro">The infrastructure skills came from necessity — you can't own a system end-to-end without understanding how it runs.</p>
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<!-- SKILLS                                                                 -->
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<section class="section" id="skills">
+  <div class="section-inner">
+    <div class="reveal">
+      <div class="section-label">03 — Stack</div>
+      <h2 class="section-title">Tools I've used <em>at 2am.</em></h2>
+    </div>
+    <div class="skills-grid">
+      <div class="skills-prose reveal">
+        <p>I'm not a framework collector. Every tool here is something I've used to solve a real production problem — usually at 2am when something was wrong.</p>
+        <p>My strongest areas are the intersection of <em>retrieval quality, evaluation, and inference cost</em>. That's where most production GenAI systems fail, and it's where I've spent the most time.</p>
+        <p>The infrastructure skills came from necessity — you can't <strong>own a system end-to-end</strong> without understanding how it runs.</p>
       </div>
-      <div class="skills-right">
-        <div class="sk-line"><span class="sk-cat">LLMs &amp; GenAI</span><div class="sk-vals"><span class="sk-v">Llama 3</span><span class="sk-v">LoRA/PEFT</span><span class="sk-v">DPO</span><span class="sk-v">RLHF</span><span class="sk-v">LangGraph</span><span class="sk-v">Model Routing</span><span class="sk-v">NL-to-SQL</span></div></div>
-        <div class="sk-line"><span class="sk-cat">RAG &amp; Retrieval</span><div class="sk-vals"><span class="sk-v">BM25</span><span class="sk-v">pgvector</span><span class="sk-v">Azure AI Search</span><span class="sk-v">Cross-encoder Reranking</span><span class="sk-v">Query Rewriting</span><span class="sk-v">Document Intelligence</span></div></div>
-        <div class="sk-line"><span class="sk-cat">Computer Vision</span><div class="sk-vals"><span class="sk-v">GPT-4o Vision</span><span class="sk-v">YOLOv8</span><span class="sk-v">OpenCV</span><span class="sk-v">Object Detection</span><span class="sk-v">Damage Classification</span><span class="sk-v">Model Training &amp; Evaluation</span><span class="sk-v">Image Annotation</span><span class="sk-v">Confidence Scoring</span></div></div>
-        <div class="sk-line"><span class="sk-cat">Eval &amp; Observability</span><div class="sk-vals"><span class="sk-v">RAGAS</span><span class="sk-v">DeepEval</span><span class="sk-v">LLM-as-Judge</span><span class="sk-v">Golden Datasets</span><span class="sk-v">Regression Gates</span><span class="sk-v">OpenTelemetry</span><span class="sk-v">CloudWatch</span></div></div>
-        <div class="sk-line"><span class="sk-cat">Cloud &amp; Infra</span><div class="sk-vals"><span class="sk-v">AWS EKS</span><span class="sk-v">Azure Container Apps</span><span class="sk-v">Azure OpenAI PTU</span><span class="sk-v">Key Vault</span><span class="sk-v">Entra ID</span><span class="sk-v">Kubernetes</span><span class="sk-v">Docker</span><span class="sk-v">Terraform</span><span class="sk-v">Bicep</span><span class="sk-v">GitHub Actions</span></div></div>
-        <div class="sk-line"><span class="sk-cat">Compliance</span><div class="sk-vals"><span class="sk-v">EU AI Act</span><span class="sk-v">Responsible AI</span><span class="sk-v">Deployment Documentation</span></div></div>
-        <div class="sk-line"><span class="sk-cat">Languages</span><div class="sk-vals"><span class="sk-v">Python</span><span class="sk-v">PyTorch</span><span class="sk-v">FastAPI</span><span class="sk-v">React/Next.js</span><span class="sk-v">Angular</span><span class="sk-v">Go</span></div></div>
+      <div class="skills-list reveal">
+        <div class="sk-row"><div class="sk-cat">LLMs &amp; GenAI</div><div class="sk-vals"><span class="sk-v">Llama 3</span><span class="sk-v">LoRA/PEFT</span><span class="sk-v">DPO</span><span class="sk-v">RLHF</span><span class="sk-v">LangGraph</span><span class="sk-v">Model Routing</span><span class="sk-v">NL-to-SQL</span></div></div>
+        <div class="sk-row"><div class="sk-cat">RAG &amp; Retrieval</div><div class="sk-vals"><span class="sk-v">BM25</span><span class="sk-v">pgvector</span><span class="sk-v">Azure AI Search</span><span class="sk-v">Cross-encoder</span><span class="sk-v">Query Rewriting</span><span class="sk-v">Document Intelligence</span></div></div>
+        <div class="sk-row"><div class="sk-cat">Computer Vision</div><div class="sk-vals"><span class="sk-v">GPT-4o Vision</span><span class="sk-v">YOLOv8</span><span class="sk-v">OpenCV</span><span class="sk-v">Object Detection</span><span class="sk-v">Damage Classification</span><span class="sk-v">Confidence Scoring</span></div></div>
+        <div class="sk-row"><div class="sk-cat">Eval &amp; Observability</div><div class="sk-vals"><span class="sk-v">RAGAS</span><span class="sk-v">DeepEval</span><span class="sk-v">LLM-as-Judge</span><span class="sk-v">Golden Datasets</span><span class="sk-v">Regression Gates</span><span class="sk-v">OpenTelemetry</span><span class="sk-v">CloudWatch</span></div></div>
+        <div class="sk-row"><div class="sk-cat">Cloud &amp; Infra</div><div class="sk-vals"><span class="sk-v">AWS EKS</span><span class="sk-v">Azure Container Apps</span><span class="sk-v">Azure OpenAI PTU</span><span class="sk-v">Key Vault</span><span class="sk-v">Entra ID</span><span class="sk-v">Kubernetes</span><span class="sk-v">Docker</span><span class="sk-v">Terraform</span><span class="sk-v">Bicep</span><span class="sk-v">GitHub Actions</span></div></div>
+        <div class="sk-row"><div class="sk-cat">Compliance</div><div class="sk-vals"><span class="sk-v">EU AI Act</span><span class="sk-v">Responsible AI</span><span class="sk-v">Deployment Docs</span></div></div>
+        <div class="sk-row"><div class="sk-cat">Languages</div><div class="sk-vals"><span class="sk-v">Python</span><span class="sk-v">PyTorch</span><span class="sk-v">FastAPI</span><span class="sk-v">React/Next.js</span><span class="sk-v">Angular</span><span class="sk-v">Go</span></div></div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ══════════════════════════════════════════════════════════════════════════ -->
-<!-- CHAPTER 5 — PROJECTS                                                      -->
-<!-- ══════════════════════════════════════════════════════════════════════════ -->
-<section class="chapter" id="ch5" data-label="Projects">
-  <div class="ch-num">05</div>
-  <div class="c-inner">
-    <div style="margin-bottom:2rem;">
-      <div class="story-label" style="color:var(--ink-faint);">What I've built</div>
-      <h2 style="font-family:'Cormorant Garamond',serif;font-size:2.4rem;font-weight:300;margin-bottom:0;">Selected projects</h2>
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<!-- PROJECTS                                                               -->
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<section class="section" id="projects">
+  <div class="section-inner">
+    <div class="reveal">
+      <div class="section-label">04 — Selected Work</div>
+      <h2 class="section-title">Things I've <em>built &amp; shipped.</em></h2>
     </div>
-
-    <!-- TABS -->
-    <div class="proj-tabs">
+    <div class="proj-tabs reveal">
       <div class="p-tab on" data-pp="pp1">RAOC</div>
       <div class="p-tab" data-pp="pp2">Bugfix AI Pilot</div>
       <div class="p-tab" data-pp="pp3">LLM Eval Harness</div>
     </div>
 
-    <!-- PROJECT 1: RAOC -->
+    <!-- PROJECT 1 -->
     <div class="proj-panel on" id="pp1">
-      <div class="pp-left">
+      <div>
         <span class="pp-badge">Agentic · macOS · Python</span>
         <div class="pp-name">RAOC</div>
         <div class="pp-what">Remote Autonomous OS Controller</div>
         <p class="pp-desc">Control your Mac from your phone via Telegram. Send a natural language command, a <strong>6-agent pipeline</strong> builds and executes a plan — with mandatory tap-to-approve before anything runs.</p>
         <ul class="pp-bullets">
-          <li><strong>Intake agent</strong> understands your request. <strong>Discovery</strong> finds the target file. <strong>Planning</strong> generates a step-by-step action plan. <strong>Execution</strong> carries it out. <strong>Verification</strong> checks it worked. <strong>Reporter</strong> sends proof to your phone.</li>
-          <li><strong>Safety model:</strong> approval enforced in code, not convention. Dangerous commands blocked. Every file backed up before writes. Workspace sandboxed at the zone resolver level.</li>
+          <li><strong>Intake</strong> understands intent. <strong>Discovery</strong> finds files. <strong>Planning</strong> generates a step-by-step plan. <strong>Execution</strong> carries it out. <strong>Verification</strong> checks. <strong>Reporter</strong> sends proof.</li>
+          <li><strong>Safety model:</strong> approval enforced in code, not convention. Dangerous commands blocked. Every file backed up before writes. Workspace sandboxed at zone resolver level.</li>
           <li>303 passing tests · GitHub Actions CI · Pydantic v2 · macOS Keychain for secrets</li>
         </ul>
-        <div class="pp-stack"><span class="pp-pill">Python 3.12</span><span class="pp-pill">Claude API</span><span class="pp-pill">Telegram Bot</span><span class="pp-pill">SQLite/SQLAlchemy</span><span class="pp-pill">Pydantic v2</span><span class="pp-pill">macOS Keychain</span></div>
-        <a class="pp-link" href="https://github.com/Revanth9727/RAOC" target="_blank">View on GitHub</a>
+        <div class="pp-stack"><span class="pp-pill">Python 3.12</span><span class="pp-pill">Claude API</span><span class="pp-pill">Telegram</span><span class="pp-pill">SQLite</span><span class="pp-pill">Pydantic v2</span></div>
+        <a class="pp-link" href="https://github.com/Revanth9727/RAOC" target="_blank">View on GitHub →</a>
       </div>
-      <div class="pp-right">
-        <div class="diagram-wrap">
-          <div class="diagram-title">Agent pipeline — RAOC</div>
-          <svg class="diag" viewBox="0 0 320 420" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <marker id="arr" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
-                <path d="M0,0 L6,3 L0,6 Z" fill="#a8a49e"/>
-              </marker>
-            </defs>
-            <!-- phone input -->
-            <rect x="100" y="10" width="120" height="36" rx="2" fill="#f0ede7" stroke="#d6d2ca" stroke-width="1"/>
-            <text x="160" y="32" font-family="Epilogue,sans-serif" font-size="10" fill="#4a4744" text-anchor="middle">📱 Telegram command</text>
-            <!-- arrow -->
-            <line x1="160" y1="46" x2="160" y2="62" stroke="#d6d2ca" stroke-width="1" marker-end="url(#arr)"/>
-            <!-- agent boxes -->
-            <!-- Intake -->
-            <rect x="80" y="62" width="160" height="42" rx="2" fill="#f6f3ee" stroke="#b0ada8" stroke-width="1"/>
-            <text x="160" y="78" font-family="Epilogue,sans-serif" font-size="9" fill="#7a7673" text-anchor="middle" font-weight="500" letter-spacing="1">INTAKE AGENT</text>
-            <text x="160" y="93" font-family="Epilogue,sans-serif" font-size="9" fill="#4a4744" text-anchor="middle">Understands intent</text>
-            <line x1="160" y1="104" x2="160" y2="120" stroke="#d6d2ca" stroke-width="1" marker-end="url(#arr)"/>
-            <!-- Discovery -->
-            <rect x="80" y="120" width="160" height="42" rx="2" fill="#f6f3ee" stroke="#b0ada8" stroke-width="1"/>
-            <text x="160" y="136" font-family="Epilogue,sans-serif" font-size="9" fill="#7a7673" text-anchor="middle" font-weight="500" letter-spacing="1">DISCOVERY AGENT</text>
-            <text x="160" y="151" font-family="Epilogue,sans-serif" font-size="9" fill="#4a4744" text-anchor="middle">Finds &amp; reads files</text>
-            <line x1="160" y1="162" x2="160" y2="178" stroke="#d6d2ca" stroke-width="1" marker-end="url(#arr)"/>
-            <!-- Planning -->
-            <rect x="80" y="178" width="160" height="42" rx="2" fill="#f6f3ee" stroke="#b0ada8" stroke-width="1"/>
-            <text x="160" y="194" font-family="Epilogue,sans-serif" font-size="9" fill="#7a7673" text-anchor="middle" font-weight="500" letter-spacing="1">PLANNING AGENT</text>
-            <text x="160" y="209" font-family="Epilogue,sans-serif" font-size="9" fill="#4a4744" text-anchor="middle">Generates action plan</text>
-            <!-- approval gate -->
-            <line x1="160" y1="220" x2="160" y2="234" stroke="#d6d2ca" stroke-width="1" marker-end="url(#arr)"/>
-            <rect x="95" y="234" width="130" height="28" rx="14" fill="#5c3d1e" stroke="none"/>
-            <text x="160" y="252" font-family="Epilogue,sans-serif" font-size="9" fill="#f6f3ee" text-anchor="middle" font-weight="500">✓ TAP TO APPROVE</text>
-            <line x1="160" y1="262" x2="160" y2="278" stroke="#d6d2ca" stroke-width="1" marker-end="url(#arr)"/>
-            <!-- Execution -->
-            <rect x="80" y="278" width="160" height="42" rx="2" fill="#f6f3ee" stroke="#b0ada8" stroke-width="1"/>
-            <text x="160" y="294" font-family="Epilogue,sans-serif" font-size="9" fill="#7a7673" text-anchor="middle" font-weight="500" letter-spacing="1">EXECUTION AGENT</text>
-            <text x="160" y="309" font-family="Epilogue,sans-serif" font-size="9" fill="#4a4744" text-anchor="middle">Runs the plan safely</text>
-            <line x1="160" y1="320" x2="160" y2="336" stroke="#d6d2ca" stroke-width="1" marker-end="url(#arr)"/>
-            <!-- Verification + Reporter side by side -->
-            <rect x="20" y="336" width="130" height="42" rx="2" fill="#f6f3ee" stroke="#b0ada8" stroke-width="1"/>
-            <text x="85" y="352" font-family="Epilogue,sans-serif" font-size="9" fill="#7a7673" text-anchor="middle" font-weight="500" letter-spacing="1">VERIFICATION</text>
-            <text x="85" y="367" font-family="Epilogue,sans-serif" font-size="9" fill="#4a4744" text-anchor="middle">Checks result</text>
-            <rect x="170" y="336" width="130" height="42" rx="2" fill="#f6f3ee" stroke="#b0ada8" stroke-width="1"/>
-            <text x="235" y="352" font-family="Epilogue,sans-serif" font-size="9" fill="#7a7673" text-anchor="middle" font-weight="500" letter-spacing="1">REPORTER</text>
-            <text x="235" y="367" font-family="Epilogue,sans-serif" font-size="9" fill="#4a4744" text-anchor="middle">Sends proof to phone</text>
-            <!-- split line -->
-            <line x1="160" y1="336" x2="85" y2="336" stroke="#d6d2ca" stroke-width="1"/>
-            <line x1="160" y1="336" x2="235" y2="336" stroke="#d6d2ca" stroke-width="1"/>
-            <!-- bottom arrow -->
-            <line x1="85" y1="378" x2="85" y2="400" stroke="#d6d2ca" stroke-width="1" marker-end="url(#arr)"/>
-            <line x1="235" y1="378" x2="235" y2="400" stroke="#d6d2ca" stroke-width="1" marker-end="url(#arr)"/>
-            <text x="160" y="415" font-family="Epilogue,sans-serif" font-size="9" fill="#7a7673" text-anchor="middle">📱 Result delivered</text>
+      <div>
+        <div class="diagram-shell">
+          <div class="diagram-title">Agent pipeline · RAOC</div>
+          <svg class="diag" viewBox="0 0 320 420">
+            <defs><marker id="arr" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#5a6573"/></marker></defs>
+            <rect x="100" y="10" width="120" height="36" rx="2" class="node-fill"/>
+            <text x="160" y="32" class="text-bright" text-anchor="middle">📱 Telegram command</text>
+            <line x1="160" y1="46" x2="160" y2="62" class="arrow" marker-end="url(#arr)"/>
+            <rect x="80" y="62" width="160" height="42" rx="2" class="node-fill"/>
+            <text x="160" y="78" class="label" text-anchor="middle">INTAKE AGENT</text>
+            <text x="160" y="93" class="text" text-anchor="middle">Understands intent</text>
+            <line x1="160" y1="104" x2="160" y2="120" class="arrow" marker-end="url(#arr)"/>
+            <rect x="80" y="120" width="160" height="42" rx="2" class="node-fill"/>
+            <text x="160" y="136" class="label" text-anchor="middle">DISCOVERY AGENT</text>
+            <text x="160" y="151" class="text" text-anchor="middle">Finds &amp; reads files</text>
+            <line x1="160" y1="162" x2="160" y2="178" class="arrow" marker-end="url(#arr)"/>
+            <rect x="80" y="178" width="160" height="42" rx="2" class="node-fill"/>
+            <text x="160" y="194" class="label" text-anchor="middle">PLANNING AGENT</text>
+            <text x="160" y="209" class="text" text-anchor="middle">Generates action plan</text>
+            <line x1="160" y1="220" x2="160" y2="234" class="arrow" marker-end="url(#arr)"/>
+            <rect x="95" y="234" width="130" height="28" rx="14" class="node-accent"/>
+            <text x="160" y="252" class="label" text-anchor="middle" style="fill:#a8d8f5">✓ TAP TO APPROVE</text>
+            <line x1="160" y1="262" x2="160" y2="278" class="arrow" marker-end="url(#arr)"/>
+            <rect x="80" y="278" width="160" height="42" rx="2" class="node-fill"/>
+            <text x="160" y="294" class="label" text-anchor="middle">EXECUTION AGENT</text>
+            <text x="160" y="309" class="text" text-anchor="middle">Runs the plan safely</text>
+            <line x1="160" y1="320" x2="160" y2="336" class="arrow" marker-end="url(#arr)"/>
+            <rect x="20" y="336" width="130" height="42" rx="2" class="node-fill"/>
+            <text x="85" y="352" class="label" text-anchor="middle">VERIFICATION</text>
+            <text x="85" y="367" class="text" text-anchor="middle">Checks result</text>
+            <rect x="170" y="336" width="130" height="42" rx="2" class="node-fill"/>
+            <text x="235" y="352" class="label" text-anchor="middle">REPORTER</text>
+            <text x="235" y="367" class="text" text-anchor="middle">Sends proof to phone</text>
+            <line x1="160" y1="336" x2="85" y2="336" class="arrow"/>
+            <line x1="160" y1="336" x2="235" y2="336" class="arrow"/>
+            <line x1="85" y1="378" x2="85" y2="400" class="arrow" marker-end="url(#arr)"/>
+            <line x1="235" y1="378" x2="235" y2="400" class="arrow" marker-end="url(#arr)"/>
+            <text x="160" y="415" class="text-bright" text-anchor="middle">📱 Result delivered</text>
           </svg>
         </div>
       </div>
     </div>
 
-    <!-- PROJECT 2: BUGFIX AI PILOT -->
+    <!-- PROJECT 2 -->
     <div class="proj-panel" id="pp2">
-      <div class="pp-left">
-        <span class="pp-badge">Multi-agent · Full-stack · Docker</span>
+      <div>
+        <span class="pp-badge">Multi-agent · Full-stack</span>
         <div class="pp-name">Bugfix AI Pilot</div>
-        <div class="pp-what">Autonomous Bug Resolution System</div>
-        <p class="pp-desc">Takes a JIRA ticket ID and — without any human involvement — reads the ticket, generates a GPT-4 code fix, validates it with tests, and opens a GitHub PR. 233 commits.</p>
+        <div class="pp-what">Autonomous Bug Resolution</div>
+        <p class="pp-desc">Takes a JIRA ticket ID and — without any human involvement — reads the ticket, generates a GPT-4 code fix, validates with tests, and opens a GitHub PR. <strong>233 commits.</strong></p>
         <ul class="pp-bullets">
           <li><strong>Planner agent</strong> reads the JIRA ticket and identifies the affected code and root cause.</li>
           <li><strong>Developer agent</strong> generates the fix with full codebase context awareness.</li>
-          <li><strong>QA agent</strong> runs tests against the fix. Failed results loop back to the Developer for retry (up to 3 cycles).</li>
-          <li><strong>Communicator agent</strong> comments on JIRA and opens a GitHub PR with the diff and test results.</li>
-          <li>React/TypeScript monitoring dashboard with live agent output logs and manual trigger.</li>
+          <li><strong>QA agent</strong> runs tests against the fix. Failed results loop back to Developer (up to 3 cycles).</li>
+          <li><strong>Communicator agent</strong> comments on JIRA and opens a GitHub PR with diff and test results.</li>
         </ul>
-        <div class="pp-stack"><span class="pp-pill">Python</span><span class="pp-pill">GPT-4</span><span class="pp-pill">TypeScript</span><span class="pp-pill">React</span><span class="pp-pill">FastAPI</span><span class="pp-pill">Docker Compose</span><span class="pp-pill">JIRA API</span><span class="pp-pill">GitHub API</span></div>
-        <a class="pp-link" href="https://github.com/Revanth980727/bugfix-ai-pilot" target="_blank">View on GitHub</a>
+        <div class="pp-stack"><span class="pp-pill">Python</span><span class="pp-pill">GPT-4</span><span class="pp-pill">React</span><span class="pp-pill">FastAPI</span><span class="pp-pill">Docker</span><span class="pp-pill">JIRA API</span></div>
+        <a class="pp-link" href="https://github.com/Revanth980727/bugfix-ai-pilot" target="_blank">View on GitHub →</a>
       </div>
-      <div class="pp-right">
-        <div class="diagram-wrap">
-          <div class="diagram-title">Agent pipeline — Bugfix AI Pilot</div>
-          <svg class="diag" viewBox="0 0 320 400" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <marker id="arr2" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
-                <path d="M0,0 L6,3 L0,6 Z" fill="#a8a49e"/>
-              </marker>
-            </defs>
-            <!-- JIRA input -->
-            <rect x="90" y="10" width="140" height="36" rx="2" fill="#f0ede7" stroke="#d6d2ca" stroke-width="1"/>
-            <text x="160" y="32" font-family="Epilogue,sans-serif" font-size="10" fill="#4a4744" text-anchor="middle">🎫 JIRA Ticket</text>
-            <line x1="160" y1="46" x2="160" y2="62" stroke="#d6d2ca" stroke-width="1" marker-end="url(#arr2)"/>
-            <!-- Planner -->
-            <rect x="70" y="62" width="180" height="50" rx="2" fill="#f6f3ee" stroke="#b0ada8" stroke-width="1"/>
-            <text x="160" y="80" font-family="Epilogue,sans-serif" font-size="9" fill="#7a7673" text-anchor="middle" font-weight="500" letter-spacing="1">PLANNER AGENT</text>
-            <text x="160" y="95" font-family="Epilogue,sans-serif" font-size="9" fill="#4a4744" text-anchor="middle">Reads ticket · identifies</text>
-            <text x="160" y="106" font-family="Epilogue,sans-serif" font-size="9" fill="#4a4744" text-anchor="middle">affected files &amp; root cause</text>
-            <line x1="160" y1="112" x2="160" y2="128" stroke="#d6d2ca" stroke-width="1" marker-end="url(#arr2)"/>
-            <!-- Developer -->
-            <rect x="70" y="128" width="180" height="50" rx="2" fill="#f6f3ee" stroke="#b0ada8" stroke-width="1"/>
-            <text x="160" y="146" font-family="Epilogue,sans-serif" font-size="9" fill="#7a7673" text-anchor="middle" font-weight="500" letter-spacing="1">DEVELOPER AGENT</text>
-            <text x="160" y="161" font-family="Epilogue,sans-serif" font-size="9" fill="#4a4744" text-anchor="middle">Generates code fix</text>
-            <text x="160" y="172" font-family="Epilogue,sans-serif" font-size="9" fill="#4a4744" text-anchor="middle">with codebase context</text>
-            <line x1="160" y1="178" x2="160" y2="194" stroke="#d6d2ca" stroke-width="1" marker-end="url(#arr2)"/>
-            <!-- QA -->
-            <rect x="70" y="194" width="180" height="50" rx="2" fill="#f6f3ee" stroke="#b0ada8" stroke-width="1"/>
-            <text x="160" y="212" font-family="Epilogue,sans-serif" font-size="9" fill="#7a7673" text-anchor="middle" font-weight="500" letter-spacing="1">QA AGENT</text>
-            <text x="160" y="227" font-family="Epilogue,sans-serif" font-size="9" fill="#4a4744" text-anchor="middle">Runs test suite</text>
-            <text x="160" y="238" font-family="Epilogue,sans-serif" font-size="9" fill="#4a4744" text-anchor="middle">against the fix</text>
-            <!-- retry loop -->
-            <path d="M70,219 Q20,219 20,160 Q20,142 70,142" fill="none" stroke="#d6d2ca" stroke-width="1" stroke-dasharray="3,3" marker-end="url(#arr2)"/>
-            <text x="14" y="185" font-family="Epilogue,sans-serif" font-size="8" fill="#b0ada8" text-anchor="middle">retry</text>
-            <text x="14" y="195" font-family="Epilogue,sans-serif" font-size="8" fill="#b0ada8" text-anchor="middle">≤3×</text>
-            <line x1="160" y1="244" x2="160" y2="260" stroke="#d6d2ca" stroke-width="1" marker-end="url(#arr2)"/>
-            <!-- Communicator -->
-            <rect x="70" y="260" width="180" height="50" rx="2" fill="#f6f3ee" stroke="#b0ada8" stroke-width="1"/>
-            <text x="160" y="278" font-family="Epilogue,sans-serif" font-size="9" fill="#7a7673" text-anchor="middle" font-weight="500" letter-spacing="1">COMMUNICATOR AGENT</text>
-            <text x="160" y="293" font-family="Epilogue,sans-serif" font-size="9" fill="#4a4744" text-anchor="middle">Updates JIRA · opens</text>
-            <text x="160" y="304" font-family="Epilogue,sans-serif" font-size="9" fill="#4a4744" text-anchor="middle">GitHub PR with diff</text>
-            <line x1="160" y1="310" x2="160" y2="326" stroke="#d6d2ca" stroke-width="1" marker-end="url(#arr2)"/>
-            <!-- output boxes -->
-            <rect x="30" y="326" width="110" height="36" rx="2" fill="#5c3d1e" stroke="none"/>
-            <text x="85" y="348" font-family="Epilogue,sans-serif" font-size="9" fill="#f6f3ee" text-anchor="middle">🔀 GitHub PR</text>
-            <rect x="180" y="326" width="110" height="36" rx="2" fill="#5c3d1e" stroke="none"/>
-            <text x="235" y="348" font-family="Epilogue,sans-serif" font-size="9" fill="#f6f3ee" text-anchor="middle">🎫 JIRA updated</text>
-            <line x1="160" y1="326" x2="85" y2="326" stroke="#d6d2ca" stroke-width="1"/>
-            <line x1="160" y1="326" x2="235" y2="326" stroke="#d6d2ca" stroke-width="1"/>
-            <!-- monitoring note -->
-            <rect x="240" y="100" width="72" height="130" rx="2" fill="none" stroke="#d6d2ca" stroke-width="1" stroke-dasharray="3,3"/>
-            <text x="276" y="118" font-family="Epilogue,sans-serif" font-size="8" fill="#b0ada8" text-anchor="middle">React</text>
-            <text x="276" y="130" font-family="Epilogue,sans-serif" font-size="8" fill="#b0ada8" text-anchor="middle">dashboard</text>
-            <text x="276" y="148" font-family="Epilogue,sans-serif" font-size="8" fill="#b0ada8" text-anchor="middle">live agent</text>
-            <text x="276" y="160" font-family="Epilogue,sans-serif" font-size="8" fill="#b0ada8" text-anchor="middle">output logs</text>
-            <text x="276" y="180" font-family="Epilogue,sans-serif" font-size="8" fill="#b0ada8" text-anchor="middle">+ manual</text>
-            <text x="276" y="192" font-family="Epilogue,sans-serif" font-size="8" fill="#b0ada8" text-anchor="middle">trigger</text>
+      <div>
+        <div class="diagram-shell">
+          <div class="diagram-title">Agent pipeline · Bugfix AI Pilot</div>
+          <svg class="diag" viewBox="0 0 320 400">
+            <defs><marker id="arr2" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#5a6573"/></marker></defs>
+            <rect x="90" y="10" width="140" height="36" rx="2" class="node-fill"/>
+            <text x="160" y="32" class="text-bright" text-anchor="middle">🎫 JIRA Ticket</text>
+            <line x1="160" y1="46" x2="160" y2="62" class="arrow" marker-end="url(#arr2)"/>
+            <rect x="70" y="62" width="180" height="50" rx="2" class="node-fill"/>
+            <text x="160" y="80" class="label" text-anchor="middle">PLANNER AGENT</text>
+            <text x="160" y="95" class="text" text-anchor="middle">Reads ticket · identifies</text>
+            <text x="160" y="106" class="text" text-anchor="middle">affected files &amp; root cause</text>
+            <line x1="160" y1="112" x2="160" y2="128" class="arrow" marker-end="url(#arr2)"/>
+            <rect x="70" y="128" width="180" height="50" rx="2" class="node-fill"/>
+            <text x="160" y="146" class="label" text-anchor="middle">DEVELOPER AGENT</text>
+            <text x="160" y="161" class="text" text-anchor="middle">Generates code fix</text>
+            <text x="160" y="172" class="text" text-anchor="middle">with codebase context</text>
+            <line x1="160" y1="178" x2="160" y2="194" class="arrow" marker-end="url(#arr2)"/>
+            <rect x="70" y="194" width="180" height="50" rx="2" class="node-fill"/>
+            <text x="160" y="212" class="label" text-anchor="middle">QA AGENT</text>
+            <text x="160" y="227" class="text" text-anchor="middle">Runs test suite</text>
+            <text x="160" y="238" class="text" text-anchor="middle">against the fix</text>
+            <path d="M70,219 Q20,219 20,160 Q20,142 70,142" class="arrow" stroke-dasharray="3,3" marker-end="url(#arr2)"/>
+            <text x="14" y="185" class="text" text-anchor="middle" style="font-size:7px">retry</text>
+            <text x="14" y="195" class="text" text-anchor="middle" style="font-size:7px">≤3×</text>
+            <line x1="160" y1="244" x2="160" y2="260" class="arrow" marker-end="url(#arr2)"/>
+            <rect x="70" y="260" width="180" height="50" rx="2" class="node-fill"/>
+            <text x="160" y="278" class="label" text-anchor="middle">COMMUNICATOR AGENT</text>
+            <text x="160" y="293" class="text" text-anchor="middle">Updates JIRA · opens</text>
+            <text x="160" y="304" class="text" text-anchor="middle">GitHub PR with diff</text>
+            <line x1="160" y1="310" x2="160" y2="326" class="arrow" marker-end="url(#arr2)"/>
+            <rect x="30" y="326" width="110" height="36" rx="2" class="node-out"/>
+            <text x="85" y="348" class="text-bright" text-anchor="middle" style="fill:#a8d8f5">🔀 GitHub PR</text>
+            <rect x="180" y="326" width="110" height="36" rx="2" class="node-out"/>
+            <text x="235" y="348" class="text-bright" text-anchor="middle" style="fill:#a8d8f5">🎫 JIRA updated</text>
+            <line x1="160" y1="326" x2="85" y2="326" class="arrow"/>
+            <line x1="160" y1="326" x2="235" y2="326" class="arrow"/>
           </svg>
         </div>
       </div>
@@ -583,207 +648,365 @@ svg.diag{width:100%;height:auto;display:block;}
 
     <!-- PROJECT 3 -->
     <div class="proj-panel" id="pp3">
-      <div class="pp-left">
+      <div>
         <span class="pp-badge">EvalOps · Python · CI/CD</span>
-        <div class="pp-name">LLM Evaluation Harness</div>
-        <div class="pp-what">CI-ready A/B Evaluation Framework</div>
-        <p class="pp-desc">A production-ready framework for A/B evaluating LLM changes with statistical rigour and CI integration — making evaluation a real deployment gate, not a manual check.</p>
+        <div class="pp-name">LLM Eval Harness</div>
+        <div class="pp-what">CI-ready A/B Eval Framework</div>
+        <p class="pp-desc">A production-ready framework for A/B evaluating LLM changes with statistical rigour and CI integration — making evaluation a <strong>real deployment gate</strong>, not a manual check.</p>
         <ul class="pp-bullets">
-          <li><strong>Hard checks first:</strong> Schema, citation presence, format requirements — deterministic, zero cost. Only passing cases proceed to LLM judge.</li>
-          <li><strong>LLM-as-judge with calibration:</strong> Rubric-based pairwise scoring with agreement rate, flip rate, and order bias measurement.</li>
-          <li><strong>95% bootstrap confidence intervals</strong> on win rate. Per-tag breakdown. Refusal and format pass rates tracked separately.</li>
-          <li><strong>Quality gates:</strong> Configurable thresholds. Exit code 2 on failure blocks CI pipeline. Regression detection vs stored baseline.</li>
-          <li><strong>Zero-cost CI:</strong> Mock providers run the full pipeline in GitHub Actions with no API keys.</li>
+          <li><strong>Hard checks first:</strong> Schema, citations, format — deterministic, zero cost. Only passing cases proceed to LLM judge.</li>
+          <li><strong>LLM-as-judge with calibration:</strong> Rubric pairwise scoring with agreement, flip rate, and order bias measurement.</li>
+          <li><strong>95% bootstrap CI</strong> on win rate. Per-tag breakdown. Refusal and format pass rates tracked separately.</li>
+          <li><strong>Quality gates:</strong> Configurable thresholds. Exit code 2 on failure blocks CI pipeline.</li>
         </ul>
-        <div class="pp-stack"><span class="pp-pill">Python</span><span class="pp-pill">OpenAI</span><span class="pp-pill">Ollama</span><span class="pp-pill">NumPy</span><span class="pp-pill">RAGAS</span><span class="pp-pill">GitHub Actions</span><span class="pp-pill">pytest</span></div>
-        <a class="pp-link" href="https://github.com/Revanth9727/LLM-Evaluation-Harness" target="_blank">View on GitHub</a>
+        <div class="pp-stack"><span class="pp-pill">Python</span><span class="pp-pill">OpenAI</span><span class="pp-pill">RAGAS</span><span class="pp-pill">GitHub Actions</span><span class="pp-pill">pytest</span></div>
+        <a class="pp-link" href="https://github.com/Revanth9727/LLM-Evaluation-Harness" target="_blank">View on GitHub →</a>
       </div>
-      <div class="pp-right">
-        <div class="diagram-wrap">
+      <div>
+        <div class="diagram-shell">
           <div class="diagram-title">Eval pipeline flow</div>
-          <svg class="diag" viewBox="0 0 300 360" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <marker id="arr3" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
-                <path d="M0,0 L6,3 L0,6 Z" fill="#a8a49e"/>
-              </marker>
-            </defs>
-            <rect x="75" y="10" width="150" height="36" rx="2" fill="#f0ede7" stroke="#d6d2ca" stroke-width="1"/>
-            <text x="150" y="32" font-family="Epilogue,sans-serif" font-size="10" fill="#4a4744" text-anchor="middle">Test dataset (JSONL)</text>
-            <line x1="150" y1="46" x2="150" y2="62" stroke="#d6d2ca" stroke-width="1" marker-end="url(#arr3)"/>
-            <!-- hard checks -->
-            <rect x="55" y="62" width="190" height="50" rx="2" fill="#f6f3ee" stroke="#b0ada8" stroke-width="1"/>
-            <text x="150" y="80" font-family="Epilogue,sans-serif" font-size="9" fill="#7a7673" text-anchor="middle" font-weight="500" letter-spacing="1">HARD CHECKS</text>
-            <text x="150" y="95" font-family="Epilogue,sans-serif" font-size="9" fill="#4a4744" text-anchor="middle">Schema · citations · format · length</text>
-            <text x="150" y="106" font-family="Epilogue,sans-serif" font-size="9" fill="#4a4744" text-anchor="middle">Deterministic · zero LLM cost</text>
-            <!-- pass/fail -->
-            <line x1="150" y1="112" x2="150" y2="128" stroke="#d6d2ca" stroke-width="1" marker-end="url(#arr3)"/>
-            <path d="M55,88 Q10,88 10,140 Q10,150 55,150" fill="none" stroke="#d6d2ca" stroke-width="1" stroke-dasharray="3,3" marker-end="url(#arr3)"/>
-            <text x="6" y="120" font-family="Epilogue,sans-serif" font-size="8" fill="#b0ada8" text-anchor="middle">fail →</text>
-            <text x="6" y="130" font-family="Epilogue,sans-serif" font-size="8" fill="#b0ada8" text-anchor="middle">skip</text>
-            <!-- LLM judge -->
-            <rect x="55" y="128" width="190" height="50" rx="2" fill="#f6f3ee" stroke="#b0ada8" stroke-width="1"/>
-            <text x="150" y="146" font-family="Epilogue,sans-serif" font-size="9" fill="#7a7673" text-anchor="middle" font-weight="500" letter-spacing="1">LLM-AS-JUDGE</text>
-            <text x="150" y="161" font-family="Epilogue,sans-serif" font-size="9" fill="#4a4744" text-anchor="middle">Rubric-based A vs B scoring</text>
-            <text x="150" y="172" font-family="Epilogue,sans-serif" font-size="9" fill="#4a4744" text-anchor="middle">Calibration: flip rate · order bias</text>
-            <line x1="150" y1="178" x2="150" y2="194" stroke="#d6d2ca" stroke-width="1" marker-end="url(#arr3)"/>
-            <!-- metrics -->
-            <rect x="55" y="194" width="190" height="50" rx="2" fill="#f6f3ee" stroke="#b0ada8" stroke-width="1"/>
-            <text x="150" y="212" font-family="Epilogue,sans-serif" font-size="9" fill="#7a7673" text-anchor="middle" font-weight="500" letter-spacing="1">METRICS</text>
-            <text x="150" y="227" font-family="Epilogue,sans-serif" font-size="9" fill="#4a4744" text-anchor="middle">Win rate + 95% CI · refusal rate</text>
-            <text x="150" y="238" font-family="Epilogue,sans-serif" font-size="9" fill="#4a4744" text-anchor="middle">Format pass · per-tag breakdown</text>
-            <line x1="150" y1="244" x2="150" y2="260" stroke="#d6d2ca" stroke-width="1" marker-end="url(#arr3)"/>
-            <!-- quality gate -->
-            <rect x="55" y="260" width="190" height="42" rx="2" fill="#f6f3ee" stroke="#b0ada8" stroke-width="1"/>
-            <text x="150" y="278" font-family="Epilogue,sans-serif" font-size="9" fill="#7a7673" text-anchor="middle" font-weight="500" letter-spacing="1">QUALITY GATE</text>
-            <text x="150" y="293" font-family="Epilogue,sans-serif" font-size="9" fill="#4a4744" text-anchor="middle">Thresholds · regression vs baseline</text>
-            <line x1="150" y1="302" x2="150" y2="318" stroke="#d6d2ca" stroke-width="1" marker-end="url(#arr3)"/>
-            <!-- outcomes -->
-            <rect x="20" y="318" width="100" height="32" rx="2" fill="#2d6a4f" stroke="none"/>
-            <text x="70" y="338" font-family="Epilogue,sans-serif" font-size="9" fill="#f6f3ee" text-anchor="middle">✓ PASS · exit 0</text>
-            <rect x="180" y="318" width="100" height="32" rx="2" fill="#8b1a1a" stroke="none"/>
-            <text x="230" y="338" font-family="Epilogue,sans-serif" font-size="9" fill="#f6f3ee" text-anchor="middle">✗ FAIL · exit 2</text>
-            <line x1="150" y1="318" x2="70" y2="318" stroke="#d6d2ca" stroke-width="1"/>
-            <line x1="150" y1="318" x2="230" y2="318" stroke="#d6d2ca" stroke-width="1"/>
+          <svg class="diag" viewBox="0 0 300 360">
+            <defs><marker id="arr3" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#5a6573"/></marker></defs>
+            <rect x="75" y="10" width="150" height="36" rx="2" class="node-fill"/>
+            <text x="150" y="32" class="text-bright" text-anchor="middle">Test dataset (JSONL)</text>
+            <line x1="150" y1="46" x2="150" y2="62" class="arrow" marker-end="url(#arr3)"/>
+            <rect x="55" y="62" width="190" height="50" rx="2" class="node-fill"/>
+            <text x="150" y="80" class="label" text-anchor="middle">HARD CHECKS</text>
+            <text x="150" y="95" class="text" text-anchor="middle">Schema · citations · format · length</text>
+            <text x="150" y="106" class="text" text-anchor="middle">Deterministic · zero LLM cost</text>
+            <line x1="150" y1="112" x2="150" y2="128" class="arrow" marker-end="url(#arr3)"/>
+            <path d="M55,88 Q10,88 10,140 Q10,150 55,150" class="arrow" stroke-dasharray="3,3" marker-end="url(#arr3)"/>
+            <text x="6" y="120" class="text" text-anchor="middle" style="font-size:7px">fail →</text>
+            <text x="6" y="130" class="text" text-anchor="middle" style="font-size:7px">skip</text>
+            <rect x="55" y="128" width="190" height="50" rx="2" class="node-fill"/>
+            <text x="150" y="146" class="label" text-anchor="middle">LLM-AS-JUDGE</text>
+            <text x="150" y="161" class="text" text-anchor="middle">Rubric-based A vs B scoring</text>
+            <text x="150" y="172" class="text" text-anchor="middle">Calibration: flip rate · order bias</text>
+            <line x1="150" y1="178" x2="150" y2="194" class="arrow" marker-end="url(#arr3)"/>
+            <rect x="55" y="194" width="190" height="50" rx="2" class="node-fill"/>
+            <text x="150" y="212" class="label" text-anchor="middle">METRICS</text>
+            <text x="150" y="227" class="text" text-anchor="middle">Win rate + 95% CI · refusal rate</text>
+            <text x="150" y="238" class="text" text-anchor="middle">Format pass · per-tag breakdown</text>
+            <line x1="150" y1="244" x2="150" y2="260" class="arrow" marker-end="url(#arr3)"/>
+            <rect x="55" y="260" width="190" height="42" rx="2" class="node-fill"/>
+            <text x="150" y="278" class="label" text-anchor="middle">QUALITY GATE</text>
+            <text x="150" y="293" class="text" text-anchor="middle">Thresholds · regression vs baseline</text>
+            <line x1="150" y1="302" x2="150" y2="318" class="arrow" marker-end="url(#arr3)"/>
+            <rect x="20" y="318" width="100" height="32" rx="2" class="node-out"/>
+            <text x="70" y="338" class="text-bright" text-anchor="middle" style="fill:#5dd9c1">✓ PASS · exit 0</text>
+            <rect x="180" y="318" width="100" height="32" rx="2" class="node-fail"/>
+            <text x="230" y="338" class="text-bright" text-anchor="middle" style="fill:#ff8aa0">✗ FAIL · exit 2</text>
+            <line x1="150" y1="318" x2="70" y2="318" class="arrow"/>
+            <line x1="150" y1="318" x2="230" y2="318" class="arrow"/>
           </svg>
         </div>
-      </div>
-    </div>
-
-  </div><!-- /c-inner -->
-</section>
-
-<!-- ══════════════════════════════════════════════════════════════════════════ -->
-<!-- CHAPTER 6 — CONTACT                                                       -->
-<!-- ══════════════════════════════════════════════════════════════════════════ -->
-<section class="chapter" id="ch6" data-label="Contact">
-  <div class="ch-num">06</div>
-  <div class="c-inner">
-    <div class="contact-story">
-      <div>
-        <h2 class="ct-heading">Let's build something that stays running.</h2>
-        <p class="ct-sub">Open to senior AI architect and staff engineer roles building production GenAI systems. Based in West Lafayette, IN.</p>
-        <div class="ct-links">
-          <a class="ct-link" href="mailto:gollapudi.off@gmail.com">gollapudi.off@gmail.com</a>
-          <a class="ct-link" href="https://linkedin.com/in/revanth-gollapudi" target="_blank">LinkedIn</a>
-          <a class="ct-link" href="https://github.com/Revanth980727" target="_blank">GitHub</a>
-        </div>
-      </div>
-      <div class="ct-right">
-        <p class="ct-available">Open to senior AI architect &amp; staff engineer roles.<br>West Lafayette, IN · gollapudi.off@gmail.com</p>
-        <p class="ct-email-big">gollapudi.off<br>@gmail.com</p>
       </div>
     </div>
   </div>
 </section>
 
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<!-- CONTACT                                                                -->
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<section class="section" id="contact">
+  <div class="contact-inner reveal">
+    <div class="contact-eyebrow">05 — Available · Q4 2026</div>
+    <h2 class="contact-title">Let's build something that <em>stays running.</em></h2>
+    <p class="contact-sub">Open to senior AI architect and staff engineer roles building production GenAI systems. Based in West Lafayette, IN — open to relocation for the right opportunity.</p>
+    <div class="contact-links">
+      <a href="mailto:gollapudi.off@gmail.com" class="btn btn-primary">gollapudi.off@gmail.com</a>
+      <a href="https://linkedin.com/in/revanth-gollapudi" target="_blank" class="btn btn-ghost">LinkedIn</a>
+      <a href="https://github.com/Revanth980727" target="_blank" class="btn btn-ghost">GitHub</a>
+    </div>
+    <div class="contact-grid">
+      <div class="contact-cell">
+        <div class="cc-label">EMAIL</div>
+        <a href="mailto:gollapudi.off@gmail.com" class="cc-val">gollapudi.off@gmail.com</a>
+      </div>
+      <div class="contact-cell">
+        <div class="cc-label">LOCATION</div>
+        <div class="cc-val">West Lafayette, IN · USA</div>
+      </div>
+      <div class="contact-cell">
+        <div class="cc-label">STATUS</div>
+        <div class="cc-val">Open · Senior / Staff GenAI</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">© 2026 Revanth Gollapudi · Designed &amp; built in browser</footer>
+
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<!-- THREE.JS — crystalline shard (lightweight, hardened)                    -->
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"
+  }
+}
+</script>
+
+<script type="module">
+// ── Safe logger: never crashes in restrictive environments ─────────────
+const safeLog = (msg) => {
+  try {
+    if (typeof console === 'undefined') return;
+    const fn = console.log || console.info || console.warn;
+    if (typeof fn === 'function') fn.call(console, msg);
+  } catch (_) { /* swallow */ }
+};
+
+// ── Detect WebGL support before doing anything ─────────────────────────
+function hasWebGL() {
+  try {
+    const c = document.createElement('canvas');
+    const gl = c.getContext('webgl2') || c.getContext('webgl') || c.getContext('experimental-webgl');
+    if (!gl) return false;
+    // verify shader precision call works (the bug you hit)
+    const fmt = gl.getShaderPrecisionFormat
+      ? gl.getShaderPrecisionFormat(gl.VERTEX_SHADER, gl.HIGH_FLOAT)
+      : null;
+    return !!fmt;
+  } catch (e) { return false; }
+}
+
+const canvasEl = document.getElementById('canvas');
+const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+if (!hasWebGL() || reduceMotion) {
+  // graceful CSS fallback — paint a soft radial nebula instead
+  canvasEl.style.background = 'radial-gradient(ellipse at center, rgba(127,184,224,0.12) 0%, rgba(58,143,196,0.04) 35%, transparent 70%)';
+  safeLog('Three.js skipped: WebGL unavailable or reduced-motion preferred.');
+} else {
+  initThree();
+}
+
+async function initThree() {
+  const THREE = await import('three');
+
+  const renderer = new THREE.WebGLRenderer({
+    canvas: canvasEl,
+    antialias: window.devicePixelRatio < 2,
+    alpha: true,
+    powerPreference: 'low-power',
+    failIfMajorPerformanceCaveat: false,
+  });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+  renderer.setClearColor(0x000000, 0);
+
+  // ── Context-loss recovery ────────────────────────────────────────────
+  let contextLost = false;
+  canvasEl.addEventListener('webglcontextlost', (e) => {
+    e.preventDefault();
+    contextLost = true;
+    safeLog('WebGL context lost — pausing render.');
+  }, false);
+  canvasEl.addEventListener('webglcontextrestored', () => {
+    contextLost = false;
+    safeLog('WebGL context restored.');
+  }, false);
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(35, 1, 0.1, 100);
+  camera.position.set(0, 0, 8);
+
+  // ── Lighting ─────────────────────────────────────────────────────────
+  scene.add(new THREE.AmbientLight(0x2a3340, 0.7));
+  const key = new THREE.DirectionalLight(0x7fb8e0, 1.4);
+  key.position.set(5, 4, 6); scene.add(key);
+  const rim = new THREE.DirectionalLight(0x5dd9c1, 0.7);
+  rim.position.set(-4, -2, -3); scene.add(rim);
+  const fill = new THREE.PointLight(0xa8d8f5, 1.0, 20);
+  fill.position.set(-3, 3, 4); scene.add(fill);
+
+  // ── Crystal shard ────────────────────────────────────────────────────
+  const shardGroup = new THREE.Group();
+
+  const coreGeom = new THREE.IcosahedronGeometry(1.4, 1);
+  const cp = coreGeom.attributes.position;
+  for (let i = 0; i < cp.count; i++) {
+    const x = cp.getX(i), y = cp.getY(i), z = cp.getZ(i);
+    const n = (Math.sin(x*3.1) + Math.cos(y*2.7) + Math.sin(z*2.3)) * 0.08;
+    cp.setXYZ(i, x + n, y + n * 1.2, z + n * 0.8);
+  }
+  coreGeom.computeVertexNormals();
+
+  // MeshPhongMaterial w/ low cost — keeps icy look without transmission/clearcoat
+  const coreMat = new THREE.MeshPhongMaterial({
+    color: 0x6ba8d8,
+    emissive: 0x1a3a52,
+    emissiveIntensity: 0.6,
+    specular: 0xa8d8f5,
+    shininess: 80,
+    transparent: true,
+    opacity: 0.85,
+  });
+  shardGroup.add(new THREE.Mesh(coreGeom, coreMat));
+
+  // outer wireframe shell
+  const shell = new THREE.Mesh(
+    new THREE.IcosahedronGeometry(1.7, 1),
+    new THREE.MeshBasicMaterial({ color: 0x7fb8e0, wireframe: true, transparent: true, opacity: 0.28 })
+  );
+  shardGroup.add(shell);
+
+  // inner glow shell
+  const glow = new THREE.Mesh(
+    new THREE.IcosahedronGeometry(1.5, 0),
+    new THREE.MeshBasicMaterial({ color: 0xa8d8f5, wireframe: true, transparent: true, opacity: 0.4 })
+  );
+  shardGroup.add(glow);
+
+  scene.add(shardGroup);
+
+  // ── Floating particles (lighter count) ───────────────────────────────
+  const PCOUNT = 250;
+  const pGeom = new THREE.BufferGeometry();
+  const pPos = new Float32Array(PCOUNT * 3);
+  const pVel = new Float32Array(PCOUNT * 3);
+  for (let i = 0; i < PCOUNT; i++) {
+    const i3 = i * 3;
+    const r = 2.5 + Math.random() * 2.5;
+    const theta = Math.random() * Math.PI * 2;
+    pPos[i3]   = Math.cos(theta) * r;
+    pPos[i3+1] = (Math.random() - 0.5) * 1.6;
+    pPos[i3+2] = Math.sin(theta) * r;
+    pVel[i3]   = (Math.random()-0.5) * 0.0015;
+    pVel[i3+1] = (Math.random()-0.5) * 0.0015;
+    pVel[i3+2] = (Math.random()-0.5) * 0.0015;
+  }
+  pGeom.setAttribute('position', new THREE.BufferAttribute(pPos, 3));
+  const particles = new THREE.Points(pGeom, new THREE.PointsMaterial({
+    color: 0xa8d8f5, size: 0.025, transparent: true, opacity: 0.6,
+    blending: THREE.AdditiveBlending, depthWrite: false,
+  }));
+  scene.add(particles);
+
+  // ── Mouse parallax ───────────────────────────────────────────────────
+  const mouse = { x:0, y:0, tx:0, ty:0 };
+  window.addEventListener('mousemove', (e) => {
+    mouse.tx = (e.clientX / window.innerWidth - 0.5) * 0.6;
+    mouse.ty = (e.clientY / window.innerHeight - 0.5) * 0.4;
+  });
+
+  // ── Resize ───────────────────────────────────────────────────────────
+  function resize() {
+    const r = canvasEl.getBoundingClientRect();
+    const w = r.width, h = r.height;
+    if (!w || !h) return;
+    camera.aspect = w / h;
+    camera.updateProjectionMatrix();
+    renderer.setSize(w, h, false);
+  }
+  new ResizeObserver(resize).observe(canvasEl);
+  resize();
+
+  // ── Pause render when tab hidden or canvas off-screen ────────────────
+  let visible = true;
+  document.addEventListener('visibilitychange', () => {
+    visible = document.visibilityState === 'visible';
+  });
+  let onScreen = true;
+  new IntersectionObserver(([entry]) => {
+    onScreen = entry.isIntersecting;
+  }, { threshold: 0 }).observe(canvasEl);
+
+  // ── Animate ──────────────────────────────────────────────────────────
+  const clock = new THREE.Clock();
+  function tick() {
+    requestAnimationFrame(tick);
+    if (contextLost || !visible || !onScreen) return;
+
+    const t = clock.getElapsedTime();
+    mouse.x += (mouse.tx - mouse.x) * 0.05;
+    mouse.y += (mouse.ty - mouse.y) * 0.05;
+
+    shardGroup.rotation.y = t * 0.18 + mouse.x * 0.5;
+    shardGroup.rotation.x = Math.sin(t * 0.12) * 0.15 + mouse.y * 0.3;
+    shardGroup.position.y = Math.sin(t * 0.6) * 0.08;
+
+    shell.rotation.y = -t * 0.1;
+    shell.rotation.z = t * 0.05;
+    glow.rotation.x = t * 0.15;
+    glow.rotation.z = -t * 0.08;
+
+    const pos = particles.geometry.attributes.position.array;
+    for (let i = 0; i < PCOUNT; i++) {
+      const i3 = i * 3;
+      pos[i3]   += pVel[i3];
+      pos[i3+1] += pVel[i3+1] + Math.sin(t * 0.3 + i) * 0.0008;
+      pos[i3+2] += pVel[i3+2];
+      const rad = Math.sqrt(pos[i3]*pos[i3] + pos[i3+2]*pos[i3+2]);
+      if (rad > 5.5 || rad < 1.8) { pVel[i3] *= -1; pVel[i3+2] *= -1; }
+      if (Math.abs(pos[i3+1]) > 2) pVel[i3+1] *= -1;
+    }
+    particles.geometry.attributes.position.needsUpdate = true;
+
+    try {
+      renderer.render(scene, camera);
+    } catch (err) {
+      safeLog('Render error, stopping loop: ' + err);
+      contextLost = true;
+    }
+  }
+  tick();
+}
+</script>
+
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<!-- INTERACTIVITY                                                          -->
+<!-- ════════════════════════════════════════════════════════════════════ -->
 <script>
-// ── CURSOR (smooth lag) ───────────────────────────────────────────────────────
-const cur = document.getElementById('cur');
-let mx=window.innerWidth/2, my=window.innerHeight/2, cx=mx, cy=my;
-document.addEventListener('mousemove', e=>{mx=e.clientX;my=e.clientY;});
-document.addEventListener('mousedown',()=>cur.classList.add('click'));
-document.addEventListener('mouseup',()=>cur.classList.remove('click'));
-document.querySelectorAll('a,button,.p-tab,.exp-nav-item,.h-tag,.sk-v,.ep-pill,.pp-pill,.ct-link').forEach(el=>{
-  el.addEventListener('mouseenter',()=>cur.classList.add('big'));
-  el.addEventListener('mouseleave',()=>cur.classList.remove('big'));
+// scroll progress bar
+const prog = document.getElementById('scrollProg');
+window.addEventListener('scroll', () => {
+  const h = document.documentElement.scrollHeight - window.innerHeight;
+  const p = Math.min(window.scrollY / h, 1);
+  prog.style.transform = `scaleX(${p})`;
 });
-(function loop(){
-  cx+=(mx-cx)*.11; cy+=(my-cy)*.11;
-  cur.style.transform=`translate(calc(${cx}px - 50%), calc(${cy}px - 50%))`;
-  requestAnimationFrame(loop);
-})();
 
-// ── PROGRESS DOTS ─────────────────────────────────────────────────────────────
-const chapters = document.querySelectorAll('.chapter');
-const dotsNav = document.getElementById('dots');
-chapters.forEach((ch,i)=>{
-  const d = document.createElement('div');
-  d.className='dot';
-  d.title = ch.dataset.label||'';
-  d.addEventListener('click',()=>ch.scrollIntoView({behavior:'smooth'}));
-  dotsNav.appendChild(d);
-});
-const dotEls = dotsNav.querySelectorAll('.dot');
-
-// ── INTERSECTION — chapter entrance + dots ────────────────────────────────────
-const chObs = new IntersectionObserver(entries=>{
-  entries.forEach(e=>{
-    if(e.isIntersecting){
-      e.target.classList.add('entered');
-      // update dot
-      const idx = Array.from(chapters).indexOf(e.target);
-      dotEls.forEach((d,i)=>d.classList.toggle('on',i===idx));
+// reveal on scroll
+const revealObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('in');
+      revealObs.unobserve(e.target);
     }
   });
-},{threshold:0.25});
-chapters.forEach(ch=>chObs.observe(ch));
+}, { threshold: 0.12 });
+document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
 
-// ── COUNTER ANIMATION ─────────────────────────────────────────────────────────
-function animCount(el,target,suffix,dur){
-  const s=performance.now();
-  (function go(now){
-    const p=Math.min((now-s)/dur,1), ease=1-Math.pow(1-p,3);
-    const v=Math.round(target*ease);
-    el.textContent=(target>=1000?v.toLocaleString():v)+suffix;
-    if(p<1)requestAnimationFrame(go);
-    else el.textContent=(target>=1000?target.toLocaleString():target)+suffix;
-  })(performance.now());
-}
-const cntObs=new IntersectionObserver(entries=>{
-  entries.forEach(e=>{
-    if(!e.isIntersecting)return;
-    const el=e.target;
-    animCount(el,parseFloat(el.dataset.target),el.dataset.suffix||'',1600);
-    cntObs.unobserve(el);
+// nav scroll
+document.querySelectorAll('[data-scroll]').forEach(link => {
+  link.addEventListener('click', (e) => {
+    e.preventDefault();
+    const target = document.getElementById(link.dataset.scroll);
+    if (target) target.scrollIntoView({ behavior: 'smooth' });
   });
-},{threshold:.5});
-document.querySelectorAll('.st-n[data-target]').forEach(s=>cntObs.observe(s));
+});
 
-// ── EXPERIENCE TABS ───────────────────────────────────────────────────────────
-document.querySelectorAll('.exp-nav-item').forEach(item=>{
-  item.addEventListener('click',()=>{
-    document.querySelectorAll('.exp-nav-item').forEach(i=>i.classList.remove('on'));
-    document.querySelectorAll('.exp-panel').forEach(p=>p.classList.remove('on'));
+// experience tabs
+document.querySelectorAll('.exp-nav-item').forEach(item => {
+  item.addEventListener('click', () => {
+    document.querySelectorAll('.exp-nav-item').forEach(i => i.classList.remove('on'));
+    document.querySelectorAll('.exp-panel').forEach(p => p.classList.remove('on'));
     item.classList.add('on');
     document.getElementById(item.dataset.ep).classList.add('on');
   });
 });
 
-// ── PROJECT TABS ──────────────────────────────────────────────────────────────
-document.querySelectorAll('.p-tab').forEach(tab=>{
-  tab.addEventListener('click',()=>{
-    document.querySelectorAll('.p-tab').forEach(t=>t.classList.remove('on'));
-    document.querySelectorAll('.proj-panel').forEach(p=>p.classList.remove('on'));
+// project tabs
+document.querySelectorAll('.p-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.p-tab').forEach(t => t.classList.remove('on'));
+    document.querySelectorAll('.proj-panel').forEach(p => p.classList.remove('on'));
     tab.classList.add('on');
     document.getElementById(tab.dataset.pp).classList.add('on');
   });
 });
-
-// ── SKILL TAG HOVER STAGGER ───────────────────────────────────────────────────
-const skObs=new IntersectionObserver(entries=>{
-  entries.forEach(e=>{
-    if(!e.isIntersecting)return;
-    e.target.querySelectorAll('.sk-v').forEach((v,i)=>{
-      v.style.opacity='0'; v.style.transform='translateY(6px)';
-      setTimeout(()=>{
-        v.style.transition='opacity .3s,transform .3s';
-        v.style.opacity='1'; v.style.transform='none';
-      },50+i*35);
-    });
-    skObs.unobserve(e.target);
-  });
-},{threshold:.4});
-document.querySelectorAll('.sk-line').forEach(l=>skObs.observe(l));
-
-// ── PARALLAX HERO ─────────────────────────────────────────────────────────────
-const heroGrid = document.querySelector('.hero-grid');
-const heroR = document.querySelector('.hero-right');
-window.addEventListener('scroll',()=>{
-  const y=window.scrollY;
-  if(y<window.innerHeight*1.2&&heroR){
-    heroR.style.transform='translateY('+(y*.1)+'px)';
-  }
-},{passive:true});
 </script>
+
 </body>
 </html>
