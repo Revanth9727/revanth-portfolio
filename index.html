@@ -4,1046 +4,744 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Revanth Gollapudi — AI Architect / Senior Production GenAI Engineer</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@200;300;400;500;600&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+<meta name="description" content="AI Architect / Senior Production GenAI Engineer. Production GenAI systems, RAG, EvalOps, model routing, AWS + Azure.">
 <style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-:root{
-  --void:#05070b;
-  --void-2:#0a0d13;
-  --frost:#e8eef5;
-  --frost-dim:#a8b3c3;
-  --frost-faint:#5a6573;
-  --frost-ghost:#2a3140;
-  --ice:#7fb8e0;
-  --ice-deep:#3a8fc4;
-  --ice-bright:#a8d8f5;
-  --aurora:#5dd9c1;
-  --rule:rgba(168,179,195,.08);
-  --rule-strong:rgba(168,179,195,.16);
-}
-html{font-size:16px;background:var(--void);}
-body{
-  background:var(--void);
-  color:var(--frost);
-  font-family:'Inter Tight',sans-serif;
-  font-weight:300;
-  line-height:1.6;
-  overflow-x:hidden;
-  letter-spacing:.005em;
-  -webkit-font-smoothing:antialiased;
-  text-rendering:optimizeLegibility;
+/* ─────────────────────────────────────────────────────────────
+   System-default theme: respects prefers-color-scheme.
+   No external fonts. No animations. No gradients.
+   ───────────────────────────────────────────────────────────── */
+
+:root {
+  --bg: #ffffff;
+  --bg-alt: #f6f7f8;
+  --fg: #1a1a1a;
+  --fg-dim: #4a4a4a;
+  --fg-faint: #6b6b6b;
+  --rule: #e2e4e7;
+  --accent: #0b4f9c;
+  --link: #0b4f9c;
+  --code-bg: #f1f3f5;
+  --pill-bg: #eef0f3;
+  --pill-fg: #2a2a2a;
 }
 
-/* ── ATMOSPHERIC GRAIN OVERLAY ── */
-body::before{
-  content:'';position:fixed;inset:0;pointer-events:none;z-index:1;
-  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.6 0 0 0 0 0.7 0 0 0 0 0.85 0 0 0 0.06 0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
-  opacity:.4;mix-blend-mode:overlay;
-}
-body::after{
-  content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
-  background:
-    radial-gradient(ellipse 80% 50% at 50% 0%,rgba(58,143,196,.08),transparent 60%),
-    radial-gradient(ellipse 60% 40% at 80% 90%,rgba(93,217,193,.04),transparent 50%);
-}
-
-/* ── TOP NAV ── */
-.nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:1.5rem 2rem;mix-blend-mode:difference;}
-.nav-logo{font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--frost);}
-.nav-logo span{color:var(--ice);}
-.nav-links{display:flex;gap:2rem;}
-.nav-link{font-family:'JetBrains Mono',monospace;font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;color:var(--frost);text-decoration:none;opacity:.6;transition:opacity .3s;cursor:pointer;}
-.nav-link:hover{opacity:1;}
-.nav-status{display:flex;align-items:center;gap:.5rem;font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.15em;text-transform:uppercase;color:var(--frost);opacity:.6;}
-.nav-status::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--aurora);box-shadow:0 0 8px var(--aurora);animation:pulse 2.5s infinite;}
-@keyframes pulse{0%,100%{opacity:.5;}50%{opacity:1;}}
-
-/* ── HERO + 3D STAGE ── */
-.hero{position:relative;min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:8rem 2rem 3rem;z-index:2;}
-.hero-canvas{position:absolute;inset:0;z-index:-1;}
-.hero-grid-bg{
-  position:absolute;inset:0;z-index:-2;
-  background-image:
-    linear-gradient(rgba(168,179,195,.04) 1px,transparent 1px),
-    linear-gradient(90deg,rgba(168,179,195,.04) 1px,transparent 1px);
-  background-size:80px 80px;
-  mask-image:radial-gradient(ellipse 70% 70% at 50% 50%,black,transparent);
-  -webkit-mask-image:radial-gradient(ellipse 70% 70% at 50% 50%,black,transparent);
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e1116;
+    --bg-alt: #161a22;
+    --fg: #e6e8eb;
+    --fg-dim: #b0b6bf;
+    --fg-faint: #8a909a;
+    --rule: #2a2f38;
+    --accent: #79b8ff;
+    --link: #79b8ff;
+    --code-bg: #1c2129;
+    --pill-bg: #1c2129;
+    --pill-fg: #d6d9de;
+  }
 }
 
-.hero-inner{max-width:1400px;margin:0 auto;width:100%;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;}
-.hero-meta{font-family:'JetBrains Mono',monospace;font-size:.65rem;letter-spacing:.22em;text-transform:uppercase;color:var(--frost-dim);margin-bottom:2.5rem;display:flex;gap:1.5rem;align-items:center;flex-wrap:wrap;}
-.hero-meta .dot-sep{width:4px;height:4px;background:var(--ice);border-radius:50%;flex-shrink:0;}
-
-.hero-title{
-  font-family:'Inter Tight',sans-serif;
-  font-weight:200;
-  font-size:clamp(3.5rem,7.5vw,8.5rem);
-  line-height:.92;
-  letter-spacing:-.04em;
-  margin-bottom:2rem;
-  color:var(--frost);
+* { box-sizing: border-box; }
+html { font-size: 16px; }
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Helvetica Neue", Arial, sans-serif;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
-.hero-title .line{display:block;overflow:hidden;}
-.hero-title .line span{display:inline-block;animation:rise 1.2s cubic-bezier(.2,.9,.3,1) both;}
-.hero-title .line:nth-child(1) span{animation-delay:.2s;color:var(--frost);}
-.hero-title .line:nth-child(2) span{animation-delay:.35s;color:var(--ice-bright);font-style:italic;font-weight:300;}
-@keyframes rise{from{transform:translateY(110%);opacity:0;}to{transform:translateY(0);opacity:1;}}
 
-.hero-tagline{font-size:1rem;line-height:1.75;color:var(--frost-dim);max-width:46ch;margin-bottom:3rem;font-weight:300;animation:fade 1.4s ease .8s both;}
-.hero-tagline strong{color:var(--frost);font-weight:500;}
-@keyframes fade{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:none;}}
+a { color: var(--link); text-decoration: none; }
+a:hover { text-decoration: underline; }
 
-.hero-tags{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:3rem;animation:fade 1.4s ease 1s both;}
-.h-tag{font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.15em;text-transform:uppercase;color:var(--frost-dim);border:1px solid var(--rule-strong);padding:.4rem .8rem;border-radius:1px;backdrop-filter:blur(8px);background:rgba(10,13,19,.4);}
-.h-tag.accent{color:var(--ice-bright);border-color:rgba(127,184,224,.3);background:rgba(127,184,224,.05);}
+h1, h2, h3 { color: var(--fg); font-weight: 600; line-height: 1.25; }
+h1 { font-size: 2rem; margin: 0 0 .5rem; }
+h2 { font-size: 1.4rem; margin: 0 0 1rem; padding-bottom: .5rem; border-bottom: 1px solid var(--rule); }
+h3 { font-size: 1.05rem; margin: 1.5rem 0 .4rem; }
+p { margin: .6rem 0; }
 
-.hero-ctas{display:flex;gap:1rem;flex-wrap:wrap;animation:fade 1.4s ease 1.2s both;}
-.btn{font-family:'JetBrains Mono',monospace;font-size:.65rem;font-weight:400;letter-spacing:.18em;text-transform:uppercase;text-decoration:none;padding:1rem 1.6rem;transition:all .4s cubic-bezier(.22,1,.36,1);display:inline-flex;align-items:center;gap:.6rem;border:1px solid;cursor:pointer;background:transparent;position:relative;overflow:hidden;}
-.btn-primary{border-color:var(--ice);color:var(--frost);background:linear-gradient(135deg,rgba(127,184,224,.15),rgba(58,143,196,.05));}
-.btn-primary:hover{background:linear-gradient(135deg,rgba(127,184,224,.3),rgba(58,143,196,.15));border-color:var(--ice-bright);box-shadow:0 0 30px rgba(127,184,224,.2);transform:translateY(-2px);}
-.btn-ghost{border-color:var(--rule-strong);color:var(--frost-dim);}
-.btn-ghost:hover{border-color:var(--frost-dim);color:var(--frost);transform:translateY(-2px);}
-.btn::after{content:'→';font-size:.9rem;transform:translateX(0);transition:transform .3s;}
-.btn:hover::after{transform:translateX(4px);}
+/* Top nav */
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: .75rem 1.5rem;
+  background: var(--bg);
+  border-bottom: 1px solid var(--rule);
+  font-size: .9rem;
+}
+.nav-name { font-weight: 600; color: var(--fg); }
+.nav-links { display: flex; gap: 1.25rem; flex-wrap: wrap; }
+.nav-links a { color: var(--fg-dim); }
+.nav-links a:hover { color: var(--accent); text-decoration: none; }
+.nav-resume {
+  border: 1px solid var(--rule);
+  padding: .35rem .8rem;
+  border-radius: 4px;
+  color: var(--fg);
+  font-weight: 500;
+}
+.nav-resume:hover { background: var(--bg-alt); text-decoration: none; }
 
-.hero-right{position:relative;height:100%;min-height:500px;}
+/* Page container */
+.wrap {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 4rem;
+}
 
-/* HERO STATS - flowed below hero, not absolute */
-.hero-strip{margin-top:5rem;padding:0 2rem;z-index:3;animation:fade 1.4s ease 1.4s both;}
-.strip-inner{max-width:1400px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-top:1px solid var(--rule-strong);border-bottom:1px solid var(--rule-strong);}
-.strip-cell{padding:1.5rem 1.5rem;border-right:1px solid var(--rule-strong);position:relative;}
-.strip-cell:last-child{border-right:none;}
-.strip-num{font-family:'Inter Tight',sans-serif;font-weight:200;font-size:2rem;line-height:1;color:var(--frost);margin-bottom:.4rem;letter-spacing:-.02em;}
-.strip-num em{color:var(--ice);font-style:normal;}
-.strip-label{font-family:'JetBrains Mono',monospace;font-size:.55rem;letter-spacing:.18em;text-transform:uppercase;color:var(--frost-faint);}
+/* Header / hero */
+.header { margin-bottom: 2.5rem; }
+.header .role { color: var(--fg-dim); font-size: 1.05rem; margin-top: .25rem; }
+.header .summary { margin-top: 1rem; color: var(--fg-dim); max-width: 720px; }
+.header .links { margin-top: 1rem; display: flex; flex-wrap: wrap; gap: 1rem; font-size: .92rem; }
+.header .links a { color: var(--link); }
 
-/* ── SECTION GENERIC ── */
-.section{position:relative;padding:8rem 2rem;z-index:2;}
-.section-inner{max-width:1400px;margin:0 auto;}
-.section-label{font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.25em;text-transform:uppercase;color:var(--ice);margin-bottom:1rem;display:flex;align-items:center;gap:.8rem;}
-.section-label::before{content:'';width:24px;height:1px;background:var(--ice);}
-.section-title{font-family:'Inter Tight',sans-serif;font-weight:200;font-size:clamp(2.5rem,5vw,4.5rem);line-height:1;letter-spacing:-.03em;margin-bottom:4rem;max-width:24ch;}
-.section-title em{font-style:italic;font-weight:300;color:var(--ice-bright);}
+/* Stat strip */
+.stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem 2rem;
+  margin: 1.5rem 0;
+  padding: 1rem 0;
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  font-size: .9rem;
+  color: var(--fg-dim);
+}
+.stats strong { color: var(--accent); font-weight: 600; }
 
-/* ── STORY SECTION ── */
-#story{border-top:1px solid var(--rule);}
-.story-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:6rem;align-items:start;}
-.story-prose p{font-size:1.05rem;line-height:1.85;color:var(--frost-dim);margin-bottom:1.5rem;font-weight:300;}
-.story-prose p:last-child{margin-bottom:0;}
-.story-prose strong{color:var(--frost);font-weight:500;}
-.story-prose em{color:var(--ice);font-style:normal;}
+/* Sections */
+section { margin: 2.5rem 0; scroll-margin-top: 80px; }
 
-.story-stats{display:flex;flex-direction:column;gap:0;}
-.story-stat{padding:2rem 0;border-top:1px solid var(--rule);display:grid;grid-template-columns:auto 1fr;gap:2rem;align-items:baseline;}
-.story-stat:last-child{border-bottom:1px solid var(--rule);}
-.story-stat-num{font-family:'Inter Tight',sans-serif;font-weight:200;font-size:3rem;line-height:1;letter-spacing:-.03em;color:var(--frost);min-width:6rem;}
-.story-stat-num em{color:var(--ice);font-style:normal;}
-.story-stat-label{font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--frost-dim);line-height:1.6;}
+/* Experience tabs */
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0;
+  border-bottom: 1px solid var(--rule);
+  margin-bottom: 1.25rem;
+}
+.tab {
+  padding: .6rem 1rem;
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  font: inherit;
+  font-size: .92rem;
+  color: var(--fg-dim);
+  margin-bottom: -1px;
+}
+.tab:hover { color: var(--fg); }
+.tab.on { color: var(--accent); border-bottom-color: var(--accent); font-weight: 500; }
 
-/* ── EXPERIENCE ── */
-#experience{border-top:1px solid var(--rule);background:linear-gradient(180deg,var(--void),var(--void-2));}
-.exp-shell{display:grid;grid-template-columns:280px 1fr;gap:5rem;}
-.exp-nav{display:flex;flex-direction:column;gap:0;position:sticky;top:7rem;align-self:start;}
-.exp-nav-item{padding:1.5rem 0;border-top:1px solid var(--rule);cursor:pointer;transition:all .3s;position:relative;}
-.exp-nav-item:last-child{border-bottom:1px solid var(--rule);}
-.exp-nav-item::before{content:'';position:absolute;left:-1.5rem;top:50%;transform:translateY(-50%);width:.5rem;height:.5rem;border:1px solid var(--frost-faint);border-radius:50%;transition:all .3s;}
-.exp-nav-item.on::before{background:var(--ice);border-color:var(--ice);box-shadow:0 0 12px var(--ice);}
-.exp-nav-item .en-co{font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;color:var(--ice);margin-bottom:.4rem;}
-.exp-nav-item .en-role{font-size:1.05rem;color:var(--frost-dim);font-weight:300;transition:color .3s;}
-.exp-nav-item.on .en-role{color:var(--frost);}
-.exp-nav-item .en-date{font-family:'JetBrains Mono',monospace;font-size:.62rem;color:var(--frost-faint);margin-top:.4rem;letter-spacing:.08em;}
+.panel { display: none; }
+.panel.on { display: block; }
 
-.exp-content{min-height:60vh;}
-.exp-panel{display:none;}
-.exp-panel.on{display:block;animation:slideIn .6s cubic-bezier(.22,1,.36,1);}
-@keyframes slideIn{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:none;}}
-.ep-role{font-family:'Inter Tight',sans-serif;font-weight:200;font-size:2.5rem;letter-spacing:-.02em;margin-bottom:.6rem;color:var(--frost);}
-.ep-meta{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--frost-faint);letter-spacing:.12em;text-transform:uppercase;margin-bottom:3rem;display:flex;gap:1rem;}
-.ep-meta span+span::before{content:'·';margin-right:1rem;color:var(--frost-ghost);}
-.ep-points{display:flex;flex-direction:column;gap:2rem;}
-.ep-point-label{font-family:'JetBrains Mono',monospace;font-size:.6rem;font-weight:400;letter-spacing:.18em;text-transform:uppercase;color:var(--ice);margin-bottom:.7rem;}
-.ep-point p{font-size:.95rem;color:var(--frost-dim);line-height:1.85;font-weight:300;}
-.ep-point p+p{margin-top:.9rem;}
-.ep-point p strong{color:var(--frost);font-weight:500;}
-.ep-stack{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:2.5rem;padding-top:2rem;border-top:1px solid var(--rule);}
-.ep-pill{font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--frost-faint);border:1px solid var(--rule-strong);padding:.3rem .65rem;letter-spacing:.06em;}
+.role-block { margin-bottom: 1.25rem; }
+.role-block .role-meta {
+  font-size: .85rem;
+  color: var(--fg-faint);
+  margin-bottom: .75rem;
+}
+.role-block .role-meta span { margin-right: 1rem; }
+.role-block ul { margin: .25rem 0 .75rem 1.25rem; padding: 0; }
+.role-block li { margin: .35rem 0; }
+.role-block .item-label { font-weight: 600; color: var(--fg); }
 
-/* ── SKILLS ── */
-#skills{border-top:1px solid var(--rule);}
-.skills-grid{display:grid;grid-template-columns:1fr 1.4fr;gap:6rem;}
-.skills-prose p{font-size:1rem;line-height:1.85;color:var(--frost-dim);margin-bottom:1.25rem;font-weight:300;}
-.skills-prose strong{color:var(--frost);font-weight:500;}
-.skills-prose em{color:var(--ice);font-style:normal;}
-.skills-list{display:flex;flex-direction:column;}
-.sk-row{display:grid;grid-template-columns:200px 1fr;gap:2rem;align-items:baseline;padding:1.5rem 0;border-top:1px solid var(--rule);}
-.sk-row:last-child{border-bottom:1px solid var(--rule);}
-.sk-cat{font-family:'JetBrains Mono',monospace;font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;color:var(--ice);}
-.sk-vals{display:flex;flex-wrap:wrap;gap:.4rem;}
-.sk-v{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--frost-dim);border:1px solid var(--rule-strong);padding:.3rem .65rem;transition:all .3s;letter-spacing:.06em;}
-.sk-v:hover{border-color:var(--ice);color:var(--frost);background:rgba(127,184,224,.08);transform:translateY(-1px);}
+/* Stack pills */
+.pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .35rem;
+  margin: .5rem 0 0;
+}
+.pill {
+  background: var(--pill-bg);
+  color: var(--pill-fg);
+  padding: .15rem .55rem;
+  border-radius: 3px;
+  font-size: .78rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
 
-/* ── PROJECTS ── */
-#projects{border-top:1px solid var(--rule);background:linear-gradient(180deg,var(--void-2),var(--void));}
-.proj-tabs{display:flex;border-bottom:1px solid var(--rule-strong);margin-bottom:4rem;}
-.p-tab{font-family:'JetBrains Mono',monospace;font-size:.65rem;font-weight:400;letter-spacing:.18em;text-transform:uppercase;color:var(--frost-faint);padding:1.2rem 2rem;cursor:pointer;border-bottom:1px solid transparent;margin-bottom:-1px;transition:all .3s;background:transparent;}
-.p-tab:hover{color:var(--frost-dim);}
-.p-tab.on{color:var(--ice-bright);border-bottom-color:var(--ice);}
-.proj-panel{display:none;}
-.proj-panel.on{display:grid;grid-template-columns:1fr 1fr;gap:5rem;animation:slideIn .6s cubic-bezier(.22,1,.36,1);}
-.pp-badge{font-family:'JetBrains Mono',monospace;font-size:.55rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ice);border:1px solid rgba(127,184,224,.3);padding:.3rem .7rem;display:inline-block;margin-bottom:1.5rem;background:rgba(127,184,224,.05);}
-.pp-name{font-family:'Inter Tight',sans-serif;font-weight:200;font-size:3rem;line-height:1;letter-spacing:-.03em;margin-bottom:.6rem;color:var(--frost);}
-.pp-what{font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:.15em;text-transform:uppercase;color:var(--frost-faint);margin-bottom:1.8rem;}
-.pp-desc{font-size:.95rem;color:var(--frost-dim);line-height:1.85;margin-bottom:1.8rem;font-weight:300;}
-.pp-desc strong{color:var(--frost);font-weight:500;}
-.pp-bullets{list-style:none;display:flex;flex-direction:column;gap:.9rem;margin-bottom:2rem;}
-.pp-bullets li{font-size:.88rem;color:var(--frost-dim);line-height:1.75;padding-left:1.5rem;position:relative;font-weight:300;}
-.pp-bullets li::before{content:'';position:absolute;left:0;top:.7em;width:.5rem;height:1px;background:var(--ice);}
-.pp-bullets li strong{color:var(--frost);font-weight:500;}
-.pp-stack{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:2rem;}
-.pp-pill{font-family:'JetBrains Mono',monospace;font-size:.58rem;color:var(--frost-faint);border:1px solid var(--rule-strong);padding:.25rem .55rem;letter-spacing:.05em;}
-.pp-link{font-family:'JetBrains Mono',monospace;font-size:.65rem;font-weight:400;letter-spacing:.18em;text-transform:uppercase;color:var(--ice-bright);text-decoration:none;display:inline-flex;align-items:center;gap:.7rem;border-bottom:1px solid var(--ice);padding-bottom:.4rem;transition:all .3s;}
-.pp-link:hover{color:var(--frost);border-bottom-color:var(--frost);gap:1rem;}
+/* Skills */
+.skills-table {
+  border-collapse: collapse;
+  width: 100%;
+  margin-top: .5rem;
+}
+.skills-table td {
+  padding: .55rem .5rem;
+  border-bottom: 1px solid var(--rule);
+  vertical-align: top;
+}
+.skills-table td:first-child {
+  width: 200px;
+  color: var(--accent);
+  font-weight: 500;
+  font-size: .88rem;
+}
 
-/* DIAGRAM (frosted) */
-.diagram-shell{background:linear-gradient(135deg,rgba(168,179,195,.03),rgba(127,184,224,.04));border:1px solid var(--rule-strong);padding:2.5rem;backdrop-filter:blur(20px);border-radius:2px;position:relative;overflow:hidden;}
-.diagram-shell::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--ice),transparent);}
-.diagram-title{font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ice);margin-bottom:2rem;text-align:center;}
-svg.diag{width:100%;height:auto;display:block;}
-svg.diag rect{stroke:var(--rule-strong);}
-svg.diag .node-fill{fill:rgba(168,179,195,.04);stroke:var(--rule-strong);stroke-width:1;}
-svg.diag .node-accent{fill:rgba(127,184,224,.12);stroke:var(--ice);stroke-width:1;}
-svg.diag .node-out{fill:rgba(93,217,193,.1);stroke:var(--aurora);stroke-width:1;}
-svg.diag .node-fail{fill:rgba(255,100,120,.08);stroke:#ff6478;stroke-width:1;}
-svg.diag .label{fill:var(--ice);font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:1px;font-weight:500;}
-svg.diag .text{fill:var(--frost-dim);font-family:'Inter Tight',sans-serif;font-size:9px;font-weight:300;}
-svg.diag .text-bright{fill:var(--frost);font-family:'Inter Tight',sans-serif;font-size:9px;font-weight:400;}
-svg.diag .arrow{stroke:var(--frost-faint);stroke-width:1;fill:none;}
+/* Education */
+.edu-row {
+  display: grid;
+  grid-template-columns: 160px 1fr;
+  gap: 1rem;
+  padding: .75rem 0;
+  border-bottom: 1px solid var(--rule);
+}
+.edu-row:last-child { border-bottom: none; }
+.edu-row .edu-date { color: var(--fg-faint); font-size: .9rem; }
+.edu-row .edu-degree { font-weight: 500; }
+.edu-row .edu-school { color: var(--fg-dim); font-size: .92rem; }
 
-/* ── CONTACT ── */
-#contact{border-top:1px solid var(--rule);padding:10rem 2rem;background:radial-gradient(ellipse 80% 60% at 50% 50%,rgba(58,143,196,.06),var(--void) 70%);}
-.contact-inner{max-width:1400px;margin:0 auto;text-align:center;}
-.contact-eyebrow{font-family:'JetBrains Mono',monospace;font-size:.65rem;letter-spacing:.25em;text-transform:uppercase;color:var(--ice);margin-bottom:2rem;}
-.contact-title{font-family:'Inter Tight',sans-serif;font-weight:200;font-size:clamp(3rem,8vw,7rem);line-height:.95;letter-spacing:-.04em;margin-bottom:2rem;}
-.contact-title em{font-style:italic;color:var(--ice-bright);font-weight:300;}
-.contact-sub{font-size:1.05rem;color:var(--frost-dim);max-width:50ch;margin:0 auto 4rem;line-height:1.75;font-weight:300;}
-.contact-links{display:flex;justify-content:center;gap:1rem;flex-wrap:wrap;margin-bottom:5rem;}
-.contact-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:1px solid var(--rule-strong);}
-.contact-cell{padding:2rem;border-right:1px solid var(--rule-strong);text-align:left;}
-.contact-cell:last-child{border-right:none;}
-.cc-label{font-family:'JetBrains Mono',monospace;font-size:.55rem;letter-spacing:.2em;text-transform:uppercase;color:var(--frost-faint);margin-bottom:.6rem;}
-.cc-val{font-family:'JetBrains Mono',monospace;font-size:.85rem;color:var(--frost);text-decoration:none;letter-spacing:.04em;}
-a.cc-val:hover{color:var(--ice-bright);}
+/* ── Projects (preserved styles for SVG diagrams) ── */
+.proj-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0;
+  border-bottom: 1px solid var(--rule);
+  margin-bottom: 1.25rem;
+}
+.p-tab {
+  padding: .6rem 1rem;
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  font: inherit;
+  font-size: .92rem;
+  color: var(--fg-dim);
+  margin-bottom: -1px;
+}
+.p-tab:hover { color: var(--fg); }
+.p-tab.on { color: var(--accent); border-bottom-color: var(--accent); font-weight: 500; }
 
-/* ── FOOTER ── */
-.footer{padding:2rem;border-top:1px solid var(--rule);text-align:center;font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--frost-faint);position:relative;z-index:2;}
+.proj-panel { display: none; }
+.proj-panel.on {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 2.5rem;
+  align-items: start;
+}
 
-/* ── SCROLL PROGRESS ── */
-.scroll-prog{position:fixed;top:0;left:0;height:1px;background:linear-gradient(90deg,var(--ice),var(--aurora));z-index:200;transform-origin:left;transform:scaleX(0);transition:transform .1s;}
+.pp-badge {
+  display: inline-block;
+  font-size: .75rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  color: var(--fg-faint);
+  letter-spacing: .04em;
+  margin-bottom: .5rem;
+}
+.pp-name { font-size: 1.4rem; font-weight: 600; color: var(--fg); }
+.pp-what { font-size: .95rem; color: var(--fg-dim); margin-bottom: .8rem; }
+.pp-desc { color: var(--fg-dim); }
+.pp-bullets { margin: .75rem 0 .75rem 1.25rem; padding: 0; }
+.pp-bullets li { margin: .4rem 0; color: var(--fg-dim); }
+.pp-bullets li strong { color: var(--fg); font-weight: 600; }
+.pp-stack { display: flex; flex-wrap: wrap; gap: .35rem; margin-top: .75rem; }
+.pp-pill {
+  background: var(--pill-bg);
+  color: var(--pill-fg);
+  padding: .15rem .55rem;
+  border-radius: 3px;
+  font-size: .78rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+.pp-link {
+  display: inline-block;
+  margin-top: .9rem;
+  color: var(--link);
+  font-size: .92rem;
+}
 
-/* ── REVEAL ON SCROLL ── */
-.reveal{opacity:0;transform:translateY(40px);transition:opacity 1s cubic-bezier(.22,1,.36,1),transform 1s cubic-bezier(.22,1,.36,1);}
-.reveal.in{opacity:1;transform:none;}
+/* Diagram (kept identical visually but recolored to theme) */
+.diagram-shell {
+  background: var(--bg-alt);
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  padding: 1rem;
+}
+.diagram-title {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: .75rem;
+  color: var(--fg-faint);
+  letter-spacing: .05em;
+  text-transform: uppercase;
+  margin-bottom: .75rem;
+}
+.diag { width: 100%; height: auto; display: block; }
+.diag .node-fill { fill: var(--bg); stroke: var(--rule); stroke-width: 1; }
+.diag .node-accent { fill: transparent; stroke: var(--accent); stroke-width: 1.2; }
+.diag .node-out { fill: transparent; stroke: var(--accent); stroke-width: 1; }
+.diag .node-fail { fill: transparent; stroke: #c0392b; stroke-width: 1; }
+@media (prefers-color-scheme: dark) {
+  .diag .node-fail { stroke: #ff8aa0; }
+}
+.diag .arrow { stroke: var(--fg-faint); stroke-width: 1; fill: none; }
+.diag .label {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 9px;
+  fill: var(--fg);
+  letter-spacing: .04em;
+}
+.diag .text {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 9px;
+  fill: var(--fg-dim);
+}
+.diag .text-bright {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 11px;
+  fill: var(--fg);
+  font-weight: 600;
+}
 
-/* ── RESPONSIVE ── */
-@media(max-width:980px){
-  .nav-links{display:none;}
-  .hero{padding:7rem 1.25rem 4rem;}
-  .hero-inner{grid-template-columns:1fr;gap:0;}
-  .hero-right{display:none;}
-  .hero-canvas{opacity:.5;}
-  .hero-strip{margin-top:3rem;padding:0;}
-  .strip-inner{grid-template-columns:repeat(2,1fr);}
-  .strip-cell:nth-child(2){border-right:none;}
-  .strip-cell:nth-child(1),.strip-cell:nth-child(2){border-bottom:1px solid var(--rule-strong);}
-  .section{padding:5rem 1.25rem;}
-  .story-grid,.skills-grid,.exp-shell{grid-template-columns:1fr;gap:3rem;}
-  .exp-nav{position:relative;top:auto;flex-direction:row;overflow-x:auto;}
-  .exp-nav-item{flex:1;min-width:200px;border-top:none;border-left:1px solid var(--rule);padding:1rem;}
-  .exp-nav-item::before{display:none;}
-  .proj-panel.on{grid-template-columns:1fr;gap:3rem;}
-  .contact-grid{grid-template-columns:1fr;}
-  .contact-cell{border-right:none;border-bottom:1px solid var(--rule-strong);}
-  .sk-row{grid-template-columns:1fr;gap:.8rem;}
+/* Contact */
+.contact-block { margin-top: 1rem; }
+.contact-block .ctas { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: 1rem; }
+.contact-block .ctas a {
+  border: 1px solid var(--rule);
+  padding: .5rem 1rem;
+  border-radius: 4px;
+  color: var(--fg);
+}
+.contact-block .ctas a:hover { background: var(--bg-alt); text-decoration: none; }
+.contact-block .ctas a.primary {
+  background: var(--accent);
+  color: white;
+  border-color: var(--accent);
+}
+.contact-block .ctas a.primary:hover { opacity: .92; background: var(--accent); }
+
+/* Footer */
+footer {
+  border-top: 1px solid var(--rule);
+  margin-top: 3rem;
+  padding-top: 1rem;
+  font-size: .85rem;
+  color: var(--fg-faint);
+  text-align: center;
+}
+
+/* Responsive */
+@media (max-width: 720px) {
+  .nav { padding: .6rem 1rem; flex-wrap: wrap; gap: .5rem; }
+  .nav-links { gap: .85rem; font-size: .85rem; order: 3; width: 100%; }
+  h1 { font-size: 1.6rem; }
+  h2 { font-size: 1.2rem; }
+  .proj-panel.on { grid-template-columns: 1fr; gap: 1.5rem; }
+  .edu-row { grid-template-columns: 1fr; gap: .15rem; }
+  .skills-table td:first-child { width: 130px; font-size: .82rem; }
 }
 </style>
 </head>
 <body>
 
-<!-- SCROLL PROGRESS -->
-<div class="scroll-prog" id="scrollProg"></div>
-
-<!-- NAV -->
 <nav class="nav">
-  <div class="nav-logo">RG <span>·</span> AI/ARCH</div>
+  <div class="nav-name">Revanth Gollapudi</div>
   <div class="nav-links">
-    <a class="nav-link" data-scroll="story">Story</a>
-    <a class="nav-link" data-scroll="experience">Experience</a>
-    <a class="nav-link" data-scroll="skills">Skills</a>
-    <a class="nav-link" data-scroll="education">Education</a>
-    <a class="nav-link" data-scroll="projects">Projects</a>
-    <a class="nav-link" data-scroll="contact">Contact</a>
+    <a href="#about">About</a>
+    <a href="#experience">Experience</a>
+    <a href="#skills">Skills</a>
+    <a href="#education">Education</a>
+    <a href="#projects">Projects</a>
+    <a href="#contact">Contact</a>
   </div>
-  <a class="nav-status" href="/resume.pdf" id="resume-btn" download="Revanth_Gollapudi_Resume.pdf" style="text-decoration:none;cursor:pointer;">Download Resume</a>
+  <a class="nav-resume" href="/resume.pdf" download="Revanth_Gollapudi_Resume.pdf">Resume</a>
 </nav>
 
-<!-- ════════════════════════════════════════════════════════════════════ -->
-<!-- HERO with 3D shard                                                     -->
-<!-- ════════════════════════════════════════════════════════════════════ -->
-<section class="hero" id="hero">
-  <div class="hero-grid-bg"></div>
-  <canvas class="hero-canvas" id="canvas"></canvas>
-  <div class="hero-inner">
+<div class="wrap">
+
+<!-- ── HEADER ── -->
+<header class="header" id="about">
+  <h1>Revanth Gollapudi</h1>
+  <div class="role">AI Architect / Senior GenAI Engineer</div>
+  <p class="summary">
+    I build and own production GenAI systems &mdash; RAG platforms, evaluation gates, model-routing pipelines, and secure enterprise deployments. Live systems serving <strong>85K+ requests/day</strong> and <strong>6,000+ employees</strong>, with measurable gains in latency, retrieval quality, and inference cost.
+  </p>
+  <div class="links">
+    <a href="mailto:gollapudi.off@gmail.com">gollapudi.off@gmail.com</a>
+    <a href="https://www.linkedin.com/in/revanth-gollapudi-45935218a/" target="_blank" rel="noopener">LinkedIn</a>
+    <a href="https://github.com/Revanth980727" target="_blank" rel="noopener">GitHub</a>
+    <a href="/resume.pdf" download="Revanth_Gollapudi_Resume.pdf">Resume (PDF)</a>
+  </div>
+  <div class="stats">
+    <span><strong>85K+</strong> req/day</span>
+    <span><strong>6,000</strong> users</span>
+    <span><strong>99.9%</strong> SLA</span>
+    <span><strong>30%</strong> inference cost cut</span>
+    <span><strong>+0.12</strong> RAGAS faithfulness</span>
+  </div>
+</header>
+
+<!-- ── EXPERIENCE ── -->
+<section id="experience">
+  <h2>Experience</h2>
+  <div class="tabs" role="tablist">
+    <button class="tab on" data-ep="ep1">CGI &middot; AI Architect</button>
+    <button class="tab" data-ep="ep2">CGI &middot; Data Engineer</button>
+    <button class="tab" data-ep="ep3">eKincare &middot; Data Engineer</button>
+  </div>
+
+  <div class="panel on" id="ep1">
+    <div class="role-block">
+      <div class="role-meta">
+        <span><strong>AI Architect</strong> &middot; CGI</span>
+        <span>Dec 2024 &mdash; Present</span>
+      </div>
+
+      <h3>Conversational AI Platform &middot; AWS</h3>
+      <p>Architected and own a Kubernetes-based conversational AI platform on AWS EKS serving ~85K requests/day across 10+ agent workflows for 1,200 users. Lead a 5-person engineering team with full SLA accountability for the production environment.</p>
+
+      <h3>Azure HR RAG &middot; Live for 6,000 Employees</h3>
+      <p>Sole architect on an end-to-end Azure RAG system for an HR Policy chatbot. Angular SPA, FastAPI on Container Apps, Azure AI Search (vector + BM25 + semantic reranker), GPT-4o on PTU, Document Intelligence, Entra ID/MFA, private VNet. Delivers &lt;3s response time, ~40% cache hit rate, 99.9% uptime, with EU AI Act&ndash;aligned deployment documentation.</p>
+
+      <h3>Inference Cost &middot; 30% Reduction</h3>
+      <p>Co-designed a complexity-based model router sending simple queries to Gemma/Mistral 8B and complex ones to GPT-4o. Cut monthly inference spend from $15K to $10.5K with no quality degradation.</p>
+
+      <h3>Fine-tuning &middot; 45% &rarr; 30% Hallucination Rate</h3>
+      <p>Fine-tuned Llama 3 via LoRA/PEFT with DPO on 500+ human-labeled preference pairs. Reduced measured hallucination rate from 45% to 30% across production workloads.</p>
+
+      <h3>EvalOps &middot; Regression Gate in CI</h3>
+      <p>Built a full EvalOps pipeline &mdash; groundedness rubrics, golden datasets, automated RAGAS scoring, OpenTelemetry retrieval tracing &mdash; as mandatory CI gates before every model update. No known regressions have reached production undetected since rollout.</p>
+
+      <h3>Vehicle AI Inspection &middot; Ryder Systems (Fortune 500)</h3>
+      <p>Lead engineer on an AI-powered vehicle inspection system &mdash; replacing manual walk-around inspections with a fully automated pipeline processing 10,000+ vehicles/month at ~$0.01/image. Funded by a $93.9K Microsoft ECIF grant.</p>
+      <p>Started by training and evaluating a YOLOv8 model on 10,000 labeled vehicle images, reaching 85&ndash;89% accuracy, before driving a strategic pivot to GPT-4o Vision &mdash; recognising the generative model's zero-shot damage understanding would outperform a task-specific detector without retraining burden.</p>
+      <p>Built a two-pass automated pipeline: OpenCV blur detection pre-filters frames, then GPT-4o Vision runs a 15-point damage assessment with Pass/Fail/N-A verdicts, confidence signals, and human-readable descriptions. Deployed on Azure Functions, Blob Storage, Cosmos DB, and Azure OpenAI.</p>
+
+      <div class="pills">
+        <span class="pill">AWS EKS</span><span class="pill">Azure Container Apps</span><span class="pill">Azure AI Search</span><span class="pill">GPT-4o PTU</span><span class="pill">GPT-4o Vision</span><span class="pill">YOLOv8</span><span class="pill">OpenCV</span><span class="pill">Azure Functions</span><span class="pill">Cosmos DB</span><span class="pill">Llama 3</span><span class="pill">LoRA/PEFT</span><span class="pill">DPO</span><span class="pill">RAGAS</span><span class="pill">OpenTelemetry</span><span class="pill">LangGraph</span><span class="pill">Bicep</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel" id="ep2">
+    <div class="role-block">
+      <div class="role-meta">
+        <span><strong>Data Engineer</strong> &middot; CGI</span>
+        <span>Jan 2023 &mdash; Dec 2024</span>
+      </div>
+
+      <h3>Retrieval Quality &middot; 0.62 &rarr; 0.74 Faithfulness</h3>
+      <p>Tuned hybrid retrieval (BM25 + pgvector + cross-encoder reranking) with query rewriting optimisations. Lifted RAGAS faithfulness from 0.62 to 0.74 on a 500-question eval set (+0.12 absolute, +19% relative) with no generation model changes.</p>
+
+      <h3>Eval-gated CI/CD &middot; 20% of Bad Updates Blocked</h3>
+      <p>Built an eval-gated CI/CD pipeline using LLM-as-judge with rubric scoring as a mandatory release gate. Blocked ~20% of regressive model updates before production.</p>
+
+      <h3>ML Pipelines &middot; 72h &rarr; 24h</h3>
+      <p>Rebuilt Kubernetes ML training pipelines for ~6TB document classification. Cut training-to-deployment cycle from 72 hours to under 24 hours &mdash; 3&times; faster iteration.</p>
+
+      <h3>Observability &middot; Hours to Minutes MTTD</h3>
+      <p>Implemented CloudWatch + OpenTelemetry instrumentation with drift detection and alerting. Reduced mean time to diagnose failures from hours to minutes.</p>
+
+      <div class="pills">
+        <span class="pill">BM25</span><span class="pill">pgvector</span><span class="pill">Cross-encoder</span><span class="pill">RAGAS</span><span class="pill">LLM-as-judge</span><span class="pill">Kubernetes</span><span class="pill">CloudWatch</span><span class="pill">OpenTelemetry</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel" id="ep3">
+    <div class="role-block">
+      <div class="role-meta">
+        <span><strong>Data Engineer</strong> &middot; eKincare</span>
+        <span>Aug 2020 &mdash; Jul 2021</span>
+      </div>
+
+      <h3>Pipeline Throughput &middot; +40%</h3>
+      <p>Improved Kafka and Spark pipeline throughput by 40% through partitioning and parallelism tuning. Added schema validation and dead-letter handling to cut production failures.</p>
+
+      <h3>Application Stability &middot; &minus;15% Crashes</h3>
+      <p>Diagnosed root causes across recurring crash patterns and overhauled logging, monitoring, and alerting. Reduced crash rate by 15%.</p>
+
+      <div class="pills">
+        <span class="pill">Apache Kafka</span><span class="pill">Apache Spark</span><span class="pill">Python</span><span class="pill">AWS</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── SKILLS ── -->
+<section id="skills">
+  <h2>Skills</h2>
+  <p style="color:var(--fg-dim);max-width:720px;">Tools I've used in production to solve real reliability, latency, retrieval, or cost problems. Strongest at the intersection of <em>retrieval quality, evaluation, and inference cost</em> &mdash; where most production GenAI systems fail.</p>
+  <table class="skills-table">
+    <tr><td>LLMs &amp; GenAI</td><td>Llama 3, LoRA/PEFT, DPO, RLHF, LangGraph, Model Routing, NL-to-SQL</td></tr>
+    <tr><td>RAG &amp; Retrieval</td><td>BM25, pgvector, Azure AI Search, Cross-encoder, Query Rewriting, Document Intelligence</td></tr>
+    <tr><td>Computer Vision</td><td>GPT-4o Vision, YOLOv8, OpenCV, Object Detection, Damage Classification, Confidence Scoring</td></tr>
+    <tr><td>Eval &amp; Observability</td><td>RAGAS, DeepEval, LLM-as-Judge, Golden Datasets, Regression Gates, OpenTelemetry, CloudWatch</td></tr>
+    <tr><td>Cloud &amp; Infra</td><td>AWS EKS, Azure Container Apps, Azure OpenAI PTU, Key Vault, Entra ID, Kubernetes, Docker, Terraform, Bicep, GitHub Actions</td></tr>
+    <tr><td>Compliance</td><td>EU AI Act, Responsible AI, Deployment Docs</td></tr>
+    <tr><td>Languages &amp; Frameworks</td><td>Python, PyTorch, FastAPI, React/Next.js, Angular, Go</td></tr>
+  </table>
+</section>
+
+<!-- ── EDUCATION ── -->
+<section id="education">
+  <h2>Education</h2>
+  <div class="edu-row">
+    <div class="edu-date">2021 &mdash; 2022</div>
     <div>
-      <div class="hero-meta">
-        <span>AI ARCHITECT</span>
-        <span class="dot-sep"></span>
-        <span>SENIOR GENAI ENGINEER</span>
-      </div>
-      <h1 class="hero-title">
-        <span class="line"><span>Revanth</span></span>
-        <span class="line"><span>Gollapudi</span></span>
-      </h1>
-      <p class="hero-tagline">I build and own <strong>production GenAI systems</strong> — RAG platforms, evaluation gates, model-routing pipelines, and secure enterprise deployments. Live systems serving <strong>85K+ requests/day</strong> and <strong>6,000+ employees</strong>, with measurable gains in latency, retrieval quality, and inference cost.</p>
-      <div class="hero-tags">
-        <span class="h-tag accent">Production GenAI</span>
-        <span class="h-tag">RAG · Multi-Agent</span>
-        <span class="h-tag">AWS · Azure</span>
-        <span class="h-tag">LLM Fine-tuning</span>
-        <span class="h-tag">EvalOps</span>
-        <span class="h-tag accent">EU AI Act-aligned</span>
-      </div>
-      <div class="hero-ctas">
-        <a href="mailto:gollapudi.off@gmail.com" class="btn btn-primary">Get in touch</a>
-        <a href="https://linkedin.com/in/revanth-gollapudi" target="_blank" class="btn btn-ghost">LinkedIn</a>
-        <a href="https://github.com/Revanth980727" target="_blank" class="btn btn-ghost">GitHub</a>
+      <div class="edu-degree">Master of Science &middot; Applied Engineering</div>
+      <div class="edu-school">University of Colorado Boulder</div>
+    </div>
+  </div>
+  <div class="edu-row">
+    <div class="edu-date">2016 &mdash; 2020</div>
+    <div>
+      <div class="edu-degree">Bachelor of Technology &middot; Mechanical Engineering</div>
+      <div class="edu-school">PES University</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── PROJECTS (preserved structure with diagrams) ── -->
+<section id="projects">
+  <h2>Independent Projects</h2>
+  <p style="color:var(--fg-dim);max-width:720px;">Production work at CGI is covered in Experience. These are systems I designed and built independently &mdash; open-source on GitHub, with full code, tests, and CI.</p>
+
+  <div class="proj-tabs" role="tablist">
+    <button class="p-tab on" data-pp="pp1">RAOC</button>
+    <button class="p-tab" data-pp="pp2">Bugfix AI Pilot</button>
+    <button class="p-tab" data-pp="pp3">LLM Eval Harness</button>
+  </div>
+
+  <!-- PROJECT 1 -->
+  <div class="proj-panel on" id="pp1">
+    <div>
+      <span class="pp-badge">Agentic &middot; macOS &middot; Python</span>
+      <div class="pp-name">RAOC</div>
+      <div class="pp-what">Remote Autonomous OS Controller</div>
+      <p class="pp-desc">Control your Mac from your phone via Telegram. Send a natural language command, a <strong>6-agent pipeline</strong> builds and executes a plan &mdash; with mandatory tap-to-approve before anything runs.</p>
+      <ul class="pp-bullets">
+        <li><strong>Intake</strong> understands intent. <strong>Discovery</strong> finds files. <strong>Planning</strong> generates a step-by-step plan. <strong>Execution</strong> carries it out. <strong>Verification</strong> checks. <strong>Reporter</strong> sends proof.</li>
+        <li><strong>Safety model:</strong> approval enforced in code, not convention. Dangerous commands blocked. Every file backed up before writes. Workspace sandboxed at zone resolver level.</li>
+        <li>303 passing tests &middot; GitHub Actions CI &middot; Pydantic v2 &middot; macOS Keychain for secrets</li>
+      </ul>
+      <div class="pp-stack"><span class="pp-pill">Python 3.12</span><span class="pp-pill">Claude API</span><span class="pp-pill">Telegram</span><span class="pp-pill">SQLite</span><span class="pp-pill">Pydantic v2</span></div>
+      <a class="pp-link" href="https://github.com/Revanth9727/RAOC" target="_blank" rel="noopener">View on GitHub &rarr;</a>
+    </div>
+    <div>
+      <div class="diagram-shell">
+        <div class="diagram-title">Agent pipeline &middot; RAOC</div>
+        <svg class="diag" viewBox="0 0 320 420">
+          <defs><marker id="arr" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="currentColor" style="color:var(--fg-faint)"/></marker></defs>
+          <rect x="100" y="10" width="120" height="36" rx="2" class="node-fill"/>
+          <text x="160" y="32" class="text-bright" text-anchor="middle">📱 Telegram command</text>
+          <line x1="160" y1="46" x2="160" y2="62" class="arrow" marker-end="url(#arr)"/>
+          <rect x="80" y="62" width="160" height="42" rx="2" class="node-fill"/>
+          <text x="160" y="78" class="label" text-anchor="middle">INTAKE AGENT</text>
+          <text x="160" y="93" class="text" text-anchor="middle">Understands intent</text>
+          <line x1="160" y1="104" x2="160" y2="120" class="arrow" marker-end="url(#arr)"/>
+          <rect x="80" y="120" width="160" height="42" rx="2" class="node-fill"/>
+          <text x="160" y="136" class="label" text-anchor="middle">DISCOVERY AGENT</text>
+          <text x="160" y="151" class="text" text-anchor="middle">Finds &amp; reads files</text>
+          <line x1="160" y1="162" x2="160" y2="178" class="arrow" marker-end="url(#arr)"/>
+          <rect x="80" y="178" width="160" height="42" rx="2" class="node-fill"/>
+          <text x="160" y="194" class="label" text-anchor="middle">PLANNING AGENT</text>
+          <text x="160" y="209" class="text" text-anchor="middle">Generates action plan</text>
+          <line x1="160" y1="220" x2="160" y2="234" class="arrow" marker-end="url(#arr)"/>
+          <rect x="95" y="234" width="130" height="28" rx="14" class="node-accent"/>
+          <text x="160" y="252" class="label" text-anchor="middle">✓ TAP TO APPROVE</text>
+          <line x1="160" y1="262" x2="160" y2="278" class="arrow" marker-end="url(#arr)"/>
+          <rect x="80" y="278" width="160" height="42" rx="2" class="node-fill"/>
+          <text x="160" y="294" class="label" text-anchor="middle">EXECUTION AGENT</text>
+          <text x="160" y="309" class="text" text-anchor="middle">Runs the plan safely</text>
+          <line x1="160" y1="320" x2="160" y2="336" class="arrow" marker-end="url(#arr)"/>
+          <rect x="20" y="336" width="130" height="42" rx="2" class="node-fill"/>
+          <text x="85" y="352" class="label" text-anchor="middle">VERIFICATION</text>
+          <text x="85" y="367" class="text" text-anchor="middle">Checks result</text>
+          <rect x="170" y="336" width="130" height="42" rx="2" class="node-fill"/>
+          <text x="235" y="352" class="label" text-anchor="middle">REPORTER</text>
+          <text x="235" y="367" class="text" text-anchor="middle">Sends proof to phone</text>
+          <line x1="160" y1="336" x2="85" y2="336" class="arrow"/>
+          <line x1="160" y1="336" x2="235" y2="336" class="arrow"/>
+          <line x1="85" y1="378" x2="85" y2="400" class="arrow" marker-end="url(#arr)"/>
+          <line x1="235" y1="378" x2="235" y2="400" class="arrow" marker-end="url(#arr)"/>
+          <text x="160" y="415" class="text-bright" text-anchor="middle">📱 Result delivered</text>
+        </svg>
       </div>
     </div>
-    <div class="hero-right"></div>
   </div>
-  <!-- bottom strip -->
-  <div class="hero-strip">
-    <div class="strip-inner">
-      <div class="strip-cell">
-        <div class="strip-num"><em>85</em>K+</div>
-        <div class="strip-label">API requests / day</div>
+
+  <!-- PROJECT 2 -->
+  <div class="proj-panel" id="pp2">
+    <div>
+      <span class="pp-badge">Multi-agent &middot; Full-stack</span>
+      <div class="pp-name">Bugfix AI Pilot</div>
+      <div class="pp-what">Autonomous Bug Resolution</div>
+      <p class="pp-desc">Takes a JIRA ticket ID and &mdash; without any human involvement &mdash; reads the ticket, generates a GPT-4 code fix, validates with tests, and opens a GitHub PR. <strong>233 commits.</strong></p>
+      <ul class="pp-bullets">
+        <li><strong>Planner agent</strong> reads the JIRA ticket and identifies the affected code and root cause.</li>
+        <li><strong>Developer agent</strong> generates the fix with full codebase context awareness.</li>
+        <li><strong>QA agent</strong> runs tests against the fix. Failed results loop back to Developer (up to 3 cycles).</li>
+        <li><strong>Communicator agent</strong> comments on JIRA and opens a GitHub PR with diff and test results.</li>
+      </ul>
+      <div class="pp-stack"><span class="pp-pill">Python</span><span class="pp-pill">GPT-4</span><span class="pp-pill">React</span><span class="pp-pill">FastAPI</span><span class="pp-pill">Docker</span><span class="pp-pill">JIRA API</span></div>
+      <a class="pp-link" href="https://github.com/Revanth980727/bugfix-ai-pilot" target="_blank" rel="noopener">View on GitHub &rarr;</a>
+    </div>
+    <div>
+      <div class="diagram-shell">
+        <div class="diagram-title">Agent pipeline &middot; Bugfix AI Pilot</div>
+        <svg class="diag" viewBox="0 0 320 400">
+          <defs><marker id="arr2" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="currentColor" style="color:var(--fg-faint)"/></marker></defs>
+          <rect x="90" y="10" width="140" height="36" rx="2" class="node-fill"/>
+          <text x="160" y="32" class="text-bright" text-anchor="middle">🎫 JIRA Ticket</text>
+          <line x1="160" y1="46" x2="160" y2="62" class="arrow" marker-end="url(#arr2)"/>
+          <rect x="70" y="62" width="180" height="50" rx="2" class="node-fill"/>
+          <text x="160" y="80" class="label" text-anchor="middle">PLANNER AGENT</text>
+          <text x="160" y="95" class="text" text-anchor="middle">Reads ticket &middot; identifies</text>
+          <text x="160" y="106" class="text" text-anchor="middle">affected files &amp; root cause</text>
+          <line x1="160" y1="112" x2="160" y2="128" class="arrow" marker-end="url(#arr2)"/>
+          <rect x="70" y="128" width="180" height="50" rx="2" class="node-fill"/>
+          <text x="160" y="146" class="label" text-anchor="middle">DEVELOPER AGENT</text>
+          <text x="160" y="161" class="text" text-anchor="middle">Generates code fix</text>
+          <text x="160" y="172" class="text" text-anchor="middle">with codebase context</text>
+          <line x1="160" y1="178" x2="160" y2="194" class="arrow" marker-end="url(#arr2)"/>
+          <rect x="70" y="194" width="180" height="50" rx="2" class="node-fill"/>
+          <text x="160" y="212" class="label" text-anchor="middle">QA AGENT</text>
+          <text x="160" y="227" class="text" text-anchor="middle">Runs test suite</text>
+          <text x="160" y="238" class="text" text-anchor="middle">against the fix</text>
+          <path d="M70,219 Q20,219 20,160 Q20,142 70,142" class="arrow" stroke-dasharray="3,3" marker-end="url(#arr2)" fill="none"/>
+          <text x="14" y="185" class="text" text-anchor="middle" style="font-size:7px">retry</text>
+          <text x="14" y="195" class="text" text-anchor="middle" style="font-size:7px">≤3×</text>
+          <line x1="160" y1="244" x2="160" y2="260" class="arrow" marker-end="url(#arr2)"/>
+          <rect x="70" y="260" width="180" height="50" rx="2" class="node-fill"/>
+          <text x="160" y="278" class="label" text-anchor="middle">COMMUNICATOR AGENT</text>
+          <text x="160" y="293" class="text" text-anchor="middle">Updates JIRA &middot; opens</text>
+          <text x="160" y="304" class="text" text-anchor="middle">GitHub PR with diff</text>
+          <line x1="160" y1="310" x2="160" y2="326" class="arrow" marker-end="url(#arr2)"/>
+          <rect x="30" y="326" width="110" height="36" rx="2" class="node-out"/>
+          <text x="85" y="348" class="text-bright" text-anchor="middle">🔀 GitHub PR</text>
+          <rect x="180" y="326" width="110" height="36" rx="2" class="node-out"/>
+          <text x="235" y="348" class="text-bright" text-anchor="middle">🎫 JIRA updated</text>
+          <line x1="160" y1="326" x2="85" y2="326" class="arrow"/>
+          <line x1="160" y1="326" x2="235" y2="326" class="arrow"/>
+        </svg>
       </div>
-      <div class="strip-cell">
-        <div class="strip-num"><em>6</em>,000</div>
-        <div class="strip-label">Enterprise users · Azure RAG</div>
-      </div>
-      <div class="strip-cell">
-        <div class="strip-num"><em>30</em>%</div>
-        <div class="strip-label">Inference cost reduction</div>
-      </div>
-      <div class="strip-cell">
-        <div class="strip-num"><em>0.74</em></div>
-        <div class="strip-label">RAGAS faithfulness · 0.62 → 0.74</div>
+    </div>
+  </div>
+
+  <!-- PROJECT 3 -->
+  <div class="proj-panel" id="pp3">
+    <div>
+      <span class="pp-badge">EvalOps &middot; Python &middot; CI/CD</span>
+      <div class="pp-name">LLM Eval Harness</div>
+      <div class="pp-what">CI-ready A/B Eval Framework</div>
+      <p class="pp-desc">A production-ready framework for A/B evaluating LLM changes with statistical rigour and CI integration &mdash; making evaluation a <strong>real deployment gate</strong>, not a manual check.</p>
+      <ul class="pp-bullets">
+        <li><strong>Hard checks first:</strong> Schema, citations, format &mdash; deterministic, zero cost. Only passing cases proceed to LLM judge.</li>
+        <li><strong>LLM-as-judge with calibration:</strong> Rubric pairwise scoring with agreement, flip rate, and order bias measurement.</li>
+        <li><strong>95% bootstrap CI</strong> on win rate. Per-tag breakdown. Refusal and format pass rates tracked separately.</li>
+        <li><strong>Quality gates:</strong> Configurable thresholds. Exit code 2 on failure blocks CI pipeline.</li>
+      </ul>
+      <div class="pp-stack"><span class="pp-pill">Python</span><span class="pp-pill">OpenAI</span><span class="pp-pill">RAGAS</span><span class="pp-pill">GitHub Actions</span><span class="pp-pill">pytest</span></div>
+      <a class="pp-link" href="https://github.com/Revanth9727/LLM-Evaluation-Harness" target="_blank" rel="noopener">View on GitHub &rarr;</a>
+    </div>
+    <div>
+      <div class="diagram-shell">
+        <div class="diagram-title">Eval pipeline flow</div>
+        <svg class="diag" viewBox="0 0 300 360">
+          <defs><marker id="arr3" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="currentColor" style="color:var(--fg-faint)"/></marker></defs>
+          <rect x="75" y="10" width="150" height="36" rx="2" class="node-fill"/>
+          <text x="150" y="32" class="text-bright" text-anchor="middle">Test dataset (JSONL)</text>
+          <line x1="150" y1="46" x2="150" y2="62" class="arrow" marker-end="url(#arr3)"/>
+          <rect x="55" y="62" width="190" height="50" rx="2" class="node-fill"/>
+          <text x="150" y="80" class="label" text-anchor="middle">HARD CHECKS</text>
+          <text x="150" y="95" class="text" text-anchor="middle">Schema &middot; citations &middot; format &middot; length</text>
+          <text x="150" y="106" class="text" text-anchor="middle">Deterministic &middot; zero LLM cost</text>
+          <line x1="150" y1="112" x2="150" y2="128" class="arrow" marker-end="url(#arr3)"/>
+          <path d="M55,88 Q10,88 10,140 Q10,150 55,150" class="arrow" stroke-dasharray="3,3" marker-end="url(#arr3)" fill="none"/>
+          <text x="6" y="120" class="text" text-anchor="middle" style="font-size:7px">fail &rarr;</text>
+          <text x="6" y="130" class="text" text-anchor="middle" style="font-size:7px">skip</text>
+          <rect x="55" y="128" width="190" height="50" rx="2" class="node-fill"/>
+          <text x="150" y="146" class="label" text-anchor="middle">LLM-AS-JUDGE</text>
+          <text x="150" y="161" class="text" text-anchor="middle">Rubric-based A vs B scoring</text>
+          <text x="150" y="172" class="text" text-anchor="middle">Calibration: flip rate &middot; order bias</text>
+          <line x1="150" y1="178" x2="150" y2="194" class="arrow" marker-end="url(#arr3)"/>
+          <rect x="55" y="194" width="190" height="50" rx="2" class="node-fill"/>
+          <text x="150" y="212" class="label" text-anchor="middle">METRICS</text>
+          <text x="150" y="227" class="text" text-anchor="middle">Win rate + 95% CI &middot; refusal rate</text>
+          <text x="150" y="238" class="text" text-anchor="middle">Format pass &middot; per-tag breakdown</text>
+          <line x1="150" y1="244" x2="150" y2="260" class="arrow" marker-end="url(#arr3)"/>
+          <rect x="55" y="260" width="190" height="42" rx="2" class="node-fill"/>
+          <text x="150" y="278" class="label" text-anchor="middle">QUALITY GATE</text>
+          <text x="150" y="293" class="text" text-anchor="middle">Thresholds &middot; regression vs baseline</text>
+          <line x1="150" y1="302" x2="150" y2="318" class="arrow" marker-end="url(#arr3)"/>
+          <rect x="20" y="318" width="100" height="32" rx="2" class="node-out"/>
+          <text x="70" y="338" class="text-bright" text-anchor="middle">✓ PASS &middot; exit 0</text>
+          <rect x="180" y="318" width="100" height="32" rx="2" class="node-fail"/>
+          <text x="230" y="338" class="text-bright" text-anchor="middle">✗ FAIL &middot; exit 2</text>
+          <line x1="150" y1="318" x2="70" y2="318" class="arrow"/>
+          <line x1="150" y1="318" x2="230" y2="318" class="arrow"/>
+        </svg>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ════════════════════════════════════════════════════════════════════ -->
-<!-- STORY                                                                  -->
-<!-- ════════════════════════════════════════════════════════════════════ -->
-<section class="section" id="story">
-  <div class="section-inner">
-    <div class="reveal">
-      <div class="section-label">01 — Story</div>
-      <h2 class="section-title">Building things that <em>actually ship.</em></h2>
-    </div>
-    <div class="story-grid">
-      <div class="story-prose reveal">
-        <p>I build and ship production GenAI systems — the part where reliability, latency, cost, and evaluation matter as much as model quality. Two systems I've owned end-to-end: a conversational AI platform handling <strong>85K+ requests/day</strong> (leading a 5-person engineering team), and an Azure RAG chatbot for <strong>6,000 employees</strong> as sole architect.</p>
-        <p>I work where most production GenAI fails — at the intersection of <em>retrieval quality, evaluation, and inference cost</em>. Hybrid retrieval tuning, eval-gated CI/CD, complexity-based model routing, observability that catches drift before users do.</p>
-        <p>I <strong>own outcomes, not just code</strong>. Observability baked in from day one. Every model update through an eval gate. Every cost spike investigated. That's what running AI in production actually looks like.</p>
-      </div>
-      <div class="story-stats reveal">
-        <div class="story-stat"><div class="story-stat-num"><em>99.9</em>%</div><div class="story-stat-label">Uptime SLA · Azure HR RAG</div></div>
-        <div class="story-stat"><div class="story-stat-num">~<em>40</em>%</div><div class="story-stat-label">Cache hit · repeat queries</div></div>
-        <div class="story-stat"><div class="story-stat-num"><em>20</em>%</div><div class="story-stat-label">Regressive updates blocked at gate</div></div>
-        <div class="story-stat"><div class="story-stat-num"><em>3</em>×</div><div class="story-stat-label">Deployment cycle accelerated</div></div>
-        <div class="story-stat"><div class="story-stat-num">+<em>0.12</em></div><div class="story-stat-label">RAGAS faithfulness · 0.62 → 0.74 (+19% rel.)</div></div>
-      </div>
+<!-- ── CONTACT ── -->
+<section id="contact">
+  <h2>Contact</h2>
+  <div class="contact-block">
+    <p><strong>What I'm looking for:</strong> Senior / Lead roles building production GenAI platforms &mdash; RAG systems, LLM evaluation infrastructure, AI agents, and enterprise AI products. Especially interested in teams that care about reliability, cost, observability, governance, and measurable model quality.</p>
+    <div class="ctas">
+      <a class="primary" href="mailto:gollapudi.off@gmail.com">gollapudi.off@gmail.com</a>
+      <a href="https://www.linkedin.com/in/revanth-gollapudi-45935218a/" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="https://github.com/Revanth980727" target="_blank" rel="noopener">GitHub</a>
+      <a href="/resume.pdf" download="Revanth_Gollapudi_Resume.pdf">Download Resume</a>
     </div>
   </div>
 </section>
 
-<!-- ════════════════════════════════════════════════════════════════════ -->
-<!-- EXPERIENCE                                                             -->
-<!-- ════════════════════════════════════════════════════════════════════ -->
-<section class="section" id="experience">
-  <div class="section-inner">
-    <div class="reveal">
-      <div class="section-label">02 — Experience</div>
-      <h2 class="section-title">Where <em>I've shipped.</em></h2>
-    </div>
-    <div class="exp-shell">
-      <div class="exp-nav reveal">
-        <div class="exp-nav-item on" data-ep="ep1">
-          <div class="en-co">Production GenAI Systems</div>
-          <div class="en-role">AI Architect · CGI</div>
-          <div class="en-date">Dec 2024 — Present</div>
-        </div>
-        <div class="exp-nav-item" data-ep="ep2">
-          <div class="en-co">RAG & ML Platform</div>
-          <div class="en-role">Data Engineer · CGI</div>
-          <div class="en-date">Jan 2023 — Dec 2024</div>
-        </div>
-        <div class="exp-nav-item" data-ep="ep3">
-          <div class="en-co">Streaming Data Platform</div>
-          <div class="en-role">Data Engineer · eKincare</div>
-          <div class="en-date">Aug 2020 — Jul 2021</div>
-        </div>
-      </div>
-      <div class="exp-content reveal">
-        <!-- Panel 1 -->
-        <div class="exp-panel on" id="ep1">
-          <div class="ep-role">Production GenAI Systems · AWS + Azure</div>
-          <div class="ep-meta"><span>AI Architect · CGI</span><span>Dec 2024 — Present</span></div>
-          <div class="ep-points">
-            <div class="ep-point">
-              <div class="ep-point-label">Conversational AI Platform · AWS</div>
-              <p>Architected and own a <strong>Kubernetes-based conversational AI platform on AWS EKS</strong> serving ~85K requests/day across 10+ agent workflows for 1,200 users. Lead a 5-person engineering team with full SLA accountability for the production environment.</p>
-            </div>
-            <div class="ep-point">
-              <div class="ep-point-label">Azure HR RAG · Live for 6,000 Employees</div>
-              <p>Sole architect on an end-to-end Azure RAG system for an HR Policy chatbot. Angular SPA, FastAPI on Container Apps, Azure AI Search (vector + BM25 + semantic reranker), GPT-4o on PTU, Document Intelligence, Entra ID/MFA, private VNet. Delivers <strong>&lt;3s response time, ~40% cache hit rate, 99.9% uptime</strong>, with <strong>EU AI Act-aligned</strong> deployment documentation.</p>
-            </div>
-            <div class="ep-point">
-              <div class="ep-point-label">Inference Cost · 30% Reduction</div>
-              <p>Co-designed a <strong>complexity-based model router</strong> sending simple queries to Gemma/Mistral 8B and complex ones to GPT-4o. Cut monthly inference spend from <strong>$15K to $10.5K</strong> with no quality degradation.</p>
-            </div>
-            <div class="ep-point">
-              <div class="ep-point-label">Fine-tuning · 45% → 30% Hallucination Rate</div>
-              <p>Fine-tuned <strong>Llama 3 via LoRA/PEFT with DPO</strong> on 500+ human-labeled preference pairs. Reduced measured hallucination rate from 45% to 30% across production workloads.</p>
-            </div>
-            <div class="ep-point">
-              <div class="ep-point-label">EvalOps · Regression Gate in CI</div>
-              <p>Built a full <strong>EvalOps pipeline</strong> — groundedness rubrics, golden datasets, automated RAGAS scoring, OpenTelemetry retrieval tracing — as mandatory CI gates before every model update. <strong>No known regressions have reached production undetected since rollout.</strong></p>
-            </div>
-            <div class="ep-point">
-              <div class="ep-point-label">Vehicle AI Inspection · Ryder Systems (Fortune 500)</div>
-              <p>Lead engineer on an <strong>AI-powered vehicle inspection system</strong> — replacing manual walk-around inspections with a fully automated pipeline processing <strong>10,000+ vehicles/month at ~$0.01/image</strong>. Funded by a $93.9K Microsoft ECIF grant.</p>
-              <p>Started by training and evaluating a <strong>YOLOv8 model on 10,000 labeled vehicle images</strong>, reaching 85–89% accuracy, before driving a <strong>strategic pivot to GPT-4o Vision</strong> — recognising the generative model's zero-shot damage understanding would outperform a task-specific detector without retraining burden.</p>
-              <p>Built a <strong>two-pass automated pipeline</strong>: OpenCV blur detection pre-filters frames, then GPT-4o Vision runs a <strong>15-point damage assessment</strong> with Pass/Fail/N-A verdicts, confidence signals, and human-readable descriptions. Deployed on <strong>Azure Functions, Blob Storage, Cosmos DB, and Azure OpenAI</strong>.</p>
-            </div>
-          </div>
-          <div class="ep-stack">
-            <span class="ep-pill">AWS EKS</span><span class="ep-pill">Azure Container Apps</span><span class="ep-pill">Azure AI Search</span><span class="ep-pill">GPT-4o PTU</span><span class="ep-pill">GPT-4o Vision</span><span class="ep-pill">YOLOv8</span><span class="ep-pill">OpenCV</span><span class="ep-pill">Azure Functions</span><span class="ep-pill">Cosmos DB</span><span class="ep-pill">Llama 3</span><span class="ep-pill">LoRA/PEFT</span><span class="ep-pill">DPO</span><span class="ep-pill">RAGAS</span><span class="ep-pill">OpenTelemetry</span><span class="ep-pill">LangGraph</span><span class="ep-pill">Bicep</span>
-          </div>
-        </div>
+<footer>&copy; <span id="yr"></span> Revanth Gollapudi</footer>
 
-        <!-- Panel 2 -->
-        <div class="exp-panel" id="ep2">
-          <div class="ep-role">RAG Retrieval Quality & ML Platform</div>
-          <div class="ep-meta"><span>Data Engineer · CGI</span><span>Jan 2023 — Dec 2024</span></div>
-          <div class="ep-points">
-            <div class="ep-point">
-              <div class="ep-point-label">Retrieval Quality · 0.62 → 0.74 Faithfulness</div>
-              <p>Tuned <strong>hybrid retrieval (BM25 + pgvector + cross-encoder reranking)</strong> with query rewriting optimisations. Lifted RAGAS faithfulness from <strong>0.62 to 0.74</strong> on a 500-question eval set (<strong>+0.12 absolute, +19% relative</strong>) with no generation model changes.</p>
-            </div>
-            <div class="ep-point">
-              <div class="ep-point-label">Eval-gated CI/CD · 20% of Bad Updates Blocked</div>
-              <p>Built an <strong>eval-gated CI/CD pipeline</strong> using LLM-as-judge with rubric scoring as a mandatory release gate. Blocked ~20% of regressive model updates before production.</p>
-            </div>
-            <div class="ep-point">
-              <div class="ep-point-label">ML Pipelines · 72h → 24h</div>
-              <p>Rebuilt <strong>Kubernetes ML training pipelines</strong> for ~6TB document classification. Cut training-to-deployment cycle from 72 hours to under 24 hours — 3× faster iteration.</p>
-            </div>
-            <div class="ep-point">
-              <div class="ep-point-label">Observability · Hours to Minutes MTTD</div>
-              <p>Implemented <strong>CloudWatch + OpenTelemetry</strong> instrumentation with drift detection and alerting. Reduced mean time to diagnose failures from hours to minutes.</p>
-            </div>
-          </div>
-          <div class="ep-stack">
-            <span class="ep-pill">BM25</span><span class="ep-pill">pgvector</span><span class="ep-pill">Cross-encoder</span><span class="ep-pill">RAGAS</span><span class="ep-pill">LLM-as-judge</span><span class="ep-pill">Kubernetes</span><span class="ep-pill">CloudWatch</span><span class="ep-pill">OpenTelemetry</span>
-          </div>
-        </div>
+</div><!-- /.wrap -->
 
-        <!-- Panel 3 -->
-        <div class="exp-panel" id="ep3">
-          <div class="ep-role">Streaming Data Platform · Kafka + Spark</div>
-          <div class="ep-meta"><span>Data Engineer · eKincare</span><span>Aug 2020 — Jul 2021</span></div>
-          <div class="ep-points">
-            <div class="ep-point">
-              <div class="ep-point-label">Pipeline Throughput · +40%</div>
-              <p>Improved <strong>Kafka and Spark pipeline throughput by 40%</strong> through partitioning and parallelism tuning. Added schema validation and dead-letter handling to cut production failures.</p>
-            </div>
-            <div class="ep-point">
-              <div class="ep-point-label">Application Stability · -15% Crashes</div>
-              <p>Diagnosed root causes across recurring crash patterns and overhauled <strong>logging, monitoring, and alerting</strong>. Reduced crash rate by 15%.</p>
-            </div>
-          </div>
-          <div class="ep-stack">
-            <span class="ep-pill">Apache Kafka</span><span class="ep-pill">Apache Spark</span><span class="ep-pill">Python</span><span class="ep-pill">AWS</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ════════════════════════════════════════════════════════════════════ -->
-<!-- SKILLS                                                                 -->
-<!-- ════════════════════════════════════════════════════════════════════ -->
-<section class="section" id="skills">
-  <div class="section-inner">
-    <div class="reveal">
-      <div class="section-label">03 — Stack</div>
-      <h2 class="section-title">Tools I've used <em>at 2am.</em></h2>
-    </div>
-    <div class="skills-grid">
-      <div class="skills-prose reveal">
-        <p>Every tool here is something I've used in production — to solve a real reliability, latency, retrieval, or cost problem. No framework I picked up to pad a slide.</p>
-        <p>My strongest areas are the intersection of <em>retrieval quality, evaluation, and inference cost</em> — where most production GenAI systems fail.</p>
-        <p>The infrastructure depth came from necessity. You can't <strong>own a system end-to-end</strong> without understanding how it runs, where it breaks, and what it costs.</p>
-      </div>
-      <div class="skills-list reveal">
-        <div class="sk-row"><div class="sk-cat">LLMs &amp; GenAI</div><div class="sk-vals"><span class="sk-v">Llama 3</span><span class="sk-v">LoRA/PEFT</span><span class="sk-v">DPO</span><span class="sk-v">RLHF</span><span class="sk-v">LangGraph</span><span class="sk-v">Model Routing</span><span class="sk-v">NL-to-SQL</span></div></div>
-        <div class="sk-row"><div class="sk-cat">RAG &amp; Retrieval</div><div class="sk-vals"><span class="sk-v">BM25</span><span class="sk-v">pgvector</span><span class="sk-v">Azure AI Search</span><span class="sk-v">Cross-encoder</span><span class="sk-v">Query Rewriting</span><span class="sk-v">Document Intelligence</span></div></div>
-        <div class="sk-row"><div class="sk-cat">Computer Vision</div><div class="sk-vals"><span class="sk-v">GPT-4o Vision</span><span class="sk-v">YOLOv8</span><span class="sk-v">OpenCV</span><span class="sk-v">Object Detection</span><span class="sk-v">Damage Classification</span><span class="sk-v">Confidence Scoring</span></div></div>
-        <div class="sk-row"><div class="sk-cat">Eval &amp; Observability</div><div class="sk-vals"><span class="sk-v">RAGAS</span><span class="sk-v">DeepEval</span><span class="sk-v">LLM-as-Judge</span><span class="sk-v">Golden Datasets</span><span class="sk-v">Regression Gates</span><span class="sk-v">OpenTelemetry</span><span class="sk-v">CloudWatch</span></div></div>
-        <div class="sk-row"><div class="sk-cat">Cloud &amp; Infra</div><div class="sk-vals"><span class="sk-v">AWS EKS</span><span class="sk-v">Azure Container Apps</span><span class="sk-v">Azure OpenAI PTU</span><span class="sk-v">Key Vault</span><span class="sk-v">Entra ID</span><span class="sk-v">Kubernetes</span><span class="sk-v">Docker</span><span class="sk-v">Terraform</span><span class="sk-v">Bicep</span><span class="sk-v">GitHub Actions</span></div></div>
-        <div class="sk-row"><div class="sk-cat">Compliance</div><div class="sk-vals"><span class="sk-v">EU AI Act</span><span class="sk-v">Responsible AI</span><span class="sk-v">Deployment Docs</span></div></div>
-        <div class="sk-row"><div class="sk-cat">Languages</div><div class="sk-vals"><span class="sk-v">Python</span><span class="sk-v">PyTorch</span><span class="sk-v">FastAPI</span><span class="sk-v">React/Next.js</span><span class="sk-v">Angular</span><span class="sk-v">Go</span></div></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ════════════════════════════════════════════════════════════════════ -->
-<!-- EDUCATION                                                              -->
-<!-- ════════════════════════════════════════════════════════════════════ -->
-<section class="section" id="education">
-  <div class="section-inner">
-    <div class="reveal">
-      <div class="section-label">04 — Education</div>
-      <h2 class="section-title">Where <em>I trained.</em></h2>
-    </div>
-    <div class="skills-list reveal" style="margin-top:3rem;max-width:1000px;">
-      <div class="sk-row">
-        <div class="sk-cat">2021 — 2022</div>
-        <div>
-          <div style="font-size:1.15rem;color:var(--frost);font-weight:300;margin-bottom:.3rem;">Master of Science · Applied Engineering</div>
-          <div style="font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:.12em;color:var(--frost-dim);text-transform:uppercase;">University of Colorado Boulder</div>
-        </div>
-      </div>
-      <div class="sk-row">
-        <div class="sk-cat">2016 — 2020</div>
-        <div>
-          <div style="font-size:1.15rem;color:var(--frost);font-weight:300;margin-bottom:.3rem;">Bachelor of Technology · Mechanical Engineering</div>
-          <div style="font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:.12em;color:var(--frost-dim);text-transform:uppercase;">PES University</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ════════════════════════════════════════════════════════════════════ -->
-<!-- PROJECTS                                                               -->
-<!-- ════════════════════════════════════════════════════════════════════ -->
-<section class="section" id="projects">
-  <div class="section-inner">
-    <div class="reveal">
-      <div class="section-label">05 — Independent Projects</div>
-      <h2 class="section-title">Built on my own time, <em>shipped publicly.</em></h2>
-      <p style="max-width:680px;margin-top:1.5rem;color:var(--frost-dim);font-weight:300;">Production work at CGI is covered above. These are systems I designed and built independently — open-source on GitHub, with full code, tests, and CI.</p>
-    </div>
-    <div class="proj-tabs reveal">
-      <div class="p-tab on" data-pp="pp1">RAOC</div>
-      <div class="p-tab" data-pp="pp2">Bugfix AI Pilot</div>
-      <div class="p-tab" data-pp="pp3">LLM Eval Harness</div>
-    </div>
-
-    <!-- PROJECT 1 -->
-    <div class="proj-panel on" id="pp1">
-      <div>
-        <span class="pp-badge">Agentic · macOS · Python</span>
-        <div class="pp-name">RAOC</div>
-        <div class="pp-what">Remote Autonomous OS Controller</div>
-        <p class="pp-desc">Control your Mac from your phone via Telegram. Send a natural language command, a <strong>6-agent pipeline</strong> builds and executes a plan — with mandatory tap-to-approve before anything runs.</p>
-        <ul class="pp-bullets">
-          <li><strong>Intake</strong> understands intent. <strong>Discovery</strong> finds files. <strong>Planning</strong> generates a step-by-step plan. <strong>Execution</strong> carries it out. <strong>Verification</strong> checks. <strong>Reporter</strong> sends proof.</li>
-          <li><strong>Safety model:</strong> approval enforced in code, not convention. Dangerous commands blocked. Every file backed up before writes. Workspace sandboxed at zone resolver level.</li>
-          <li>303 passing tests · GitHub Actions CI · Pydantic v2 · macOS Keychain for secrets</li>
-        </ul>
-        <div class="pp-stack"><span class="pp-pill">Python 3.12</span><span class="pp-pill">Claude API</span><span class="pp-pill">Telegram</span><span class="pp-pill">SQLite</span><span class="pp-pill">Pydantic v2</span></div>
-        <a class="pp-link" href="https://github.com/Revanth9727/RAOC" target="_blank">View on GitHub →</a>
-      </div>
-      <div>
-        <div class="diagram-shell">
-          <div class="diagram-title">Agent pipeline · RAOC</div>
-          <svg class="diag" viewBox="0 0 320 420">
-            <defs><marker id="arr" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#5a6573"/></marker></defs>
-            <rect x="100" y="10" width="120" height="36" rx="2" class="node-fill"/>
-            <text x="160" y="32" class="text-bright" text-anchor="middle">📱 Telegram command</text>
-            <line x1="160" y1="46" x2="160" y2="62" class="arrow" marker-end="url(#arr)"/>
-            <rect x="80" y="62" width="160" height="42" rx="2" class="node-fill"/>
-            <text x="160" y="78" class="label" text-anchor="middle">INTAKE AGENT</text>
-            <text x="160" y="93" class="text" text-anchor="middle">Understands intent</text>
-            <line x1="160" y1="104" x2="160" y2="120" class="arrow" marker-end="url(#arr)"/>
-            <rect x="80" y="120" width="160" height="42" rx="2" class="node-fill"/>
-            <text x="160" y="136" class="label" text-anchor="middle">DISCOVERY AGENT</text>
-            <text x="160" y="151" class="text" text-anchor="middle">Finds &amp; reads files</text>
-            <line x1="160" y1="162" x2="160" y2="178" class="arrow" marker-end="url(#arr)"/>
-            <rect x="80" y="178" width="160" height="42" rx="2" class="node-fill"/>
-            <text x="160" y="194" class="label" text-anchor="middle">PLANNING AGENT</text>
-            <text x="160" y="209" class="text" text-anchor="middle">Generates action plan</text>
-            <line x1="160" y1="220" x2="160" y2="234" class="arrow" marker-end="url(#arr)"/>
-            <rect x="95" y="234" width="130" height="28" rx="14" class="node-accent"/>
-            <text x="160" y="252" class="label" text-anchor="middle" style="fill:#a8d8f5">✓ TAP TO APPROVE</text>
-            <line x1="160" y1="262" x2="160" y2="278" class="arrow" marker-end="url(#arr)"/>
-            <rect x="80" y="278" width="160" height="42" rx="2" class="node-fill"/>
-            <text x="160" y="294" class="label" text-anchor="middle">EXECUTION AGENT</text>
-            <text x="160" y="309" class="text" text-anchor="middle">Runs the plan safely</text>
-            <line x1="160" y1="320" x2="160" y2="336" class="arrow" marker-end="url(#arr)"/>
-            <rect x="20" y="336" width="130" height="42" rx="2" class="node-fill"/>
-            <text x="85" y="352" class="label" text-anchor="middle">VERIFICATION</text>
-            <text x="85" y="367" class="text" text-anchor="middle">Checks result</text>
-            <rect x="170" y="336" width="130" height="42" rx="2" class="node-fill"/>
-            <text x="235" y="352" class="label" text-anchor="middle">REPORTER</text>
-            <text x="235" y="367" class="text" text-anchor="middle">Sends proof to phone</text>
-            <line x1="160" y1="336" x2="85" y2="336" class="arrow"/>
-            <line x1="160" y1="336" x2="235" y2="336" class="arrow"/>
-            <line x1="85" y1="378" x2="85" y2="400" class="arrow" marker-end="url(#arr)"/>
-            <line x1="235" y1="378" x2="235" y2="400" class="arrow" marker-end="url(#arr)"/>
-            <text x="160" y="415" class="text-bright" text-anchor="middle">📱 Result delivered</text>
-          </svg>
-        </div>
-      </div>
-    </div>
-
-    <!-- PROJECT 2 -->
-    <div class="proj-panel" id="pp2">
-      <div>
-        <span class="pp-badge">Multi-agent · Full-stack</span>
-        <div class="pp-name">Bugfix AI Pilot</div>
-        <div class="pp-what">Autonomous Bug Resolution</div>
-        <p class="pp-desc">Takes a JIRA ticket ID and — without any human involvement — reads the ticket, generates a GPT-4 code fix, validates with tests, and opens a GitHub PR. <strong>233 commits.</strong></p>
-        <ul class="pp-bullets">
-          <li><strong>Planner agent</strong> reads the JIRA ticket and identifies the affected code and root cause.</li>
-          <li><strong>Developer agent</strong> generates the fix with full codebase context awareness.</li>
-          <li><strong>QA agent</strong> runs tests against the fix. Failed results loop back to Developer (up to 3 cycles).</li>
-          <li><strong>Communicator agent</strong> comments on JIRA and opens a GitHub PR with diff and test results.</li>
-        </ul>
-        <div class="pp-stack"><span class="pp-pill">Python</span><span class="pp-pill">GPT-4</span><span class="pp-pill">React</span><span class="pp-pill">FastAPI</span><span class="pp-pill">Docker</span><span class="pp-pill">JIRA API</span></div>
-        <a class="pp-link" href="https://github.com/Revanth980727/bugfix-ai-pilot" target="_blank">View on GitHub →</a>
-      </div>
-      <div>
-        <div class="diagram-shell">
-          <div class="diagram-title">Agent pipeline · Bugfix AI Pilot</div>
-          <svg class="diag" viewBox="0 0 320 400">
-            <defs><marker id="arr2" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#5a6573"/></marker></defs>
-            <rect x="90" y="10" width="140" height="36" rx="2" class="node-fill"/>
-            <text x="160" y="32" class="text-bright" text-anchor="middle">🎫 JIRA Ticket</text>
-            <line x1="160" y1="46" x2="160" y2="62" class="arrow" marker-end="url(#arr2)"/>
-            <rect x="70" y="62" width="180" height="50" rx="2" class="node-fill"/>
-            <text x="160" y="80" class="label" text-anchor="middle">PLANNER AGENT</text>
-            <text x="160" y="95" class="text" text-anchor="middle">Reads ticket · identifies</text>
-            <text x="160" y="106" class="text" text-anchor="middle">affected files &amp; root cause</text>
-            <line x1="160" y1="112" x2="160" y2="128" class="arrow" marker-end="url(#arr2)"/>
-            <rect x="70" y="128" width="180" height="50" rx="2" class="node-fill"/>
-            <text x="160" y="146" class="label" text-anchor="middle">DEVELOPER AGENT</text>
-            <text x="160" y="161" class="text" text-anchor="middle">Generates code fix</text>
-            <text x="160" y="172" class="text" text-anchor="middle">with codebase context</text>
-            <line x1="160" y1="178" x2="160" y2="194" class="arrow" marker-end="url(#arr2)"/>
-            <rect x="70" y="194" width="180" height="50" rx="2" class="node-fill"/>
-            <text x="160" y="212" class="label" text-anchor="middle">QA AGENT</text>
-            <text x="160" y="227" class="text" text-anchor="middle">Runs test suite</text>
-            <text x="160" y="238" class="text" text-anchor="middle">against the fix</text>
-            <path d="M70,219 Q20,219 20,160 Q20,142 70,142" class="arrow" stroke-dasharray="3,3" marker-end="url(#arr2)"/>
-            <text x="14" y="185" class="text" text-anchor="middle" style="font-size:7px">retry</text>
-            <text x="14" y="195" class="text" text-anchor="middle" style="font-size:7px">≤3×</text>
-            <line x1="160" y1="244" x2="160" y2="260" class="arrow" marker-end="url(#arr2)"/>
-            <rect x="70" y="260" width="180" height="50" rx="2" class="node-fill"/>
-            <text x="160" y="278" class="label" text-anchor="middle">COMMUNICATOR AGENT</text>
-            <text x="160" y="293" class="text" text-anchor="middle">Updates JIRA · opens</text>
-            <text x="160" y="304" class="text" text-anchor="middle">GitHub PR with diff</text>
-            <line x1="160" y1="310" x2="160" y2="326" class="arrow" marker-end="url(#arr2)"/>
-            <rect x="30" y="326" width="110" height="36" rx="2" class="node-out"/>
-            <text x="85" y="348" class="text-bright" text-anchor="middle" style="fill:#a8d8f5">🔀 GitHub PR</text>
-            <rect x="180" y="326" width="110" height="36" rx="2" class="node-out"/>
-            <text x="235" y="348" class="text-bright" text-anchor="middle" style="fill:#a8d8f5">🎫 JIRA updated</text>
-            <line x1="160" y1="326" x2="85" y2="326" class="arrow"/>
-            <line x1="160" y1="326" x2="235" y2="326" class="arrow"/>
-          </svg>
-        </div>
-      </div>
-    </div>
-
-    <!-- PROJECT 3 -->
-    <div class="proj-panel" id="pp3">
-      <div>
-        <span class="pp-badge">EvalOps · Python · CI/CD</span>
-        <div class="pp-name">LLM Eval Harness</div>
-        <div class="pp-what">CI-ready A/B Eval Framework</div>
-        <p class="pp-desc">A production-ready framework for A/B evaluating LLM changes with statistical rigour and CI integration — making evaluation a <strong>real deployment gate</strong>, not a manual check.</p>
-        <ul class="pp-bullets">
-          <li><strong>Hard checks first:</strong> Schema, citations, format — deterministic, zero cost. Only passing cases proceed to LLM judge.</li>
-          <li><strong>LLM-as-judge with calibration:</strong> Rubric pairwise scoring with agreement, flip rate, and order bias measurement.</li>
-          <li><strong>95% bootstrap CI</strong> on win rate. Per-tag breakdown. Refusal and format pass rates tracked separately.</li>
-          <li><strong>Quality gates:</strong> Configurable thresholds. Exit code 2 on failure blocks CI pipeline.</li>
-        </ul>
-        <div class="pp-stack"><span class="pp-pill">Python</span><span class="pp-pill">OpenAI</span><span class="pp-pill">RAGAS</span><span class="pp-pill">GitHub Actions</span><span class="pp-pill">pytest</span></div>
-        <a class="pp-link" href="https://github.com/Revanth9727/LLM-Evaluation-Harness" target="_blank">View on GitHub →</a>
-      </div>
-      <div>
-        <div class="diagram-shell">
-          <div class="diagram-title">Eval pipeline flow</div>
-          <svg class="diag" viewBox="0 0 300 360">
-            <defs><marker id="arr3" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#5a6573"/></marker></defs>
-            <rect x="75" y="10" width="150" height="36" rx="2" class="node-fill"/>
-            <text x="150" y="32" class="text-bright" text-anchor="middle">Test dataset (JSONL)</text>
-            <line x1="150" y1="46" x2="150" y2="62" class="arrow" marker-end="url(#arr3)"/>
-            <rect x="55" y="62" width="190" height="50" rx="2" class="node-fill"/>
-            <text x="150" y="80" class="label" text-anchor="middle">HARD CHECKS</text>
-            <text x="150" y="95" class="text" text-anchor="middle">Schema · citations · format · length</text>
-            <text x="150" y="106" class="text" text-anchor="middle">Deterministic · zero LLM cost</text>
-            <line x1="150" y1="112" x2="150" y2="128" class="arrow" marker-end="url(#arr3)"/>
-            <path d="M55,88 Q10,88 10,140 Q10,150 55,150" class="arrow" stroke-dasharray="3,3" marker-end="url(#arr3)"/>
-            <text x="6" y="120" class="text" text-anchor="middle" style="font-size:7px">fail →</text>
-            <text x="6" y="130" class="text" text-anchor="middle" style="font-size:7px">skip</text>
-            <rect x="55" y="128" width="190" height="50" rx="2" class="node-fill"/>
-            <text x="150" y="146" class="label" text-anchor="middle">LLM-AS-JUDGE</text>
-            <text x="150" y="161" class="text" text-anchor="middle">Rubric-based A vs B scoring</text>
-            <text x="150" y="172" class="text" text-anchor="middle">Calibration: flip rate · order bias</text>
-            <line x1="150" y1="178" x2="150" y2="194" class="arrow" marker-end="url(#arr3)"/>
-            <rect x="55" y="194" width="190" height="50" rx="2" class="node-fill"/>
-            <text x="150" y="212" class="label" text-anchor="middle">METRICS</text>
-            <text x="150" y="227" class="text" text-anchor="middle">Win rate + 95% CI · refusal rate</text>
-            <text x="150" y="238" class="text" text-anchor="middle">Format pass · per-tag breakdown</text>
-            <line x1="150" y1="244" x2="150" y2="260" class="arrow" marker-end="url(#arr3)"/>
-            <rect x="55" y="260" width="190" height="42" rx="2" class="node-fill"/>
-            <text x="150" y="278" class="label" text-anchor="middle">QUALITY GATE</text>
-            <text x="150" y="293" class="text" text-anchor="middle">Thresholds · regression vs baseline</text>
-            <line x1="150" y1="302" x2="150" y2="318" class="arrow" marker-end="url(#arr3)"/>
-            <rect x="20" y="318" width="100" height="32" rx="2" class="node-out"/>
-            <text x="70" y="338" class="text-bright" text-anchor="middle" style="fill:#5dd9c1">✓ PASS · exit 0</text>
-            <rect x="180" y="318" width="100" height="32" rx="2" class="node-fail"/>
-            <text x="230" y="338" class="text-bright" text-anchor="middle" style="fill:#ff8aa0">✗ FAIL · exit 2</text>
-            <line x1="150" y1="318" x2="70" y2="318" class="arrow"/>
-            <line x1="150" y1="318" x2="230" y2="318" class="arrow"/>
-          </svg>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ════════════════════════════════════════════════════════════════════ -->
-<!-- CONTACT                                                                -->
-<!-- ════════════════════════════════════════════════════════════════════ -->
-<section class="section" id="contact">
-  <div class="contact-inner reveal">
-    <div class="contact-eyebrow">06 — Contact</div>
-    <h2 class="contact-title">Let's build something that <em>stays running.</em></h2>
-    <p class="contact-sub"><strong>What I'm looking for:</strong> Senior / Lead roles building production GenAI platforms — RAG systems, LLM evaluation infrastructure, AI agents, and enterprise AI products. Especially interested in teams that care about reliability, cost, observability, governance, and measurable model quality.</p>
-
-    <!-- Proof of production strip -->
-    <div style="display:flex;flex-wrap:wrap;gap:1.5rem 2.5rem;margin:3rem 0;padding:2rem 0;border-top:1px solid var(--rule-strong);border-bottom:1px solid var(--rule-strong);font-family:'JetBrains Mono',monospace;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--frost-dim);">
-      <span><strong style="color:var(--ice-bright);font-weight:400;">85K+</strong> req/day</span>
-      <span><strong style="color:var(--ice-bright);font-weight:400;">6,000</strong> users</span>
-      <span><strong style="color:var(--ice-bright);font-weight:400;">99.9%</strong> SLA</span>
-      <span><strong style="color:var(--ice-bright);font-weight:400;">30%</strong> inference cost cut</span>
-      <span><strong style="color:var(--ice-bright);font-weight:400;">+0.12</strong> RAGAS faithfulness</span>
-    </div>
-
-    <div class="contact-links">
-      <a href="mailto:gollapudi.off@gmail.com" class="btn btn-primary">gollapudi.off@gmail.com</a>
-      <a href="https://linkedin.com/in/revanth-gollapudi" target="_blank" class="btn btn-ghost">LinkedIn</a>
-      <a href="https://github.com/Revanth980727" target="_blank" class="btn btn-ghost">GitHub</a>
-      <a href="/resume.pdf" class="btn btn-ghost" id="resume-btn-2" download="Revanth_Gollapudi_Resume.pdf">Download Resume</a>
-    </div>
-    <div class="contact-grid">
-      <div class="contact-cell">
-        <div class="cc-label">EMAIL</div>
-        <a href="mailto:gollapudi.off@gmail.com" class="cc-val">gollapudi.off@gmail.com</a>
-      </div>
-      <div class="contact-cell">
-        <div class="cc-label">LINKEDIN</div>
-        <a href="https://linkedin.com/in/revanth-gollapudi" target="_blank" class="cc-val">/in/revanth-gollapudi</a>
-      </div>
-      <div class="contact-cell">
-        <div class="cc-label">STATUS</div>
-        <div class="cc-val">Open · Senior / Lead GenAI</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<footer class="footer">© 2026 Revanth Gollapudi · Designed &amp; built in browser</footer>
-
-<!-- ════════════════════════════════════════════════════════════════════ -->
-<!-- THREE.JS — crystalline shard (lightweight, hardened)                    -->
-<!-- ════════════════════════════════════════════════════════════════════ -->
-<script type="importmap">
-{
-  "imports": {
-    "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"
-  }
-}
-</script>
-
-<script type="module">
-// ── Safe logger: never crashes in restrictive environments ─────────────
-const safeLog = (msg) => {
-  try {
-    if (typeof console === 'undefined') return;
-    const fn = console.log || console.info || console.warn;
-    if (typeof fn === 'function') fn.call(console, msg);
-  } catch (_) { /* swallow */ }
-};
-
-// ── Detect WebGL support before doing anything ─────────────────────────
-function hasWebGL() {
-  try {
-    const c = document.createElement('canvas');
-    const gl = c.getContext('webgl2') || c.getContext('webgl') || c.getContext('experimental-webgl');
-    if (!gl) return false;
-    // verify shader precision call works (the bug you hit)
-    const fmt = gl.getShaderPrecisionFormat
-      ? gl.getShaderPrecisionFormat(gl.VERTEX_SHADER, gl.HIGH_FLOAT)
-      : null;
-    return !!fmt;
-  } catch (e) { return false; }
-}
-
-const canvasEl = document.getElementById('canvas');
-const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-if (!hasWebGL() || reduceMotion) {
-  // graceful CSS fallback — paint a soft radial nebula instead
-  canvasEl.style.background = 'radial-gradient(ellipse at center, rgba(127,184,224,0.12) 0%, rgba(58,143,196,0.04) 35%, transparent 70%)';
-  safeLog('Three.js skipped: WebGL unavailable or reduced-motion preferred.');
-} else {
-  initThree();
-}
-
-async function initThree() {
-  const THREE = await import('three');
-
-  const renderer = new THREE.WebGLRenderer({
-    canvas: canvasEl,
-    antialias: window.devicePixelRatio < 2,
-    alpha: true,
-    powerPreference: 'low-power',
-    failIfMajorPerformanceCaveat: false,
-  });
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
-  renderer.setClearColor(0x000000, 0);
-
-  // ── Context-loss recovery ────────────────────────────────────────────
-  let contextLost = false;
-  canvasEl.addEventListener('webglcontextlost', (e) => {
-    e.preventDefault();
-    contextLost = true;
-    safeLog('WebGL context lost — pausing render.');
-  }, false);
-  canvasEl.addEventListener('webglcontextrestored', () => {
-    contextLost = false;
-    safeLog('WebGL context restored.');
-  }, false);
-
-  const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(35, 1, 0.1, 100);
-  camera.position.set(0, 0, 8);
-
-  // ── Lighting ─────────────────────────────────────────────────────────
-  scene.add(new THREE.AmbientLight(0x2a3340, 0.7));
-  const key = new THREE.DirectionalLight(0x7fb8e0, 1.4);
-  key.position.set(5, 4, 6); scene.add(key);
-  const rim = new THREE.DirectionalLight(0x5dd9c1, 0.7);
-  rim.position.set(-4, -2, -3); scene.add(rim);
-  const fill = new THREE.PointLight(0xa8d8f5, 1.0, 20);
-  fill.position.set(-3, 3, 4); scene.add(fill);
-
-  // ── Crystal shard ────────────────────────────────────────────────────
-  const shardGroup = new THREE.Group();
-
-  const coreGeom = new THREE.IcosahedronGeometry(1.4, 1);
-  const cp = coreGeom.attributes.position;
-  for (let i = 0; i < cp.count; i++) {
-    const x = cp.getX(i), y = cp.getY(i), z = cp.getZ(i);
-    const n = (Math.sin(x*3.1) + Math.cos(y*2.7) + Math.sin(z*2.3)) * 0.08;
-    cp.setXYZ(i, x + n, y + n * 1.2, z + n * 0.8);
-  }
-  coreGeom.computeVertexNormals();
-
-  // MeshPhongMaterial w/ low cost — keeps icy look without transmission/clearcoat
-  const coreMat = new THREE.MeshPhongMaterial({
-    color: 0x6ba8d8,
-    emissive: 0x1a3a52,
-    emissiveIntensity: 0.6,
-    specular: 0xa8d8f5,
-    shininess: 80,
-    transparent: true,
-    opacity: 0.85,
-  });
-  shardGroup.add(new THREE.Mesh(coreGeom, coreMat));
-
-  // outer wireframe shell
-  const shell = new THREE.Mesh(
-    new THREE.IcosahedronGeometry(1.7, 1),
-    new THREE.MeshBasicMaterial({ color: 0x7fb8e0, wireframe: true, transparent: true, opacity: 0.28 })
-  );
-  shardGroup.add(shell);
-
-  // inner glow shell
-  const glow = new THREE.Mesh(
-    new THREE.IcosahedronGeometry(1.5, 0),
-    new THREE.MeshBasicMaterial({ color: 0xa8d8f5, wireframe: true, transparent: true, opacity: 0.4 })
-  );
-  shardGroup.add(glow);
-
-  scene.add(shardGroup);
-
-  // ── Floating particles (lighter count) ───────────────────────────────
-  const PCOUNT = 250;
-  const pGeom = new THREE.BufferGeometry();
-  const pPos = new Float32Array(PCOUNT * 3);
-  const pVel = new Float32Array(PCOUNT * 3);
-  for (let i = 0; i < PCOUNT; i++) {
-    const i3 = i * 3;
-    const r = 2.5 + Math.random() * 2.5;
-    const theta = Math.random() * Math.PI * 2;
-    pPos[i3]   = Math.cos(theta) * r;
-    pPos[i3+1] = (Math.random() - 0.5) * 1.6;
-    pPos[i3+2] = Math.sin(theta) * r;
-    pVel[i3]   = (Math.random()-0.5) * 0.0015;
-    pVel[i3+1] = (Math.random()-0.5) * 0.0015;
-    pVel[i3+2] = (Math.random()-0.5) * 0.0015;
-  }
-  pGeom.setAttribute('position', new THREE.BufferAttribute(pPos, 3));
-  const particles = new THREE.Points(pGeom, new THREE.PointsMaterial({
-    color: 0xa8d8f5, size: 0.025, transparent: true, opacity: 0.6,
-    blending: THREE.AdditiveBlending, depthWrite: false,
-  }));
-  scene.add(particles);
-
-  // ── Mouse parallax ───────────────────────────────────────────────────
-  const mouse = { x:0, y:0, tx:0, ty:0 };
-  window.addEventListener('mousemove', (e) => {
-    mouse.tx = (e.clientX / window.innerWidth - 0.5) * 0.6;
-    mouse.ty = (e.clientY / window.innerHeight - 0.5) * 0.4;
-  });
-
-  // ── Resize ───────────────────────────────────────────────────────────
-  function resize() {
-    const r = canvasEl.getBoundingClientRect();
-    const w = r.width, h = r.height;
-    if (!w || !h) return;
-    camera.aspect = w / h;
-    camera.updateProjectionMatrix();
-    renderer.setSize(w, h, false);
-  }
-  new ResizeObserver(resize).observe(canvasEl);
-  resize();
-
-  // ── Pause render when tab hidden or canvas off-screen ────────────────
-  let visible = true;
-  document.addEventListener('visibilitychange', () => {
-    visible = document.visibilityState === 'visible';
-  });
-  let onScreen = true;
-  new IntersectionObserver(([entry]) => {
-    onScreen = entry.isIntersecting;
-  }, { threshold: 0 }).observe(canvasEl);
-
-  // ── Animate ──────────────────────────────────────────────────────────
-  const clock = new THREE.Clock();
-  function tick() {
-    requestAnimationFrame(tick);
-    if (contextLost || !visible || !onScreen) return;
-
-    const t = clock.getElapsedTime();
-    mouse.x += (mouse.tx - mouse.x) * 0.05;
-    mouse.y += (mouse.ty - mouse.y) * 0.05;
-
-    shardGroup.rotation.y = t * 0.18 + mouse.x * 0.5;
-    shardGroup.rotation.x = Math.sin(t * 0.12) * 0.15 + mouse.y * 0.3;
-    shardGroup.position.y = Math.sin(t * 0.6) * 0.08;
-
-    shell.rotation.y = -t * 0.1;
-    shell.rotation.z = t * 0.05;
-    glow.rotation.x = t * 0.15;
-    glow.rotation.z = -t * 0.08;
-
-    const pos = particles.geometry.attributes.position.array;
-    for (let i = 0; i < PCOUNT; i++) {
-      const i3 = i * 3;
-      pos[i3]   += pVel[i3];
-      pos[i3+1] += pVel[i3+1] + Math.sin(t * 0.3 + i) * 0.0008;
-      pos[i3+2] += pVel[i3+2];
-      const rad = Math.sqrt(pos[i3]*pos[i3] + pos[i3+2]*pos[i3+2]);
-      if (rad > 5.5 || rad < 1.8) { pVel[i3] *= -1; pVel[i3+2] *= -1; }
-      if (Math.abs(pos[i3+1]) > 2) pVel[i3+1] *= -1;
-    }
-    particles.geometry.attributes.position.needsUpdate = true;
-
-    try {
-      renderer.render(scene, camera);
-    } catch (err) {
-      safeLog('Render error, stopping loop: ' + err);
-      contextLost = true;
-    }
-  }
-  tick();
-}
-</script>
-
-<!-- ════════════════════════════════════════════════════════════════════ -->
-<!-- INTERACTIVITY                                                          -->
-<!-- ════════════════════════════════════════════════════════════════════ -->
 <script>
-// scroll progress bar
-const prog = document.getElementById('scrollProg');
-window.addEventListener('scroll', () => {
-  const h = document.documentElement.scrollHeight - window.innerHeight;
-  const p = Math.min(window.scrollY / h, 1);
-  prog.style.transform = `scaleX(${p})`;
-});
+// Footer year
+document.getElementById('yr').textContent = new Date().getFullYear();
 
-// reveal on scroll
-const revealObs = new IntersectionObserver((entries) => {
-  entries.forEach(e => {
-    if (e.isIntersecting) {
-      e.target.classList.add('in');
-      revealObs.unobserve(e.target);
+// Smooth-scroll for nav links
+document.querySelectorAll('.nav-links a').forEach(function (link) {
+  link.addEventListener('click', function (e) {
+    var id = link.getAttribute('href').slice(1);
+    var t = document.getElementById(id);
+    if (t) {
+      e.preventDefault();
+      t.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   });
-}, { threshold: 0.12 });
-document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
+});
 
-// nav scroll
-document.querySelectorAll('[data-scroll]').forEach(link => {
-  link.addEventListener('click', (e) => {
-    e.preventDefault();
-    const target = document.getElementById(link.dataset.scroll);
-    if (target) target.scrollIntoView({ behavior: 'smooth' });
+// Experience tabs
+document.querySelectorAll('.tab').forEach(function (btn) {
+  btn.addEventListener('click', function () {
+    document.querySelectorAll('.tab').forEach(function (b) { b.classList.remove('on'); });
+    document.querySelectorAll('.panel').forEach(function (p) { p.classList.remove('on'); });
+    btn.classList.add('on');
+    var target = document.getElementById(btn.getAttribute('data-ep'));
+    if (target) target.classList.add('on');
   });
 });
 
-// experience tabs
-document.querySelectorAll('.exp-nav-item').forEach(item => {
-  item.addEventListener('click', () => {
-    document.querySelectorAll('.exp-nav-item').forEach(i => i.classList.remove('on'));
-    document.querySelectorAll('.exp-panel').forEach(p => p.classList.remove('on'));
-    item.classList.add('on');
-    document.getElementById(item.dataset.ep).classList.add('on');
-  });
-});
-
-// project tabs
-document.querySelectorAll('.p-tab').forEach(tab => {
-  tab.addEventListener('click', () => {
-    document.querySelectorAll('.p-tab').forEach(t => t.classList.remove('on'));
-    document.querySelectorAll('.proj-panel').forEach(p => p.classList.remove('on'));
-    tab.classList.add('on');
-    document.getElementById(tab.dataset.pp).classList.add('on');
+// Project tabs
+document.querySelectorAll('.p-tab').forEach(function (btn) {
+  btn.addEventListener('click', function () {
+    document.querySelectorAll('.p-tab').forEach(function (b) { b.classList.remove('on'); });
+    document.querySelectorAll('.proj-panel').forEach(function (p) { p.classList.remove('on'); });
+    btn.classList.add('on');
+    var target = document.getElementById(btn.getAttribute('data-pp'));
+    if (target) target.classList.add('on');
   });
 });
 </script>
