@@ -1,0 +1,93 @@
+/* ─────────────────────────────────────────────────────────────
+   IDE / Notebook dark theme.
+   Color palette inspired by VS Code's One Dark Pro + Tokyo Night.
+   ───────────────────────────────────────────────────────────── */
+
+:root {
+  /* Layout */
+  --bg: #0d1117;
+  --bg-panel: #161b22;
+  --bg-panel-2: #1c222b;
+  --bg-tab: #0d1117;
+  --bg-tab-active: #1e242d;
+  --bg-active-line: #1f2530;
+  --bg-hover: #21262d;
+
+  /* Borders */
+  --border: #30363d;
+  --border-soft: #21262d;
+
+  /* Foreground */
+  --fg: #e6edf3;
+  --fg-dim: #9ba3ac;
+  --fg-faint: #6e7681;
+  --fg-ghost: #484f58;
+
+  /* Accents (syntax-highlighting palette) */
+  --accent: #79b8ff;          /* keywords, links */
+  --accent-dim: #4a8bd6;
+  --accent-soft: rgba(121, 184, 255, 0.12);
+  --string: #a5d6a7;          /* strings, success */
+  --keyword: #c792ea;         /* keywords, types */
+  --func: #82aaff;            /* function names */
+  --number: #f78c6c;          /* numbers */
+  --comment: #5c6773;         /* comments */
+  --tag: #f07178;             /* tags, errors */
+  --yellow: #ffcb6b;          /* warning */
+  --teal: #5dd9c1;
+
+  /* Status bar (VS Code blue) */
+  --statusbar: #1f6feb;
+  --statusbar-fg: #ffffff;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  height: 100%;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Helvetica Neue", Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow: hidden; /* IDE shell: no body scroll, panes scroll internally */
+}
+
+@media (max-width: 800px) {
+  html, body { overflow: auto; }
+}
+
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+::selection { background: var(--accent-soft); color: var(--fg); }
+
+/* Mono font for code-y bits */
+.mono, code, pre, .editor pre, .editor code {
+  font-family: ui-monospace, "JetBrains Mono", "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+  font-size: 13px;
+}
+
+/* Scrollbars (subtle, IDE-style) */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--fg-ghost); }
+
+button {
+  background: transparent;
+  border: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
+input, textarea {
+  font: inherit;
+  color: inherit;
+  background: transparent;
+  border: none;
+  outline: none;
+}
