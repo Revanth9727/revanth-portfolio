@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Revanth Gollapudi — AI Architect</title>
+<title>Revanth Gollapudi — AI Architect / Senior Production GenAI Engineer</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@200;300;400;500;600&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
@@ -282,10 +282,11 @@ a.cc-val:hover{color:var(--ice-bright);}
     <a class="nav-link" data-scroll="story">Story</a>
     <a class="nav-link" data-scroll="experience">Experience</a>
     <a class="nav-link" data-scroll="skills">Skills</a>
+    <a class="nav-link" data-scroll="education">Education</a>
     <a class="nav-link" data-scroll="projects">Projects</a>
     <a class="nav-link" data-scroll="contact">Contact</a>
   </div>
-  <div class="nav-status">Available · Q4 2026</div>
+  <a class="nav-status" href="/resume.pdf" id="resume-btn" download="Revanth_Gollapudi_Resume.pdf" style="text-decoration:none;cursor:pointer;">Download Resume</a>
 </nav>
 
 <!-- ════════════════════════════════════════════════════════════════════ -->
@@ -299,15 +300,13 @@ a.cc-val:hover{color:var(--ice-bright);}
       <div class="hero-meta">
         <span>AI ARCHITECT</span>
         <span class="dot-sep"></span>
-        <span>WEST LAFAYETTE, IN</span>
-        <span class="dot-sep"></span>
-        <span>2026</span>
+        <span>SENIOR GENAI ENGINEER</span>
       </div>
       <h1 class="hero-title">
         <span class="line"><span>Revanth</span></span>
         <span class="line"><span>Gollapudi</span></span>
       </h1>
-      <p class="hero-tagline">I architect and lead <strong>production GenAI systems</strong> — a conversational AI platform serving <strong>85K+ requests/day</strong>, and an Azure RAG system live for <strong>6,000 employees</strong>.</p>
+      <p class="hero-tagline">I build and own <strong>production GenAI systems</strong> — RAG platforms, evaluation gates, model-routing pipelines, and secure enterprise deployments. Live systems serving <strong>85K+ requests/day</strong> and <strong>6,000+ employees</strong>, with measurable gains in latency, retrieval quality, and inference cost.</p>
       <div class="hero-tags">
         <span class="h-tag accent">Production GenAI</span>
         <span class="h-tag">RAG · Multi-Agent</span>
@@ -358,16 +357,16 @@ a.cc-val:hover{color:var(--ice-bright);}
     </div>
     <div class="story-grid">
       <div class="story-prose reveal">
-        <p>Most ML work lives in notebooks. I wanted to understand what happens when you take a model out of a notebook and put it in front of real users — when latency matters, when costs compound, when the model hallucinates and you have to catch it before anyone notices.</p>
-        <p>That obsession led me to <em>retrieval quality, evaluation pipelines, and inference cost</em> — the unglamorous work that separates a demo from a production system. I've designed and led two live systems end-to-end: a conversational AI platform handling <strong>85K+ requests a day</strong> (leading a 5-person engineering team), and an Azure RAG chatbot for <strong>6,000 employees</strong> where I was the sole architect.</p>
-        <p>I care about <strong>owning outcomes, not just delivering code</strong>. Every system I build has observability baked in from day one. Every model update goes through an eval gate. Every cost spike gets investigated. That's what it means to run AI in production.</p>
+        <p>I build and ship production GenAI systems — the part where reliability, latency, cost, and evaluation matter as much as model quality. Two systems I've owned end-to-end: a conversational AI platform handling <strong>85K+ requests/day</strong> (leading a 5-person engineering team), and an Azure RAG chatbot for <strong>6,000 employees</strong> as sole architect.</p>
+        <p>I work where most production GenAI fails — at the intersection of <em>retrieval quality, evaluation, and inference cost</em>. Hybrid retrieval tuning, eval-gated CI/CD, complexity-based model routing, observability that catches drift before users do.</p>
+        <p>I <strong>own outcomes, not just code</strong>. Observability baked in from day one. Every model update through an eval gate. Every cost spike investigated. That's what running AI in production actually looks like.</p>
       </div>
       <div class="story-stats reveal">
         <div class="story-stat"><div class="story-stat-num"><em>99.9</em>%</div><div class="story-stat-label">Uptime SLA · Azure HR RAG</div></div>
-        <div class="story-stat"><div class="story-stat-num">~<em>40</em>%</div><div class="story-stat-label">Cache hit rate · sub-150ms</div></div>
-        <div class="story-stat"><div class="story-stat-num"><em>20</em>%</div><div class="story-stat-label">Bad updates blocked by EvalOps</div></div>
+        <div class="story-stat"><div class="story-stat-num">~<em>40</em>%</div><div class="story-stat-label">Cache hit · repeat queries</div></div>
+        <div class="story-stat"><div class="story-stat-num"><em>20</em>%</div><div class="story-stat-label">Regressive updates blocked at gate</div></div>
         <div class="story-stat"><div class="story-stat-num"><em>3</em>×</div><div class="story-stat-label">Deployment cycle accelerated</div></div>
-        <div class="story-stat"><div class="story-stat-num"><em>19</em>%</div><div class="story-stat-label">RAG faithfulness · 0.62 → 0.74</div></div>
+        <div class="story-stat"><div class="story-stat-num">+<em>0.12</em></div><div class="story-stat-label">RAGAS faithfulness · 0.62 → 0.74 (+19% rel.)</div></div>
       </div>
     </div>
   </div>
@@ -404,15 +403,15 @@ a.cc-val:hover{color:var(--ice-bright);}
         <!-- Panel 1 -->
         <div class="exp-panel on" id="ep1">
           <div class="ep-role">Production GenAI Systems · AWS + Azure</div>
-          <div class="ep-meta"><span>AI Architect · CGI</span><span>West Lafayette, IN</span><span>Dec 2024 — Present</span></div>
+          <div class="ep-meta"><span>AI Architect · CGI</span><span>Dec 2024 — Present</span></div>
           <div class="ep-points">
             <div class="ep-point">
               <div class="ep-point-label">Conversational AI Platform · AWS</div>
-              <p>Architected and own a <strong>Kubernetes-based conversational AI platform on AWS EKS</strong> serving ~85K requests/day across 10+ agent workflows for 1,200 users. Lead a 5-person engineering team with full SLA accountability, presenting architecture decisions directly to the client.</p>
+              <p>Architected and own a <strong>Kubernetes-based conversational AI platform on AWS EKS</strong> serving ~85K requests/day across 10+ agent workflows for 1,200 users. Lead a 5-person engineering team with full SLA accountability for the production environment.</p>
             </div>
             <div class="ep-point">
               <div class="ep-point-label">Azure HR RAG · Live for 6,000 Employees</div>
-              <p>Served as <strong>sole architect</strong> on an end-to-end Azure RAG system for an HR Policy chatbot. Angular SPA, FastAPI on Container Apps, Azure AI Search (vector + BM25 + semantic reranker), GPT-4o on PTU, Document Intelligence, Entra ID/MFA, private VNet. Delivers <strong>&lt;3s response time, ~40% cache hit rate, 99.9% uptime</strong>, with <strong>EU AI Act-aligned</strong> deployment documentation.</p>
+              <p>Sole architect on an end-to-end Azure RAG system for an HR Policy chatbot. Angular SPA, FastAPI on Container Apps, Azure AI Search (vector + BM25 + semantic reranker), GPT-4o on PTU, Document Intelligence, Entra ID/MFA, private VNet. Delivers <strong>&lt;3s response time, ~40% cache hit rate, 99.9% uptime</strong>, with <strong>EU AI Act-aligned</strong> deployment documentation.</p>
             </div>
             <div class="ep-point">
               <div class="ep-point-label">Inference Cost · 30% Reduction</div>
@@ -423,12 +422,12 @@ a.cc-val:hover{color:var(--ice-bright);}
               <p>Fine-tuned <strong>Llama 3 via LoRA/PEFT with DPO</strong> on 500+ human-labeled preference pairs. Reduced measured hallucination rate from 45% to 30% across production workloads.</p>
             </div>
             <div class="ep-point">
-              <div class="ep-point-label">EvalOps · Zero Undetected Regressions</div>
-              <p>Built a full <strong>EvalOps pipeline</strong> — groundedness rubrics, golden datasets, automated RAGAS scoring, OpenTelemetry retrieval tracing — as mandatory CI gates before every model update. Zero undetected regressions since rollout.</p>
+              <div class="ep-point-label">EvalOps · Regression Gate in CI</div>
+              <p>Built a full <strong>EvalOps pipeline</strong> — groundedness rubrics, golden datasets, automated RAGAS scoring, OpenTelemetry retrieval tracing — as mandatory CI gates before every model update. <strong>No known regressions have reached production undetected since rollout.</strong></p>
             </div>
             <div class="ep-point">
               <div class="ep-point-label">Vehicle AI Inspection · Ryder Systems (Fortune 500)</div>
-              <p>Leading end-to-end engineering delivery of an <strong>AI-powered vehicle inspection system</strong> — replacing manual walk-around inspections with a fully automated pipeline processing <strong>10,000+ vehicles/month at ~$0.01/image</strong>. Funded by a $93.9K Microsoft ECIF grant.</p>
+              <p>Lead engineer on an <strong>AI-powered vehicle inspection system</strong> — replacing manual walk-around inspections with a fully automated pipeline processing <strong>10,000+ vehicles/month at ~$0.01/image</strong>. Funded by a $93.9K Microsoft ECIF grant.</p>
               <p>Started by training and evaluating a <strong>YOLOv8 model on 10,000 labeled vehicle images</strong>, reaching 85–89% accuracy, before driving a <strong>strategic pivot to GPT-4o Vision</strong> — recognising the generative model's zero-shot damage understanding would outperform a task-specific detector without retraining burden.</p>
               <p>Built a <strong>two-pass automated pipeline</strong>: OpenCV blur detection pre-filters frames, then GPT-4o Vision runs a <strong>15-point damage assessment</strong> with Pass/Fail/N-A verdicts, confidence signals, and human-readable descriptions. Deployed on <strong>Azure Functions, Blob Storage, Cosmos DB, and Azure OpenAI</strong>.</p>
             </div>
@@ -441,11 +440,11 @@ a.cc-val:hover{color:var(--ice-bright);}
         <!-- Panel 2 -->
         <div class="exp-panel" id="ep2">
           <div class="ep-role">RAG Retrieval Quality & ML Platform</div>
-          <div class="ep-meta"><span>Data Engineer · CGI</span><span>New Brunswick, NJ</span><span>Jan 2023 — Dec 2024</span></div>
+          <div class="ep-meta"><span>Data Engineer · CGI</span><span>Jan 2023 — Dec 2024</span></div>
           <div class="ep-points">
             <div class="ep-point">
               <div class="ep-point-label">Retrieval Quality · 0.62 → 0.74 Faithfulness</div>
-              <p>Tuned <strong>hybrid retrieval (BM25 + pgvector + cross-encoder reranking)</strong> with query rewriting optimisations. Lifted RAGAS faithfulness from 0.62 to 0.74 on a 500-question eval set — a 19% improvement with no generation model changes.</p>
+              <p>Tuned <strong>hybrid retrieval (BM25 + pgvector + cross-encoder reranking)</strong> with query rewriting optimisations. Lifted RAGAS faithfulness from <strong>0.62 to 0.74</strong> on a 500-question eval set (<strong>+0.12 absolute, +19% relative</strong>) with no generation model changes.</p>
             </div>
             <div class="ep-point">
               <div class="ep-point-label">Eval-gated CI/CD · 20% of Bad Updates Blocked</div>
@@ -468,7 +467,7 @@ a.cc-val:hover{color:var(--ice-bright);}
         <!-- Panel 3 -->
         <div class="exp-panel" id="ep3">
           <div class="ep-role">Streaming Data Platform · Kafka + Spark</div>
-          <div class="ep-meta"><span>Data Engineer · eKincare</span><span>Bangalore, India</span><span>Aug 2020 — Jul 2021</span></div>
+          <div class="ep-meta"><span>Data Engineer · eKincare</span><span>Aug 2020 — Jul 2021</span></div>
           <div class="ep-points">
             <div class="ep-point">
               <div class="ep-point-label">Pipeline Throughput · +40%</div>
@@ -499,9 +498,9 @@ a.cc-val:hover{color:var(--ice-bright);}
     </div>
     <div class="skills-grid">
       <div class="skills-prose reveal">
-        <p>Every tool here is something I've used to solve a real production problem — usually at 2am when something was wrong. No framework I picked up to pad a slide.</p>
-        <p>My strongest areas are the intersection of <em>retrieval quality, evaluation, and inference cost</em>. That's where most production GenAI systems fail, and it's where I've spent the most time.</p>
-        <p>The infrastructure skills came from necessity — you can't <strong>own a system end-to-end</strong> without understanding how it runs.</p>
+        <p>Every tool here is something I've used in production — to solve a real reliability, latency, retrieval, or cost problem. No framework I picked up to pad a slide.</p>
+        <p>My strongest areas are the intersection of <em>retrieval quality, evaluation, and inference cost</em> — where most production GenAI systems fail.</p>
+        <p>The infrastructure depth came from necessity. You can't <strong>own a system end-to-end</strong> without understanding how it runs, where it breaks, and what it costs.</p>
       </div>
       <div class="skills-list reveal">
         <div class="sk-row"><div class="sk-cat">LLMs &amp; GenAI</div><div class="sk-vals"><span class="sk-v">Llama 3</span><span class="sk-v">LoRA/PEFT</span><span class="sk-v">DPO</span><span class="sk-v">RLHF</span><span class="sk-v">LangGraph</span><span class="sk-v">Model Routing</span><span class="sk-v">NL-to-SQL</span></div></div>
@@ -517,13 +516,42 @@ a.cc-val:hover{color:var(--ice-bright);}
 </section>
 
 <!-- ════════════════════════════════════════════════════════════════════ -->
+<!-- EDUCATION                                                              -->
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<section class="section" id="education">
+  <div class="section-inner">
+    <div class="reveal">
+      <div class="section-label">04 — Education</div>
+      <h2 class="section-title">Where <em>I trained.</em></h2>
+    </div>
+    <div class="skills-list reveal" style="margin-top:3rem;max-width:1000px;">
+      <div class="sk-row">
+        <div class="sk-cat">2021 — 2022</div>
+        <div>
+          <div style="font-size:1.15rem;color:var(--frost);font-weight:300;margin-bottom:.3rem;">Master of Science · Applied Engineering</div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:.12em;color:var(--frost-dim);text-transform:uppercase;">University of Colorado Boulder</div>
+        </div>
+      </div>
+      <div class="sk-row">
+        <div class="sk-cat">2016 — 2020</div>
+        <div>
+          <div style="font-size:1.15rem;color:var(--frost);font-weight:300;margin-bottom:.3rem;">Bachelor of Technology · Mechanical Engineering</div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:.12em;color:var(--frost-dim);text-transform:uppercase;">PES University</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════════════ -->
 <!-- PROJECTS                                                               -->
 <!-- ════════════════════════════════════════════════════════════════════ -->
 <section class="section" id="projects">
   <div class="section-inner">
     <div class="reveal">
-      <div class="section-label">04 — Selected Work</div>
-      <h2 class="section-title">Things I've <em>built &amp; shipped.</em></h2>
+      <div class="section-label">05 — Independent Projects</div>
+      <h2 class="section-title">Built on my own time, <em>shipped publicly.</em></h2>
+      <p style="max-width:680px;margin-top:1.5rem;color:var(--frost-dim);font-weight:300;">Production work at CGI is covered above. These are systems I designed and built independently — open-source on GitHub, with full code, tests, and CI.</p>
     </div>
     <div class="proj-tabs reveal">
       <div class="p-tab on" data-pp="pp1">RAOC</div>
@@ -711,13 +739,24 @@ a.cc-val:hover{color:var(--ice-bright);}
 <!-- ════════════════════════════════════════════════════════════════════ -->
 <section class="section" id="contact">
   <div class="contact-inner reveal">
-    <div class="contact-eyebrow">05 — Available · Q4 2026</div>
+    <div class="contact-eyebrow">06 — Contact</div>
     <h2 class="contact-title">Let's build something that <em>stays running.</em></h2>
-    <p class="contact-sub">Open to senior AI architect and staff engineer roles building production GenAI systems. Based in West Lafayette, IN — open to relocation for the right opportunity.</p>
+    <p class="contact-sub"><strong>What I'm looking for:</strong> Senior / Lead roles building production GenAI platforms — RAG systems, LLM evaluation infrastructure, AI agents, and enterprise AI products. Especially interested in teams that care about reliability, cost, observability, governance, and measurable model quality.</p>
+
+    <!-- Proof of production strip -->
+    <div style="display:flex;flex-wrap:wrap;gap:1.5rem 2.5rem;margin:3rem 0;padding:2rem 0;border-top:1px solid var(--rule-strong);border-bottom:1px solid var(--rule-strong);font-family:'JetBrains Mono',monospace;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--frost-dim);">
+      <span><strong style="color:var(--ice-bright);font-weight:400;">85K+</strong> req/day</span>
+      <span><strong style="color:var(--ice-bright);font-weight:400;">6,000</strong> users</span>
+      <span><strong style="color:var(--ice-bright);font-weight:400;">99.9%</strong> SLA</span>
+      <span><strong style="color:var(--ice-bright);font-weight:400;">30%</strong> inference cost cut</span>
+      <span><strong style="color:var(--ice-bright);font-weight:400;">+0.12</strong> RAGAS faithfulness</span>
+    </div>
+
     <div class="contact-links">
       <a href="mailto:gollapudi.off@gmail.com" class="btn btn-primary">gollapudi.off@gmail.com</a>
       <a href="https://linkedin.com/in/revanth-gollapudi" target="_blank" class="btn btn-ghost">LinkedIn</a>
       <a href="https://github.com/Revanth980727" target="_blank" class="btn btn-ghost">GitHub</a>
+      <a href="/resume.pdf" class="btn btn-ghost" id="resume-btn-2" download="Revanth_Gollapudi_Resume.pdf">Download Resume</a>
     </div>
     <div class="contact-grid">
       <div class="contact-cell">
@@ -725,12 +764,12 @@ a.cc-val:hover{color:var(--ice-bright);}
         <a href="mailto:gollapudi.off@gmail.com" class="cc-val">gollapudi.off@gmail.com</a>
       </div>
       <div class="contact-cell">
-        <div class="cc-label">LOCATION</div>
-        <div class="cc-val">West Lafayette, IN · USA</div>
+        <div class="cc-label">LINKEDIN</div>
+        <a href="https://linkedin.com/in/revanth-gollapudi" target="_blank" class="cc-val">/in/revanth-gollapudi</a>
       </div>
       <div class="contact-cell">
         <div class="cc-label">STATUS</div>
-        <div class="cc-val">Open · Senior / Staff GenAI</div>
+        <div class="cc-val">Open · Senior / Lead GenAI</div>
       </div>
     </div>
   </div>
