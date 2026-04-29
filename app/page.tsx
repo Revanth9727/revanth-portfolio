@@ -1,5 +1,16 @@
-import IDE from "@/components/IDE";
+"use client";
+
+import RecruiterMode from "@/components/RecruiterMode";
+import DevMode from "@/components/DevMode";
+import ModeToggle, { useMode } from "@/components/ModeToggle";
 
 export default function Page() {
-  return <IDE />;
+  const [mode, setMode] = useMode();
+
+  return (
+    <>
+      <ModeToggle mode={mode} setMode={setMode} />
+      {mode === "dev" ? <DevMode /> : <RecruiterMode />}
+    </>
+  );
 }

@@ -1,6 +1,12 @@
+
 # Revanth Gollapudi — Portfolio
 
-Next.js 14 (App Router) + TypeScript + zero external CSS frameworks. Dark IDE/notebook aesthetic with a live RAG playground signature element.
+Next.js 14 (App Router) + TypeScript. A dual-mode portfolio:
+
+- **Recruiter mode** (default) — clean, modern dark layout inspired by Linear.
+- **Dev mode** — full IDE shell with sidebar, tabs, syntax-highlighted "files," and an integrated terminal with working commands.
+
+A toggle in the top-right flips between them. The selection persists in `localStorage`, so engineers who flip into dev mode stay there next visit.
 
 ## Local development
 
@@ -64,11 +70,39 @@ You currently have Vercel hooked up to your GitHub repo serving the static `inde
 - **"Do I need any environment variables?"** No. This site is fully static.
 - **"Will my old `index.html` conflict?"** Vercel only deploys what's in the latest commit. If you delete `index.html` from the repo, it disappears.
 - **"What if the build fails?"** Check the Vercel build logs. Most likely: `npm install` failed because `node_modules` was committed. Make sure `.gitignore` excludes it.
+=======
+All copy lives in **`data/content.ts`**. Both modes read from this single file — edit once, both views update.
+
+- `profile` — name, title, contact links
+- `tagline` — one-liner under your name
+- `intro` — short intro paragraph
+- `stats` — headline metric strip in recruiter mode
+- `experience` — three roles, newest first
+- `skills` — skill categories (rendered as `skills.yaml` in dev mode)
+- `projects` — side projects
+- `education` — degrees
+- `lookingFor` — the "what's next" paragraph
+- `ragCorpus` — knowledge base for the live demo
+
+## Resume
+
+Drop your `resume.pdf` into the `public/` folder. The "Resume" button serves it from `/resume.pdf`.
+
+## Vercel deployment
+
+If your Vercel project still has Framework Preset set to "Other" from the original static-HTML setup, change it before pushing this:
+
+1. Vercel project → **Settings** → **Build & Development Settings**
+2. **Framework Preset** → **Next.js**
+3. Make sure **Root Directory**, **Build Command**, **Output Directory**, **Install Command** are all blank (defaults).
+4. Trigger a redeploy: Deployments → latest → ⋯ → Redeploy → uncheck "Use existing Build Cache" → Redeploy.
+>>>>>>> 41d628e (Updates)
 
 ## Project structure
 
 ```
 .
+<<<<<<< HEAD
 ├── app/                 # Next.js App Router
 │   ├── globals.css      # Dark IDE theme tokens
 │   ├── layout.tsx       # Root layout
@@ -94,3 +128,32 @@ You currently have Vercel hooked up to your GitHub repo serving the static `inde
 - **Theme colors** are defined as CSS variables in `app/globals.css`. Change `--accent`, `--bg`, etc. to retheme the whole site.
 - **The RAG playground corpus** is in `data/content.ts` under `ragCorpus`. Add entries to make the playground respond to more queries.
 - **Terminal commands** live in `components/Terminal.tsx` in the `exec()` function. Add new cases to add commands.
+=======
+├── app/
+│   ├── globals.css          # Two themes share this stylesheet
+│   ├── layout.tsx           # Loads fonts, applies body class
+│   └── page.tsx             # Mode switch + toggle
+├── components/
+│   ├── ModeToggle.tsx       # Top-right pill, owns mode state
+│   ├── RecruiterMode.tsx    # Linear-style default view
+│   ├── DevMode.tsx          # IDE shell — sidebar, tabs, terminal, syntax highlighter
+│   └── RagDemo.tsx          # Live AI pipeline demo (used in both modes)
+├── data/
+│   └── content.ts           # Single source of truth for all copy
+├── public/                  # resume.pdf goes here
+└── package.json
+```
+
+## How the mode toggle works
+
+- `localStorage["mode"]` stores `"recruiter"` or `"dev"`.
+- An inline script in `app/layout.tsx` reads the value before paint and sets `document.documentElement.dataset.mode`, which the toggle component reads on mount. This avoids any flash of the wrong mode on page load.
+- The body class `recruiter` or `dev` swaps which CSS variables apply to the page.
+
+## Customization tips
+
+- **Recruiter mode accent color** is `--accent: #6366f1` in `app/globals.css`. Change it to retheme that view.
+- **Dev mode IDE colors** are the `--ide-*` variables further down in the same file.
+- **The RAG demo** uses recruiter mode CSS variables. In dev mode, those variables are remapped to the IDE palette inside the `rag_demo.ipynb` view, so the demo automatically takes on the IDE look without a separate prop.
+- **Terminal commands** live in `components/DevMode.tsx` in the `exec()` function. Add new cases there.
+>>>>>>> 41d628e (Updates)

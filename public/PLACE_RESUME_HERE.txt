@@ -1,0 +1,1 @@
+Drop your resume.pdf here and the "Resume.pdf" button will serve it from /resume.pdf.
