@@ -10,7 +10,7 @@ export const profile = {
   linkedin: "https://www.linkedin.com/in/revanth-gollapudi-45935218a/",
   github: "https://github.com/Revanth980727",
   github2: "https://github.com/Revanth9727",
-  resume: "/resume.pdf",
+  resume: "/Revanth_Gollapudi_Resume.pdf",
 };
 
 export const tagline = "I build AI systems that run in production.";

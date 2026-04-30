@@ -40,7 +40,7 @@ All copy lives in **`data/content.ts`**. Both modes read from this single file, 
 
 ## Resume
 
-Drop your `resume.pdf` into the `public/` folder. It will be served at `/resume.pdf`, and the download buttons will work.
+Drop `Revanth_Gollapudi_Resume.pdf` into the `public/` folder. It will be served at `/Revanth_Gollapudi_Resume.pdf`, and the download buttons will work.
 
 ## Vercel Deployment
 
@@ -73,7 +73,7 @@ If your Vercel project still has Framework Preset set to "Other" from the origin
 │   ├── files.ts             # Turns data into source-like virtual files
 │   └── highlight.tsx        # Tiny syntax highlighter
 ├── public/
-│   └── resume.pdf           # Resume download
+│   └── Revanth_Gollapudi_Resume.pdf # Resume download
 └── package.json
 ```
 
